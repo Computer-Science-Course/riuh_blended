@@ -6,3 +6,4 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     label = db.Column(db.String(32))
     description = db.Column(db.String(128))
+    active = db.Column(db.Boolean, nullable=False, default=True)

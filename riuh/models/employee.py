@@ -8,3 +8,4 @@ class Employee(db.Model):
     document = db.Column(db.String(128), nullable=False)
     username = db.Column(db.String(32), nullable=False)
     password = db.Column(db.String(256), nullable=False)
+    active = db.Column(db.Boolean, nullable=False, default=True)
