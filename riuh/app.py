@@ -3,6 +3,7 @@ import os
 from flask import Flask
 
 from models.db import db
+from services.database import populate_database
 
 __version__: str = '0.1.0'
 
@@ -31,5 +32,6 @@ def create_app(db_url=None) -> Flask:
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        populate_database()
 
     return app

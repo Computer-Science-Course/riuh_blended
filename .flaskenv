@@ -1,0 +1,2 @@
+FLASK_APP=riuh/app
+FLASK_DEBUG=1
