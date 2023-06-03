@@ -1,9 +1,8 @@
-import os
-
 from flask import Flask
 
 from models.db import db
 from services.database import populate_database
+from config import config_app
 
 __version__: str = '0.1.0'
 
@@ -17,17 +16,7 @@ def create_app(db_url=None) -> Flask:
     """
 
     app = Flask(__name__)
-
-    app.config['PROPAGATE_EXCEPTIONS'] = True
-    app.config['API_TITLE'] = 'riuh REST API'
-    app.config['API_VERSION'] = 'v1'
-    app.config['OPENAPI_VERSION'] = '3.0.3'
-    app.config['OPENAPI_URL_PREFIX'] = '/'
-    app.config['OPENAPI_SWAGGER_UI_PATH'] = '/swagger-ui'
-    app.config['OPENAPI_SWAGGER_UI_URL'] = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/'
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv(
-        'DATABASE_URL', 'sqlite:///data.db')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    config_app(db_url, app)
 
     db.init_app(app)
     with app.app_context():
