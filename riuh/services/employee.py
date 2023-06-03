@@ -21,32 +21,52 @@ class EmployeeService:
         return self.employee.query.all()
 
 
-    def get_by_id(self, id) -> Employee:
+    def get_by_id(
+            self,
+            id: int,
+    ) -> Employee:
         """Get an employee by ID."""
         return self.employee.query.get_or_404(id)
 
 
-    def get_by_username(self, username) -> Employee:
+    def get_by_username(
+            self,
+            username: str,
+    ) -> Employee:
         """Get an employee by username."""
         return self.employee.query.filter_by(username=username).first_or_404()
 
 
-    def get_by_document(self, document) -> Employee:
+    def get_by_document(
+            self,
+            document: str,
+    ) -> Employee:
         """Get an employee by document."""
         return self.employee.query.filter_by(document=document).first_or_404()
 
 
-    def get_by_name(self, name) -> Employee:
+    def get_by_name(
+            self,
+            name: str,
+    ) -> Employee:
         """Get an employee by name."""
         return self.employee.query.filter_by(name=name).first_or_404()
 
 
-    def get_by_active(self, active) -> List[Employee]:
+    def get_by_active(
+            self,
+            active: bool,
+    ) -> List[Employee]:
         """Get all employees by active."""
         return self.employee.query.filter_by(active=active).all()
 
 
-    def create(self, name, document, username, password, active) -> Employee:
+    def create(
+            self,
+            name: str, document: str,
+            username: str, password: str,
+            active: bool
+    ) -> Employee:
         """Create a new employee."""
         self.employee.name = name
         self.employee.document = document
@@ -89,7 +109,10 @@ class EmployeeService:
             abort(500, message=str(e))
 
 
-    def delete(self, id) -> None:
+    def delete(
+            self,
+            id: int,
+    ) -> None:
         """Delete an employee."""
         self.employee = self.get_by_id(id)
         self.employee.active = False
@@ -101,7 +124,10 @@ class EmployeeService:
             abort(500, message=str(e))
 
 
-    def activate(self, id) -> None:
+    def activate(
+            self,
+            id: int,
+    ) -> None:
         """Activate an employee."""
         self.employee = self.get_by_id(id)
         self.employee.active = True
@@ -113,6 +139,9 @@ class EmployeeService:
             abort(500, message=str(e))
 
 
-    def _is_new_password(self, password) -> bool:
+    def _is_new_password(
+            self,
+            password: str,
+    ) -> bool:
         """Check if the password is new."""
         return sha256.hash(password) != self.employee       
