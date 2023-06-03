@@ -11,7 +11,7 @@ from sqlalchemy.exc import (
 )
 
 class EmployeeService:
-
+    """Service for employee."""
     def __init__(self):
         self.employee = Employee()
 
@@ -73,15 +73,15 @@ class EmployeeService:
         self.employee.username = username
         self.employee.password = sha256.hash(password)
         self.employee.active = active
-        
+
         try:
             db.session.add(self.employee)
             db.session.commit()
             return self.employee
         except IntegrityError:
             abort(409, message='User already exists.')
-        except SQLAlchemyError as e:
-            abort(500, message=str(e))
+        except SQLAlchemyError as exception:
+            abort(500, message=str(exception))
 
 
     def update(
@@ -92,21 +92,22 @@ class EmployeeService:
     ) -> Employee:
         """Update an employee."""
         self.employee = self.get_by_id(id)
+        
         self.employee.name = name
         self.employee.document = document
         self.employee.username = username
-        if self._is_new_password():
+        if self._is_new_password(password):
             self.employee.password = sha256.hash(password)
         self.employee.active = active
-        
+
         try:
             db.session.add(self.employee)
             db.session.commit()
             return self.employee
         except IntegrityError:
             abort(409, message='User already exists.')
-        except SQLAlchemyError as e:
-            abort(500, message=str(e))
+        except SQLAlchemyError as exception:
+            abort(500, message=str(exception))
 
 
     def delete(
@@ -120,8 +121,8 @@ class EmployeeService:
         try:
             db.session.add(self.employee)
             db.session.commit()
-        except SQLAlchemyError as e:
-            abort(500, message=str(e))
+        except SQLAlchemyError as exception:
+            abort(500, message=str(exception))
 
 
     def activate(
@@ -135,13 +136,13 @@ class EmployeeService:
         try:
             db.session.add(self.employee)
             db.session.commit()
-        except SQLAlchemyError as e:
-            abort(500, message=str(e))
+        except SQLAlchemyError as exception:
+            abort(500, message=str(exception))
 
 
     def _is_new_password(
             self,
-            password: str,
+            password: str
     ) -> bool:
         """Check if the password is new."""
-        return sha256.hash(password) != self.employee       
+        return sha256.hash(password) != self.employee.password
