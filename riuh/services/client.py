@@ -119,11 +119,11 @@ class ClientService:
             abort(500, message=str(exception))
 
 
-    def active(
+    def activate(
             self,
             id: int,
     ) -> None:
-        """Active an client."""
+        """Activate an client."""
         self.client = self.get_by_id(id)
         self.client.active = True
 
