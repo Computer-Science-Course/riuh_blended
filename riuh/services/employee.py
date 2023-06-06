@@ -92,7 +92,7 @@ class EmployeeService:
     ) -> Employee:
         """Update an employee."""
         self.employee = self.get_by_id(id)
-        
+
         self.employee.name = name
         self.employee.document = document
         self.employee.username = username
