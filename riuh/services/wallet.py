@@ -97,6 +97,7 @@ class WalletService:
         self.wallet.balance += amount
 
         try:
+            db.session.add(self.wallet)
             db.session.commit()
             return self.wallet
         except IntegrityError as exception:

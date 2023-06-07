@@ -96,6 +96,7 @@ class ClientService:
         self.client.active = active
 
         try:
+            db.session.add(self.client)
             db.session.commit()
             return self.client
         except IntegrityError:

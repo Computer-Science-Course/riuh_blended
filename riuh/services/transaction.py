@@ -87,6 +87,7 @@ class TransactionService:
         self.transaction.type = _type
 
         try:
+            db.session.add(self.transaction)
             db.session.commit()
             return self.transaction
         except IntegrityError:
