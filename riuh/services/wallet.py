@@ -36,7 +36,7 @@ class WalletService:
 
     def create(
             self,
-            client_id: int, balance: float
+            client_id: int, balance: float = 0.00
     ) -> Wallet:
         """Create a new wallet."""
         self.wallet.client_id = client_id
