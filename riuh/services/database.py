@@ -7,6 +7,7 @@ from random import (
 from services import (
     ClientService,
     EmployeeService,
+    OrderService,
     ProductService,
     TransactionService,
     WalletService,
@@ -229,9 +230,40 @@ def populate_products():
         except Exception:
             service.create(**product)
 
+
+def populate_orders():
+    """Populate the orders table with some default data."""
+
+    orders: list = [
+        {
+            'client_id': randint(1, 10),
+            'employee_id': randint(2, 6),
+            'product_id': randint(1, 36),
+            'price': randint(500, 10000) / 100,
+        }
+        for _ in range(20)
+    ]
+
+    for order in orders:
+        try:
+            client_service: ClientService = ClientService()
+            employee_service: EmployeeService = EmployeeService()
+            product_service: ProductService = ProductService()
+
+            client_service.get_by_id(order.get('client_id'))
+            employee_service.get_by_id(order.get('employee_id'))
+            product_service.get_by_id(order.get('product_id'))
+
+            service: OrderService = OrderService()
+            service.create(**order)
+        except Exception:
+            print('Error creating transaction.')
+
+
 def populate_database():
     """Populate the database with some default data."""
     populate_employees()
     populate_clients()
     populate_transactions()
     populate_products()
+    populate_orders()
