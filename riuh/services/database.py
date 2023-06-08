@@ -9,6 +9,7 @@ from services import (
     EmployeeService,
     OrderService,
     ProductService,
+    PerkService,
     RoleService,
     TransactionService,
     WalletService,
@@ -258,7 +259,7 @@ def populate_orders():
             service: OrderService = OrderService()
             service.create(**order)
         except Exception:
-            print('Error creating transaction.')
+            print('Error creating order.')
 
 
 def populate_roles():
@@ -295,6 +296,39 @@ def populate_roles():
             service.create(**role)
 
 
+def populate_perks():
+    """Populate the perks table with some default data."""
+
+    perks: list = [
+        {
+            'employee_id': employee_id,
+            'role_id': randint(2, 4),
+        }
+        for employee_id in range(2, 7)
+    ]
+    # Admin
+    perks.append(
+        {
+            'employee_id': 1,
+            'role_id': 1,
+        }
+    )
+
+    for perk in perks:
+        try:
+            employee_service: EmployeeService = EmployeeService()
+            role_service: RoleService = RoleService() 
+
+            employee_service.get_by_id(perk.get('employee_id'))
+            role_service.get_by_id(perk.get('role_id'))
+
+            service: PerkService = PerkService()
+            if not service.get_by_employee_id(perk.get('employee_id')):
+                service.create(**perk)
+        except Exception:
+            print('Error creating perk.')
+
+
 def populate_database():
     """Populate the database with some default data."""
     populate_employees()
@@ -303,3 +337,4 @@ def populate_database():
     populate_products()
     populate_orders()
     populate_roles()
+    populate_perks()

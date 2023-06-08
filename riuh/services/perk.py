@@ -26,6 +26,14 @@ class PerkService:
     ) -> Perk:
         """Get an perk by ID."""
         return self.perk.query.get_or_404(id)
+    
+
+    def get_by_employee_id(
+            self,
+            employee_id: int,
+    ) -> Perk:
+        """Get an perk by employee_id."""
+        return self.perk.query.filter_by(employee_id=employee_id).first()
 
 
     def get_all_by_employee_id(
