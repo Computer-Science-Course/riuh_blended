@@ -9,6 +9,7 @@ from services import (
     EmployeeService,
     OrderService,
     ProductService,
+    RoleService,
     TransactionService,
     WalletService,
 )
@@ -260,6 +261,40 @@ def populate_orders():
             print('Error creating transaction.')
 
 
+def populate_roles():
+    """Populate the roles table with some default data."""
+
+    roles: list = [
+        {
+            'label': 'admin',
+            'description': 'Full access and control over all CRUD operations; Can create, read, update, and delete any record in the system; Has unrestricted administrative privileges.',
+            'active': True
+        },
+        {
+            'label': 'manager',
+            'description': 'Can create, read, update, and delete records within their assigned domain or department; Has permissions to manage and oversee specific areas of the system; Have limited administrative privileges.',
+            'active': True
+        },
+        {
+            'label': 'employee',
+            'description': 'Can create, read, update, and delete their own records; Limited access to certain features or functionalities compared to managers and superusers; Typically represents a regular user or customer of the system.',
+            'active': True
+        },
+        {
+            'label': 'guest',
+            'description': 'Read-only access to certain public information or resources; Cannot create, update, or delete records; Accessible to users who haven\'t logged in or registered in the system.',
+            'active': True
+        }
+    ]
+
+    for role in roles:
+        try:
+            service: RoleService = RoleService()
+            service.get_by_label(role.get('label'))
+        except Exception:
+            service.create(**role)
+
+
 def populate_database():
     """Populate the database with some default data."""
     populate_employees()
@@ -267,3 +302,4 @@ def populate_database():
     populate_transactions()
     populate_products()
     populate_orders()
+    populate_roles()
