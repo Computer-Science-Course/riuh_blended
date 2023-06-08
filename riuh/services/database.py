@@ -7,6 +7,7 @@ from random import (
 from services import (
     ClientService,
     EmployeeService,
+    ProductService,
     TransactionService,
     WalletService,
 )
@@ -169,8 +170,68 @@ def populate_transactions():
         except Exception:
             print('Error creating transaction.')
 
+
+def populate_products():
+    """Populate the products table with some default data."""
+
+    product_names = [
+        'Coca-Cola',
+        'Pepsi',
+        'Fanta',
+        'Guaraná',
+        'Sprite',
+        'Água',
+        'Suco de Laranja',
+        'Suco de Uva',
+        'Suco de Maracujá',
+        'Suco de Limão',
+        'Suco de Morango',
+        'Suco de Manga',
+        'Suco de Caju',
+        'Suco de Acerola',
+        'Suco de Açaí',
+        'Pringles',
+        'Doritos',
+        'Ruffles',
+        'Cheetos',
+        'Fandangos',
+        'Baconzitos',
+        'Cebolitos',
+        'Cigarro',
+        'Cigarro de Palha',
+        'Cachaça',
+        'Vodka',
+        'Whisky',
+        'Cerveja',
+        'Cerveja Artesanal',
+        'Cerveja Importada',
+        'Cerveja Sem Álcool',
+        'Cerveja de Trigo',
+        'Cerveja Pilsen',
+        'Picanha',
+        'Alcatra',
+        'Contra Filé',
+    ]
+    products: list = [
+        {
+            'name': name,
+            'price': randint(500, 10000) / 100,
+            'quantity': randint(1, 100),
+            'active': True
+        }
+        for name in product_names
+    ]
+
+    for product in products:
+        try:
+            service: ProductService = ProductService()
+            service.get_by_name(product.get('name'))
+        except Exception:
+            service.create(**product)
+
 def populate_database():
     """Populate the database with some default data."""
     populate_employees()
     populate_clients()
     populate_transactions()
+    populate_products()
