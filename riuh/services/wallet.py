@@ -9,12 +9,14 @@ from sqlalchemy.exc import (
 
 class WalletService:
     """Service for wallet."""
+
     def __init__(self):
         self.wallet = Wallet()
 
 
     def get_all(self):
         """Get all wallets."""
+
         return self.wallet.query.all()
 
 
@@ -23,6 +25,7 @@ class WalletService:
             id: int,
     ) -> Wallet:
         """Get an wallet by ID."""
+
         return self.wallet.query.get_or_404(id)
 
 
@@ -31,6 +34,7 @@ class WalletService:
             client_id: int,
     ) -> Wallet:
         """Get an wallet by client_id."""
+
         return self.wallet.query.filter_by(client_id=client_id).first_or_404()
 
 
@@ -39,6 +43,7 @@ class WalletService:
             client_id: int, balance: float = 0.00
     ) -> Wallet:
         """Create a new wallet."""
+
         self.wallet.client_id = client_id
         self.wallet.balance = balance
 
@@ -58,6 +63,7 @@ class WalletService:
             client_id: int, balance: float
     ) -> Wallet:
         """Update an wallet."""
+
         self.wallet = self.get_by_id(id)
 
         self.wallet.client_id = client_id
@@ -77,6 +83,7 @@ class WalletService:
             id: int,
     ) -> None:
         """Delete an wallet."""
+
         self.wallet = self.get_by_id(id)
 
         try:
@@ -92,6 +99,7 @@ class WalletService:
             amount: float
     ) -> Wallet:
         """Add balance to an wallet."""
+
         self.wallet = self.get_by_id(id)
 
         self.wallet.balance += amount
@@ -112,6 +120,7 @@ class WalletService:
             amount: float
     ) -> Wallet:
         """Subtract balance from an wallet."""
+
         self.wallet = self.get_by_id(id)
 
         self.wallet.balance -= amount

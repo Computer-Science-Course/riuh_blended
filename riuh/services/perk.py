@@ -11,12 +11,14 @@ from sqlalchemy.exc import (
 
 class PerkService:
     """Service for Perk."""
+
     def __init__(self):
         self.perk = Perk()
 
 
     def get_all(self):
         """Get all perks."""
+
         return self.perk.query.all()
 
 
@@ -25,6 +27,7 @@ class PerkService:
             id: int,
     ) -> Perk:
         """Get an perk by ID."""
+
         return self.perk.query.get_or_404(id)
     
 
@@ -33,6 +36,7 @@ class PerkService:
             employee_id: int,
     ) -> Perk:
         """Get an perk by employee_id."""
+
         return self.perk.query.filter_by(employee_id=employee_id).first()
 
 
@@ -41,6 +45,7 @@ class PerkService:
             employee_id: int,
     ) -> List[Perk]:
         """Get all perks by employee_id."""
+
         return self.perk.query.filter_by(employee_id=employee_id).all()
 
 
@@ -49,6 +54,7 @@ class PerkService:
             role_id: int,
     ) -> List[Perk]:
         """Get all perks by role_id."""
+
         return self.perk.query.filter_by(role_id=role_id).all()
 
 
@@ -57,6 +63,7 @@ class PerkService:
             employee_id: int, role_id: int,
     ) -> Perk:
         """Create a new perk."""
+
         self.perk.employee_id = employee_id
         self.perk.role_id = role_id
 
@@ -75,6 +82,7 @@ class PerkService:
             employee_id: int, role_id: int,
     ) -> Perk:
         """Update an perk."""
+
         self.perk.employee_id = employee_id
         self.perk.role_id = role_id
 
@@ -93,6 +101,7 @@ class PerkService:
             id: int,
     ) -> Perk:
         """Delete an perk."""
+
         self.perk = self.get_by_id(id)
 
         try:

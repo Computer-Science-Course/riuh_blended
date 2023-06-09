@@ -1,4 +1,5 @@
 """Database service module."""
+
 from random import (
     randint,
     choice,
@@ -331,6 +332,7 @@ def populate_perks():
 
 def populate_database():
     """Populate the database with some default data."""
+
     populate_employees()
     populate_clients()
     populate_transactions()

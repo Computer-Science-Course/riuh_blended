@@ -11,12 +11,14 @@ from sqlalchemy.exc import (
 
 class ProductService:
     """Service for product."""
+
     def __init__(self):
         self.product = Product()
 
 
     def get_all(self):
         """Get all products."""
+
         return self.product.query.all()
 
     def get_by_id(
@@ -24,6 +26,7 @@ class ProductService:
             id: int,
     ) -> Product:
         """Get an product by ID."""
+
         return self.product.query.get_or_404(id)
 
     def get_by_name(
@@ -31,6 +34,7 @@ class ProductService:
             name: str,
     ) -> Product:
         """Get an product by name."""
+
         return self.product.query.filter_by(name=name).first_or_404()
 
 
@@ -39,6 +43,7 @@ class ProductService:
             active: bool,
     ) -> List[Product]:
         """Get all products by active."""
+
         return self.product.query.filter_by(active=active).all()
 
     def create(
@@ -47,6 +52,7 @@ class ProductService:
             quantity: int, active: bool
     ) -> Product:
         """Create a new product."""
+
         self.product.name = name
         self.product.price = price
         self.product.quantity = quantity
@@ -68,6 +74,7 @@ class ProductService:
             quantity: int, active: bool
     ) -> Product:
         """Update an product."""
+
         self.product.name = name
         self.product.price = price
         self.product.quantity = quantity
@@ -88,6 +95,7 @@ class ProductService:
             id: int,
     ) -> None:
         """Delete an product."""
+
         self.product = self.product.query.get_or_404(id)
         self.product.active = False
 
@@ -103,6 +111,7 @@ class ProductService:
             id: int,
     ) -> None:
         """Activate an product."""
+
         self.product = self.product.query.get_or_404(id)
         self.product.active = True
 

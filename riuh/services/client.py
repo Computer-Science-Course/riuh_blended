@@ -11,12 +11,14 @@ from sqlalchemy.exc import (
 
 class ClientService:
     """Service for client."""
+
     def __init__(self):
         self.client = Client()
 
 
     def get_all(self):
         """Get all clients."""
+
         return self.client.query.all()
 
 
@@ -25,6 +27,7 @@ class ClientService:
             id: int,
     ) -> Client:
         """Get an client by ID."""
+
         return self.client.query.get_or_404(id)
 
 
@@ -33,6 +36,7 @@ class ClientService:
             username: str,
     ) -> Client:
         """Get an client by username."""
+
         return self.client.query.filter_by(username=username).first_or_404()
 
 
@@ -41,6 +45,7 @@ class ClientService:
             name: str,
     ) -> Client:
         """Get an client by name."""
+
         return self.client.query.filter_by(name=name).first_or_404()
 
 
@@ -49,6 +54,7 @@ class ClientService:
             registration: str,
     ) -> Client:
         """Get an client by registration."""
+
         return self.client.query.filter_by(registration=registration).first_or_404()
 
 
@@ -57,6 +63,7 @@ class ClientService:
             active: bool,
     ) -> List[Client]:
         """Get all clients by active."""
+
         return self.client.query.filter_by(active=active).all()
 
 
@@ -66,6 +73,7 @@ class ClientService:
             username: str, active: bool
     ) -> Client:
         """Create a new client."""
+
         self.client.name = name
         self.client.registration = registration
         self.client.username = username
@@ -88,6 +96,7 @@ class ClientService:
             username: str, active: bool
     ) -> Client:
         """Update an client."""
+
         self.client = self.get_by_id(id)
 
         self.client.name = name
@@ -110,6 +119,7 @@ class ClientService:
             id: int,
     ) -> None:
         """Delete an client."""
+
         self.client = self.get_by_id(id)
         self.client.active = False
 
@@ -125,6 +135,7 @@ class ClientService:
             id: int,
     ) -> None:
         """Activate an client."""
+
         self.client = self.get_by_id(id)
         self.client.active = True
 
