@@ -12,12 +12,14 @@ from sqlalchemy.exc import (
 
 class EmployeeService:
     """Service for employee."""
+
     def __init__(self):
         self.employee = Employee()
 
 
     def get_all(self):
         """Get all employees."""
+
         return self.employee.query.all()
 
 
@@ -26,6 +28,7 @@ class EmployeeService:
             id: int,
     ) -> Employee:
         """Get an employee by ID."""
+
         return self.employee.query.get_or_404(id)
 
 
@@ -34,6 +37,7 @@ class EmployeeService:
             username: str,
     ) -> Employee:
         """Get an employee by username."""
+
         return self.employee.query.filter_by(username=username).first_or_404()
 
 
@@ -42,6 +46,7 @@ class EmployeeService:
             document: str,
     ) -> Employee:
         """Get an employee by document."""
+
         return self.employee.query.filter_by(document=document).first_or_404()
 
 
@@ -50,6 +55,7 @@ class EmployeeService:
             name: str,
     ) -> Employee:
         """Get an employee by name."""
+
         return self.employee.query.filter_by(name=name).first_or_404()
 
 
@@ -58,6 +64,7 @@ class EmployeeService:
             active: bool,
     ) -> List[Employee]:
         """Get all employees by active."""
+
         return self.employee.query.filter_by(active=active).all()
 
 
@@ -65,9 +72,10 @@ class EmployeeService:
             self,
             name: str, document: str,
             username: str, password: str,
-            active: bool
+            active: bool = True
     ) -> Employee:
         """Create a new employee."""
+
         self.employee.name = name
         self.employee.document = document
         self.employee.username = username
@@ -88,17 +96,14 @@ class EmployeeService:
             self,
             id: int, name: str,
             document: str, username: str,
-            password: str, active: bool
     ) -> Employee:
         """Update an employee."""
+
         self.employee = self.get_by_id(id)
 
         self.employee.name = name
         self.employee.document = document
         self.employee.username = username
-        if self._is_new_password(password):
-            self.employee.password = sha256.hash(password)
-        self.employee.active = active
 
         try:
             db.session.add(self.employee)
@@ -115,6 +120,7 @@ class EmployeeService:
             id: int,
     ) -> None:
         """Delete an employee."""
+
         self.employee = self.get_by_id(id)
         self.employee.active = False
 
@@ -130,6 +136,7 @@ class EmployeeService:
             id: int,
     ) -> None:
         """Activate an employee."""
+
         self.employee = self.get_by_id(id)
         self.employee.active = True
 
@@ -145,4 +152,5 @@ class EmployeeService:
             password: str
     ) -> bool:
         """Check if the password is new."""
+
         return sha256.hash(password) != self.employee.password

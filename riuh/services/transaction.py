@@ -11,12 +11,14 @@ from sqlalchemy.exc import (
 
 class TransactionService:
     """Service for Transaction."""
+
     def __init__(self):
         self.transaction = Transaction()
 
 
     def get_all(self):
         """Get all transactions."""
+
         return self.transaction.query.all()
 
 
@@ -25,6 +27,7 @@ class TransactionService:
             id: int,
     ) -> Transaction:
         """Get an transaction by ID."""
+
         return self.transaction.query.get_or_404(id)
 
 
@@ -33,6 +36,7 @@ class TransactionService:
             client_id: int,
     ) -> List[Transaction]:
         """Get all transactions by client_id."""
+
         return self.transaction.query.filter_by(client_id=client_id).all()
 
 
@@ -41,6 +45,7 @@ class TransactionService:
             employee_id: int,
     ) -> List[Transaction]:
         """Get all transactions by employee_id."""
+
         return self.transaction.query.filter_by(employee_id=employee_id).all()
 
 
@@ -49,6 +54,7 @@ class TransactionService:
             _type: str,
     ) -> List[Transaction]:
         """Get all transactions by type."""
+
         return self.transaction.query.filter_by(type=_type).all()
 
 
@@ -58,6 +64,7 @@ class TransactionService:
             amount: float, _type: str
     ) -> Transaction:
         """Create a new transaction."""
+
         self.transaction.client_id = client_id
         self.transaction.employee_id = employee_id
         self.transaction.amount = amount
@@ -80,6 +87,7 @@ class TransactionService:
             amount: float, _type: str
     ) -> Transaction:
         """Update an transaction."""
+
         self.transaction = self.get_by_id(id)
         self.transaction.client_id = client_id
         self.transaction.employee_id = employee_id
@@ -101,6 +109,7 @@ class TransactionService:
             id: int,
     ) -> Transaction:
         """Delete an transaction."""
+
         self.transaction = self.get_by_id(id)
 
         try:

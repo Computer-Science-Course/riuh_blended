@@ -12,6 +12,7 @@ def config_app(
     :param db_url: The database URL to connect to.
     :param app: The Flask app instance to configure.
     """
+
     app.config['PROPAGATE_EXCEPTIONS'] = True
     app.config['API_TITLE'] = 'riuh REST API'
     app.config['API_VERSION'] = 'v1'

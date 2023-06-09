@@ -11,12 +11,14 @@ from sqlalchemy.exc import (
 
 class OrderService:
     """Service for order."""
+
     def __init__(self):
         self.order = Order()
     
 
     def get_all(self):
         """Get all orders."""
+
         return self.order.query.all()
 
 
@@ -25,6 +27,7 @@ class OrderService:
             id: int,
     ) -> Order:
         """Get an order by ID."""
+
         return self.order.query.get_or_404(id)
 
 
@@ -33,6 +36,7 @@ class OrderService:
             client_id: int,
     ) -> List[Order]:
         """Get all orders by client_id."""
+
         return self.order.query.filter_by(client_id=client_id).all()
 
 
@@ -41,6 +45,7 @@ class OrderService:
             employee_id: int,
     ) -> List[Order]:
         """Get all orders by employee_id."""
+
         return self.order.query.filter_by(employee_id=employee_id).all()
 
 
@@ -49,6 +54,7 @@ class OrderService:
             product_id: int,
     ) -> List[Order]:
         """Get all orders by product_id."""
+
         return self.order.query.filter_by(product_id=product_id).all()
 
 
@@ -58,6 +64,7 @@ class OrderService:
             product_id: int, price: float
     ) -> Order:
         """Create a new order."""
+
         self.order.client_id = client_id
         self.order.employee_id = employee_id
         self.order.product_id = product_id
@@ -80,6 +87,7 @@ class OrderService:
             product_id: int, price: float
     ) -> Order:
         """Update an order."""
+
         self.order = self.get_by_id(id)
         self.order.client_id = client_id
         self.order.employee_id = employee_id
@@ -101,6 +109,7 @@ class OrderService:
             id: int,
     ) -> None:
         """Delete an order."""
+
         self.order = self.get_by_id(id)
 
         try:
