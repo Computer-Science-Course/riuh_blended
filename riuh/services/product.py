@@ -49,7 +49,7 @@ class ProductService:
     def create(
             self,
             name: str, price: float,
-            quantity: int, active: bool
+            quantity: int, active: bool = True
     ) -> Product:
         """Create a new product."""
 

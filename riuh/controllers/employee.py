@@ -51,7 +51,7 @@ class Employee(MethodView):
     @blp.response(204)
     def delete(self, employee_id):
         """
-        Deactivate na employee to indicate they are deleted.
+        Deactivate an employee to indicate they are deleted.
 
         :param int employee_id: Employee ID.
         """
@@ -63,7 +63,7 @@ class Employee(MethodView):
     @blp.response(200)
     def patch(self, employee_id):
         """
-        Activate an employee to indicate they are deleted.
+        Activate an employee to indicate they are not deleted anymore.
 
         :param int employee_id: Employee ID.
         """
@@ -81,7 +81,7 @@ class EmployeeGeneral(MethodView):
         """
         Get all employees.
 
-        :return list: List of employees.
+        :return list: List of Employees.
         """
 
         service: EmployeeService = EmployeeService()
