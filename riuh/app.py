@@ -4,6 +4,7 @@ from flask_smorest import Api
 from models.db import db
 from services.database import populate_database
 from config import config_app
+from controllers.employee import blp as employee_blp
 
 from controllers.employee import blp as employee_blp
 from controllers.client import blp as client_blp
