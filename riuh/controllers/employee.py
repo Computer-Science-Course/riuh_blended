@@ -1,4 +1,4 @@
-"""Employee Controller"""
+"""Employee Controller."""
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
@@ -12,16 +12,16 @@ from services import (
     EmployeeService,
 )
 
-blp = Blueprint('Employees', __name__, description = 'Operations on employees.')
+blp = Blueprint('Employees', __name__, description='Operations on employees.')
 
 @blp.route('/employee/<int:employee_id>')
 class Employee(MethodView):
-    """Controllers for specific employee"""
+    """Controllers for specific employee."""
 
     @blp.response(200, ViewEmployeeSchema)
     def get(self, employee_id):
         """
-        Get an employee by ID
+        Get an employee by ID.
 
         :param int employee_id: Employee ID.
 
@@ -36,7 +36,7 @@ class Employee(MethodView):
     @blp.response(200, ViewEmployeeSchema)
     def put(self, employee_data, employee_id):
         """
-        Update an employee by ID.
+        Update an employee by its ID.
 
         :request UpdateEmployeeSchema employee_data: Employee data to be updated.
         :param int employee_id: Employee ID.
@@ -74,7 +74,7 @@ class Employee(MethodView):
 
 @blp.route('/employee')
 class EmployeeGeneral(MethodView):
-    """Controllers for general employees"""
+    """Controllers for general employees."""
 
     @blp.response(200, ViewEmployeeSchema(many=True))
     def get(self):

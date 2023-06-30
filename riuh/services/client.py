@@ -70,7 +70,7 @@ class ClientService:
     def create(
             self,
             name: str, registration: str,
-            username: str, active: bool
+            username: str, active: bool = True
     ) -> Client:
         """Create a new client."""
 

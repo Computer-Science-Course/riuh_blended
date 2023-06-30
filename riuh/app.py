@@ -5,6 +5,7 @@ from models.db import db
 from services.database import populate_database
 from config import config_app
 from controllers.employee import blp as employee_blp
+from controllers.client import blp as client_blp
 
 __version__: str = '0.1.0'
 
@@ -29,5 +30,6 @@ def create_app(db_url=None) -> Flask:
         populate_database()
     
     api.register_blueprint(employee_blp)
+    api.register_blueprint(client_blp)
 
     return app
