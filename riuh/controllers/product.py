@@ -5,6 +5,7 @@ from flask_smorest import Blueprint
 
 from schemas.product import (
     CreateProductSchema,
+    UpdateProductSchema,
     ViewProductSchema,
 )
 from services.product import (
@@ -29,6 +30,46 @@ class Product(MethodView):
 
         service: ProductService = ProductService()
         return service.get_by_id(product_id)
+
+
+    @blp.arguments(UpdateProductSchema)
+    @blp.response(200, ViewProductSchema)
+    def put(self, product_data, product_id):
+        """
+        Update an product by its ID.
+
+        :request UpdateProductSchema product_data: Product data to be updated.
+        :param int product_id: Product Id.
+
+        :return ViewProductSchema: Product.
+        """
+
+        service: ProductService = ProductService()
+        return service.update(id=product_id, **product_data)
+
+
+    @blp.response(204)
+    def delete(self, product_id):
+        """
+        Deactivate a product to indicate they are deleted.
+
+        :param int produt_id: Product ID.
+        """
+
+        service: ProductService = ProductService()
+        return service.delete(product_id)
+
+
+    @blp.response(200)
+    def patch(self, product_id):
+        """
+        Activate a product to indicate they are not deleted.
+
+        :param int produt_id: Product ID.
+        """
+
+        service: ProductService = ProductService()
+        return service.activate(product_id)
 
 
 @blp.route('/product')

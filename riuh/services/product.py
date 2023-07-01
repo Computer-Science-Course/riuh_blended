@@ -69,11 +69,13 @@ class ProductService:
 
 
     def update(
-            self,
+            self, id: int,
             name: str, price: float,
             quantity: int, active: bool
     ) -> Product:
         """Update an product."""
+
+        self.product = self.get_by_id(id)
 
         self.product.name = name
         self.product.price = price
