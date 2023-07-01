@@ -6,8 +6,9 @@ from services.database import populate_database
 from config import config_app
 from controllers.employee import blp as employee_blp
 
-from controllers.employee import blp as employee_blp
 from controllers.client import blp as client_blp
+from controllers.employee import blp as employee_blp
+from controllers.order import blp as order_blp
 from controllers.product import blp as product_blp
 
 __version__: str = '0.1.0'
@@ -32,8 +33,9 @@ def create_app(db_url=None) -> Flask:
         db.create_all()
         populate_database()
     
-    api.register_blueprint(employee_blp)
     api.register_blueprint(client_blp)
+    api.register_blueprint(employee_blp)
+    api.register_blueprint(order_blp)
     api.register_blueprint(product_blp)
 
     return app

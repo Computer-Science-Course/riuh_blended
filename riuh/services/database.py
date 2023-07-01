@@ -243,6 +243,7 @@ def populate_orders():
             'employee_id': randint(2, 6),
             'product_id': randint(1, 36),
             'price': randint(500, 10000) / 100,
+            'quantity': randint(1, 5),
         }
         for _ in range(20)
     ]

@@ -61,7 +61,8 @@ class OrderService:
     def create(
             self,
             client_id: int, employee_id: int,
-            product_id: int, price: float
+            product_id: int, price: float,
+            quantity: int,
     ) -> Order:
         """Create a new order."""
 
@@ -69,6 +70,7 @@ class OrderService:
         self.order.employee_id = employee_id
         self.order.product_id = product_id
         self.order.price = price
+        self.order.quantity = quantity
 
         try:
             db.session.add(self.order)
@@ -84,15 +86,18 @@ class OrderService:
             self,
             id: int,
             client_id: int, employee_id: int,
-            product_id: int, price: float
+            product_id: int, price: float,
+            quantity: int,
     ) -> Order:
         """Update an order."""
 
         self.order = self.get_by_id(id)
+
         self.order.client_id = client_id
         self.order.employee_id = employee_id
         self.order.product_id = product_id
         self.order.price = price
+        self.order.quantity = quantity
 
         try:
             db.session.add(self.order)
