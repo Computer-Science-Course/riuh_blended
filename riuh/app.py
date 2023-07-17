@@ -10,6 +10,7 @@ from controllers.client import blp as client_blp
 from controllers.employee import blp as employee_blp
 from controllers.order import blp as order_blp
 from controllers.product import blp as product_blp
+from controllers.wallet import blp as wallet_blp
 
 __version__: str = '0.1.0'
 
@@ -37,5 +38,6 @@ def create_app(db_url=None) -> Flask:
     api.register_blueprint(employee_blp)
     api.register_blueprint(order_blp)
     api.register_blueprint(product_blp)
+    api.register_blueprint(wallet_blp)
 
     return app

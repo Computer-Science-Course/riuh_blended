@@ -51,22 +51,20 @@ class WalletService:
             db.session.add(self.wallet)
             db.session.commit()
             return self.wallet
-        except IntegrityError as exception:
-            abort(409, message=str(exception))
+        except IntegrityError:
+            abort(409, message='This user already has an wallet.')
         except SQLAlchemyError as exception:
             abort(400, message=str(exception))
 
 
     def update(
             self,
-            id: int,
             client_id: int, balance: float
     ) -> Wallet:
         """Update an wallet."""
 
-        self.wallet = self.get_by_id(id)
+        self.wallet = self.get_by_client_id(client_id)
 
-        self.wallet.client_id = client_id
         self.wallet.balance = balance
 
         try:

@@ -63,7 +63,7 @@ class Order(MethodView):
 
 @blp.route('/order')
 class OrderGeneral(MethodView):
-    """Controllers fro general orders."""
+    """Controllers for general orders."""
 
     @blp.response(200, ViewOrderSchema(many=True))
     def get(self):
