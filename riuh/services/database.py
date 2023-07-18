@@ -156,7 +156,7 @@ def populate_transactions():
             'client_id': randint(1, 10),
             'employee_id': randint(2, 6),
             'amount': randint(1, 100),
-            '_type': choice(['CREDIT', 'WITHDRAWAL', 'BUY']),
+            'transaction_type': choice(['CREDIT', 'WITHDRAWAL', 'BUY']),
         }
         for _ in range(20)
     ]

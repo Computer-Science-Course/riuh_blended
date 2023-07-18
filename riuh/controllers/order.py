@@ -21,7 +21,7 @@ class Order(MethodView):
     @blp.response(200, ViewOrderSchema)
     def get(self, order_id):
         """
-        Get and order by its ID.
+        Get an order by its ID.
 
         :param int order_id: Order ID.
 
@@ -30,6 +30,7 @@ class Order(MethodView):
 
         service: OrderService = OrderService()
         return service.get_by_id(order_id)
+
 
     @blp.arguments(UpdateOrderSchema)
     @blp.response(200, ViewOrderSchema)
@@ -57,8 +58,6 @@ class Order(MethodView):
 
         service: OrderService = OrderService()
         return service.delete(order_id)
-
-
 
 
 @blp.route('/order')

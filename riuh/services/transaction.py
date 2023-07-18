@@ -49,26 +49,26 @@ class TransactionService:
         return self.transaction.query.filter_by(employee_id=employee_id).all()
 
 
-    def get_all_by_type(
+    def get_all_bytransaction_type(
             self,
-            _type: str,
+            transaction_type: str,
     ) -> List[Transaction]:
         """Get all transactions by type."""
 
-        return self.transaction.query.filter_by(type=_type).all()
+        return self.transaction.query.filter_by(type=transaction_type).all()
 
 
     def create(
             self,
             client_id: int, employee_id: int,
-            amount: float, _type: str
+            amount: float, transaction_type: str
     ) -> Transaction:
         """Create a new transaction."""
 
         self.transaction.client_id = client_id
         self.transaction.employee_id = employee_id
         self.transaction.amount = amount
-        self.transaction.type = _type
+        self.transaction.transaction_type = transaction_type
 
         try:
             db.session.add(self.transaction)
@@ -84,7 +84,7 @@ class TransactionService:
             self,
             id: int,
             client_id: int, employee_id: int,
-            amount: float, _type: str
+            amount: float, transaction_type: str
     ) -> Transaction:
         """Update an transaction."""
 
@@ -92,7 +92,7 @@ class TransactionService:
         self.transaction.client_id = client_id
         self.transaction.employee_id = employee_id
         self.transaction.amount = amount
-        self.transaction.type = _type
+        self.transaction.transaction_type = transaction_type
 
         try:
             db.session.add(self.transaction)
@@ -115,6 +115,5 @@ class TransactionService:
         try:
             db.session.delete(self.transaction)
             db.session.commit()
-            return self.transaction
         except SQLAlchemyError as exception:
             abort(400, message=str(exception))
