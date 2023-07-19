@@ -106,8 +106,6 @@ class WalletService:
             db.session.add(self.wallet)
             db.session.commit()
             return self.wallet
-        except IntegrityError as exception:
-            abort(409, message=str(exception))
         except SQLAlchemyError as exception:
             abort(400, message=str(exception))
 
@@ -126,7 +124,5 @@ class WalletService:
         try:
             db.session.commit()
             return self.wallet
-        except IntegrityError as exception:
-            abort(409, message=str(exception))
         except SQLAlchemyError as exception:
             abort(400, message=str(exception))
