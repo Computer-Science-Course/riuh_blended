@@ -9,6 +9,7 @@ from controllers.employee import blp as employee_blp
 from controllers.client import blp as client_blp
 from controllers.employee import blp as employee_blp
 from controllers.order import blp as order_blp
+from controllers.perk import blp as perk_blp
 from controllers.product import blp as product_blp
 from controllers.role import blp as role_blp
 from controllers.transaction import blp as transaction_blp
@@ -39,6 +40,7 @@ def create_app(db_url=None) -> Flask:
     api.register_blueprint(client_blp)
     api.register_blueprint(employee_blp)
     api.register_blueprint(order_blp)
+    api.register_blueprint(perk_blp)
     api.register_blueprint(product_blp)
     api.register_blueprint(role_blp)
     api.register_blueprint(transaction_blp)
