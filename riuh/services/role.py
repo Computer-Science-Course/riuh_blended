@@ -26,7 +26,7 @@ class RoleService:
             self,
             id: int,
     ) -> Role:
-        """Get an role by ID."""
+        """Get a role by ID."""
 
         return self.role.query.get_or_404(id)
 
@@ -35,7 +35,7 @@ class RoleService:
             self,
             label: str,
     ) -> Role:
-        """Get an role by label."""
+        """Get a role by label."""
 
         return self.role.query.filter_by(label=label).first_or_404()
 
@@ -52,7 +52,7 @@ class RoleService:
     def create(
             self,
             label: str, description: str,
-            active: bool
+            active: bool = True
     ) -> Role:
         """Create a new role."""
 
@@ -76,7 +76,7 @@ class RoleService:
             label: str, description: str,
             active: bool
     ) -> Role:
-        """Update an role."""
+        """Update a role."""
 
         self.role = self.get_by_id(id)
 
@@ -97,7 +97,7 @@ class RoleService:
             self,
             id: int,
     ) -> Role:
-        """Delete an role."""
+        """Delete a role."""
 
         self.role = self.get_by_id(id)
         self.role.active = False
@@ -105,18 +105,15 @@ class RoleService:
         try:
             db.session.add(self.role)
             db.session.commit()
-            return self.role
-        except IntegrityError:
-            abort(400, message='Role already exists.')
-        except SQLAlchemyError:
-            abort(400, message='Role already exists.')
+        except SQLAlchemyError as sql_error:
+            abort(400, message=f'Something went wrong: {sql_error}')
 
 
-    def restore(
+    def activate(
             self,
             id: int,
     ) -> Role:
-        """Restore an role."""
+        """Activate a role."""
 
         self.role = self.get_by_id(id)
         self.role.active = True
@@ -124,9 +121,6 @@ class RoleService:
         try:
             db.session.add(self.role)
             db.session.commit()
-            return self.role
-        except IntegrityError:
-            abort(400, message='Role already exists.')
-        except SQLAlchemyError:
-            abort(400, message='Role already exists.')
+        except SQLAlchemyError as sql_error:
+            abort(400, message=f'Something went wrong: {sql_error}')
         
