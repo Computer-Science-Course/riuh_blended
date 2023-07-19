@@ -2,6 +2,9 @@
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from flask_jwt_extended import (
+    jwt_required,
+)
 
 from schemas.wallet import (
     CreateWalletSchema,
@@ -18,6 +21,7 @@ blp = Blueprint('Wallet', __name__, description='Operations on wallets.')
 class Wallet(MethodView):
     """Controllers for specific wallet."""
 
+    @jwt_required()
     @blp.response(200, ViewWalletSchema)
     def get(self, client_id):
         """
@@ -32,6 +36,7 @@ class Wallet(MethodView):
         return service.get_by_client_id(client_id)
 
 
+    @jwt_required()
     @blp.arguments(UpdateWalletSchema)
     @blp.response(200, ViewWalletSchema)
     def put(self, wallet_data, client_id):
@@ -53,6 +58,7 @@ class Wallet(MethodView):
 class WalletGeneral(MethodView):
     """Controlers for general wallets."""
 
+    @jwt_required()
     @blp.response(200, ViewWalletSchema(many=True))
     def get(self):
         """
@@ -64,7 +70,7 @@ class WalletGeneral(MethodView):
         service: WalletService = WalletService()
         return service.get_all()
 
-
+    @jwt_required()
     @blp.arguments(CreateWalletSchema)
     @blp.response(200, ViewWalletSchema)
     def post(self, wallet_data):

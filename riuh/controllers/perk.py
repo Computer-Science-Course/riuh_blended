@@ -2,6 +2,9 @@
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from flask_jwt_extended import (
+    jwt_required,
+)
 
 from schemas.perk import (
     CreatePerkSchema,
@@ -17,6 +20,7 @@ blp = Blueprint('Perk', __name__, description='Opretations on Perks.')
 class Perk(MethodView):
     """Controllers for specific perk."""
 
+    @jwt_required()
     @blp.response(200, ViewPerkSchema)
     def get(self, perk_id):
         """
@@ -31,6 +35,7 @@ class Perk(MethodView):
         return service.get_by_id(perk_id)
 
 
+    @jwt_required()
     @blp.response(200)
     def delete(self, perk_id):
         """
@@ -47,6 +52,7 @@ class Perk(MethodView):
 class PerkGeneral(MethodView):
     """Controllers for general perks."""
 
+    @jwt_required()
     @blp.response(200, ViewPerkSchema(many=True))
     def get(self):
         """
@@ -59,6 +65,7 @@ class PerkGeneral(MethodView):
         return service.get_all()
 
 
+    @jwt_required()
     @blp.arguments(CreatePerkSchema)
     @blp.response(200, ViewPerkSchema)
     def post(self, perk_data):

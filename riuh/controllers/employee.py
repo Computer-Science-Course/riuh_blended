@@ -7,6 +7,7 @@ from flask_smorest import (
 )
 from flask_jwt_extended import (
     create_access_token,
+    jwt_required,
 )
 from passlib.hash import pbkdf2_sha256 as sha256
 
@@ -26,6 +27,7 @@ blp = Blueprint('Employees', __name__, description='Operations on employees.')
 class Employee(MethodView):
     """Controllers for specific employee."""
 
+    @jwt_required()
     @blp.response(200, ViewEmployeeSchema)
     def get(self, employee_id):
         """
@@ -40,6 +42,7 @@ class Employee(MethodView):
         return service.get_by_id(employee_id)
 
 
+    @jwt_required()
     @blp.arguments(UpdateEmployeeSchema)
     @blp.response(200, ViewEmployeeSchema)
     def put(self, employee_data, employee_id):
@@ -56,6 +59,7 @@ class Employee(MethodView):
         return service.update(id=employee_id, **employee_data)
 
 
+    @jwt_required()
     @blp.response(204)
     def delete(self, employee_id):
         """
@@ -68,6 +72,7 @@ class Employee(MethodView):
         service.delete(employee_id)
 
 
+    @jwt_required()
     @blp.response(200)
     def patch(self, employee_id):
         """
@@ -84,6 +89,7 @@ class Employee(MethodView):
 class EmployeeGeneral(MethodView):
     """Controllers for general employees."""
 
+    @jwt_required()
     @blp.response(200, ViewEmployeeSchema(many=True))
     def get(self):
         """
@@ -96,6 +102,7 @@ class EmployeeGeneral(MethodView):
         return service.get_all()
 
 
+    @jwt_required()
     @blp.arguments(CreateEmployeeSchema)
     @blp.response(201, ViewEmployeeSchema)
     def post(self, employee_data):

@@ -2,6 +2,9 @@
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from flask_jwt_extended import (
+    jwt_required,
+)
 
 from schemas.role import (
     CreateRoleSchema,
@@ -18,6 +21,7 @@ blp = Blueprint('Role', __name__, description='Opretations on Roles.')
 class Role(MethodView):
     """Controllers for specific role."""
 
+    @jwt_required()
     @blp.response(200, ViewRoleSchema)
     def get(self, role_id):
         """
@@ -31,7 +35,7 @@ class Role(MethodView):
         service: RoleService = RoleService()
         return service.get_by_id(role_id)
 
-
+    @jwt_required()
     @blp.arguments(UpdateRoleSchema)
     @blp.response(200, ViewRoleSchema)
     def put(self, role_data, role_id):
@@ -48,6 +52,7 @@ class Role(MethodView):
         return service.update(id=role_id, **role_data)
 
 
+    @jwt_required()
     @blp.response(200)
     def delete(self, role_id):
         """
@@ -59,7 +64,7 @@ class Role(MethodView):
         service: RoleService = RoleService()
         return service.delete(role_id)
 
-
+    @jwt_required()
     @blp.response(204)
     def patch(self, role_id):
         """
@@ -76,6 +81,7 @@ class Role(MethodView):
 class RoleGeneral(MethodView):
     """Controllers for general roles."""
 
+    @jwt_required()
     @blp.response(200, ViewRoleSchema(many=True))
     def get(self):
         """
@@ -87,7 +93,7 @@ class RoleGeneral(MethodView):
         service: RoleService = RoleService()
         return service.get_all()
 
-
+    @jwt_required()
     @blp.arguments(CreateRoleSchema)
     @blp.response(200, ViewRoleSchema)
     def post(self, role_data):

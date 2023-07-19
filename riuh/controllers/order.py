@@ -2,6 +2,9 @@
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from flask_jwt_extended import (
+    jwt_required,
+)
 
 from schemas.order import (
     CreateOrderSchema,
@@ -18,6 +21,7 @@ blp = Blueprint('Order', __name__, description='Opretations on Orders.')
 class Order(MethodView):
     """Controllers for specific order."""
 
+    @jwt_required()
     @blp.response(200, ViewOrderSchema)
     def get(self, order_id):
         """
@@ -31,7 +35,7 @@ class Order(MethodView):
         service: OrderService = OrderService()
         return service.get_by_id(order_id)
 
-
+    @jwt_required()
     @blp.arguments(UpdateOrderSchema)
     @blp.response(200, ViewOrderSchema)
     def put(self, order_data, order_id):
@@ -48,6 +52,7 @@ class Order(MethodView):
         return service.update(id=order_id, **order_data)
 
 
+    @jwt_required()
     @blp.response(200)
     def delete(self, order_id):
         """
@@ -64,6 +69,7 @@ class Order(MethodView):
 class OrderGeneral(MethodView):
     """Controllers for general orders."""
 
+    @jwt_required()
     @blp.response(200, ViewOrderSchema(many=True))
     def get(self):
         """
@@ -76,6 +82,7 @@ class OrderGeneral(MethodView):
         return service.get_all()
 
 
+    @jwt_required()
     @blp.arguments(CreateOrderSchema)
     @blp.response(200, ViewOrderSchema)
     def post(self, order_data):

@@ -2,6 +2,9 @@
 
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from flask_jwt_extended import (
+    jwt_required,
+)
 
 from schemas.transaction import (
     CreateTransactionSchema,
@@ -18,6 +21,7 @@ blp = Blueprint('Transaction', __name__, description='Opretations on Transaction
 class Transaction(MethodView):
     """Controllers for specific transaction."""
 
+    @jwt_required()
     @blp.response(200, ViewTransactionSchema)
     def get(self, transaction_id):
         """
@@ -32,6 +36,7 @@ class Transaction(MethodView):
         return service.get_by_id(transaction_id)
 
 
+    @jwt_required()
     @blp.arguments(UpdateTransactionSchema)
     @blp.response(200, ViewTransactionSchema)
     def put(self, transaction_data, transaction_id):
@@ -48,6 +53,7 @@ class Transaction(MethodView):
         return service.update(id=transaction_id, **transaction_data)
 
 
+    @jwt_required()
     @blp.response(200)
     def delete(self, transaction_id):
         """
@@ -64,6 +70,7 @@ class Transaction(MethodView):
 class TransactionGeneral(MethodView):
     """Controllers for general transactions."""
 
+    @jwt_required()
     @blp.response(200, ViewTransactionSchema(many=True))
     def get(self):
         """
@@ -75,7 +82,7 @@ class TransactionGeneral(MethodView):
         service: TransactionService = TransactionService()
         return service.get_all()
 
-
+    @jwt_required()
     @blp.arguments(CreateTransactionSchema)
     @blp.response(200, ViewTransactionSchema)
     def post(self, transaction_data):
