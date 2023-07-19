@@ -52,20 +52,21 @@ class RoleService:
     def create(
             self,
             label: str, description: str,
-            active: bool = True
+            level: int, active: bool = True,
     ) -> Role:
         """Create a new role."""
 
         self.role.label = label
+        self.role.level = level
         self.role.description = description
         self.role.active = active
-        
+
         try:
             db.session.add(self.role)
             db.session.commit()
             return self.role
-        except IntegrityError:
-            abort(400, message='Role already exists.')
+        except IntegrityError as integrity_error:
+            abort(400, message=f'Role already exists: {integrity_error}')
         except SQLAlchemyError:
             abort(400, message='Role already exists.')
 
@@ -74,21 +75,22 @@ class RoleService:
             self,
             id: int,
             label: str, description: str,
-            active: bool
+            active: bool, level: int,
     ) -> Role:
         """Update a role."""
 
         self.role = self.get_by_id(id)
 
         self.role.label = label
+        self.role.level = level
         self.role.description = description
         self.role.active = active
 
         try:
             db.session.commit()
             return self.role
-        except IntegrityError:
-            abort(400, message='Role already exists.')
+        except IntegrityError as integrity_error:
+            abort(400, message=f'Role already exists: {integrity_error}')
         except SQLAlchemyError:
             abort(400, message='Role already exists.')
 

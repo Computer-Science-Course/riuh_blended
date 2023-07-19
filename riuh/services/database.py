@@ -270,21 +270,25 @@ def populate_roles():
     roles: list = [
         {
             'label': 'admin',
+            'level': 1,
             'description': 'Full access and control over all CRUD operations; Can create, read, update, and delete any record in the system; Has unrestricted administrative privileges.',
             'active': True
         },
         {
             'label': 'manager',
+            'level': 2,
             'description': 'Can create, read, update, and delete records within their assigned domain or department; Has permissions to manage and oversee specific areas of the system; Have limited administrative privileges.',
             'active': True
         },
         {
             'label': 'employee',
+            'level': 3,
             'description': 'Can create, read, update, and delete their own records; Limited access to certain features or functionalities compared to managers and superusers; Typically represents a regular user or customer of the system.',
             'active': True
         },
         {
             'label': 'guest',
+            'level': 4,
             'description': 'Read-only access to certain public information or resources; Cannot create, update, or delete records; Accessible to users who haven\'t logged in or registered in the system.',
             'active': True
         }
