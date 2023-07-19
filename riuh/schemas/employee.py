@@ -18,3 +18,8 @@ class UpdateEmployeeSchema(Schema):
     name = fields.Str(required=True)
     document = fields.Str(required=True)
     username = fields.Str(required=True)
+
+
+class LoginEmployeeSchema(Schema):
+    username = fields.Str(required=True)
+    password = fields.Str(required=True)

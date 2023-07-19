@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_smorest import Api
+from flask_jwt_extended import JWTManager
 
 from models.db import db
 from services.database import populate_database
@@ -31,6 +32,7 @@ def create_app(db_url=None) -> Flask:
     app = Flask(__name__)
     config_app(db_url, app)
     api = Api(app)
+    jwt = JWTManager(app)
 
     db.init_app(app)
     with app.app_context():

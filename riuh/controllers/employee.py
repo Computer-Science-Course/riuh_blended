@@ -1,9 +1,17 @@
 """Employee Controllers."""
 
 from flask.views import MethodView
-from flask_smorest import Blueprint
+from flask_smorest import (
+    abort,
+    Blueprint,
+)
+from flask_jwt_extended import (
+    create_access_token,
+)
+from passlib.hash import pbkdf2_sha256 as sha256
 
 from schemas.employee import (
+    LoginEmployeeSchema,
     CreateEmployeeSchema,
     ViewEmployeeSchema,
     UpdateEmployeeSchema
@@ -100,3 +108,27 @@ class EmployeeGeneral(MethodView):
         """
         service: EmployeeService = EmployeeService()
         return service.create(**employee_data)
+
+
+@blp.route('/login')
+class EmployeeLogin(MethodView):
+    """Controllers for employee login."""
+
+    @blp.arguments(LoginEmployeeSchema)
+    def post(self, employee_data):
+        """
+        Login an employee.
+
+        :request LoginEmployeeSchema employee_data: Employee data to be used for login.
+
+        :return str: Access token.
+        """
+
+        service: EmployeeService = EmployeeService()
+        employee = service.get_by_username(employee_data.get('username'))
+
+        if employee and sha256.verify(employee_data.get('password'), employee.password):
+            access_token = create_access_token(identity=employee.id)
+            return {'access_token': access_token}
+
+        abort(401, message='Invalid username or password.')
