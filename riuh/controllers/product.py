@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.product import (
 )
 from services.product import (
     ProductService,
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Products', __name__, description='Operations on products.')
@@ -32,6 +36,11 @@ class Product(MethodView):
         :return ViewProductSchema: Product.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.get_by_id(product_id)
 
@@ -48,6 +57,11 @@ class Product(MethodView):
         :return ViewProductSchema: Product.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.update(id=product_id, **product_data)
 
@@ -60,6 +74,11 @@ class Product(MethodView):
         :param int produt_id: Product ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.delete(product_id)
 
@@ -72,6 +91,11 @@ class Product(MethodView):
         :param int produt_id: Product ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.activate(product_id)
 
@@ -89,6 +113,11 @@ class ProductGeneral(MethodView):
         :return list: List of Clients.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.get_all()
 
@@ -105,5 +134,10 @@ class ProductGeneral(MethodView):
         :return ViewProductSchema: Product.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ProductService = ProductService()
         return service.create(**product_data)

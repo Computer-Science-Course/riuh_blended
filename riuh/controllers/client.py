@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.client import (
 )
 from services import (
     ClientService
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Clients', __name__, description='Operations on clientes.')
@@ -48,6 +52,11 @@ class Client(MethodView):
         :return ViewClientSchema: Client.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ClientService = ClientService()
         return service.update(id=client_id, **client_data)
 
@@ -61,6 +70,11 @@ class Client(MethodView):
         :param int client_id: Client ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ClientService = ClientService()
         return service.delete(client_id)
 
@@ -74,6 +88,11 @@ class Client(MethodView):
         :param int client_id: Client ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ClientService = ClientService()
         return service.activate(client_id)
 
@@ -91,6 +110,11 @@ class ClientGeneral(MethodView):
         :return list: List of Clients
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ClientService = ClientService()
         return service.get_all()
 
@@ -107,6 +131,11 @@ class ClientGeneral(MethodView):
         :return ViewEmployeeSchema: Client.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: ClientService = ClientService()
         return service.create(**employee_data)
 

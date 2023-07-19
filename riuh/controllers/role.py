@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.role import (
 )
 from services.role import (
     RoleService,
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Role', __name__, description='Opretations on Roles.')
@@ -32,6 +36,11 @@ class Role(MethodView):
         :return ViewRoleSchema: Role.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.get_by_id(role_id)
 
@@ -48,6 +57,11 @@ class Role(MethodView):
         :return ViewRoleSchema: Role.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.update(id=role_id, **role_data)
 
@@ -61,6 +75,11 @@ class Role(MethodView):
         :param int role_id: Role ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.delete(role_id)
 
@@ -73,6 +92,11 @@ class Role(MethodView):
         :param int role_id: Role ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.activate(role_id)
 
@@ -90,6 +114,11 @@ class RoleGeneral(MethodView):
         :return list: List of Roles.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.get_all()
 
@@ -103,5 +132,10 @@ class RoleGeneral(MethodView):
         :return ViewOderSchema: Role to be stored.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER'},
+        )
         service: RoleService = RoleService()
         return service.create(**role_data)

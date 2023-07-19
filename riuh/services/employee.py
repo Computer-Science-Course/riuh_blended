@@ -2,6 +2,8 @@ from typing import List
 
 from models import Employee
 from models.db import db
+from services.perk import PerkService
+from services.role import RoleService
 
 from flask_smorest import abort
 from passlib.hash import pbkdf2_sha256 as sha256
@@ -154,3 +156,23 @@ class EmployeeService:
         """Check if the password is new."""
 
         return sha256.hash(password) != self.employee.password
+
+
+    def has_privilege(
+            self,
+            required_privilege: set,
+            employee_id: int,
+    ) -> bool:
+        """Check if the employee has the required privilege."""
+
+        self.employee = self.get_by_id(employee_id)
+        role_service: RoleService = RoleService()
+        perk_service: PerkService = PerkService()
+
+        perks = perk_service.get_all_by_employee_id(employee_id)
+        privileges = set()
+        for perk in perks:
+            privileges.add(role_service.get_by_id(perk.role_id).label.upper())
+
+        if not (required_privilege & privileges):
+            abort(403, message='You do not have the required privilege.')

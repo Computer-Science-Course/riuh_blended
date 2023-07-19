@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.transaction import (
 )
 from services.transaction import (
     TransactionService,
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Transaction', __name__, description='Opretations on Transactions.')
@@ -32,6 +36,11 @@ class Transaction(MethodView):
         :return ViewTransactionSchema: Transaction.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: TransactionService = TransactionService()
         return service.get_by_id(transaction_id)
 
@@ -49,6 +58,11 @@ class Transaction(MethodView):
         :return ViewTransactionSchema: Transaction.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: TransactionService = TransactionService()
         return service.update(id=transaction_id, **transaction_data)
 
@@ -62,6 +76,11 @@ class Transaction(MethodView):
         :param int transaction_id: Transaction ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: TransactionService = TransactionService()
         return service.delete(transaction_id)
 
@@ -79,6 +98,11 @@ class TransactionGeneral(MethodView):
         :return list: List of Transactions.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: TransactionService = TransactionService()
         return service.get_all()
 
@@ -92,5 +116,10 @@ class TransactionGeneral(MethodView):
         :return ViewOderSchema: Transaction to be stored.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: TransactionService = TransactionService()
         return service.create(**transaction_data)

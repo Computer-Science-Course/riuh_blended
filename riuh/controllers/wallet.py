@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.wallet import (
 )
 from services.wallet import (
     WalletService,
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Wallet', __name__, description='Operations on wallets.')
@@ -32,6 +36,11 @@ class Wallet(MethodView):
         :return ViewProductSchema: Product.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: WalletService = WalletService()
         return service.get_by_client_id(client_id)
 
@@ -49,6 +58,11 @@ class Wallet(MethodView):
         :return ViewWalletSchema: Wallet.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: WalletService = WalletService()
         return service.update(client_id=client_id, **wallet_data)
 
@@ -67,6 +81,11 @@ class WalletGeneral(MethodView):
         :return list: List of wallets.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: WalletService = WalletService()
         return service.get_all()
 
@@ -80,5 +99,10 @@ class WalletGeneral(MethodView):
         :return ViewOderSchema: Wallet to be stored.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: WalletService = WalletService()
         return service.create(**wallet_data)

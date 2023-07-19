@@ -7,6 +7,7 @@ from flask_smorest import (
 )
 from flask_jwt_extended import (
     create_access_token,
+    get_jwt_identity,
     jwt_required,
 )
 from passlib.hash import pbkdf2_sha256 as sha256
@@ -40,6 +41,15 @@ class Employee(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
+        service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         return service.get_by_id(employee_id)
 
 
@@ -57,6 +67,10 @@ class Employee(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         return service.update(id=employee_id, **employee_data)
 
 
@@ -70,6 +84,10 @@ class Employee(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service.delete(employee_id)
 
 
@@ -83,6 +101,10 @@ class Employee(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service.activate(employee_id)
 
 
@@ -100,6 +122,10 @@ class EmployeeGeneral(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         return service.get_all()
 
 
@@ -116,6 +142,10 @@ class EmployeeGeneral(MethodView):
         """
 
         service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         return service.create(**employee_data)
 
 

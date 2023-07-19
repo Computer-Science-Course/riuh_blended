@@ -3,6 +3,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    get_jwt_identity,
     jwt_required,
 )
 
@@ -13,6 +14,9 @@ from schemas.order import (
 )
 from services.order import (
     OrderService,
+)
+from services import (
+    EmployeeService,
 )
 
 blp = Blueprint('Order', __name__, description='Opretations on Orders.')
@@ -32,6 +36,11 @@ class Order(MethodView):
         :return ViewOrderSchema: Order.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: OrderService = OrderService()
         return service.get_by_id(order_id)
 
@@ -48,6 +57,11 @@ class Order(MethodView):
         :return ViewOrderSchema: Order.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: OrderService = OrderService()
         return service.update(id=order_id, **order_data)
 
@@ -61,6 +75,11 @@ class Order(MethodView):
         :param int order_id: Order ID.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: OrderService = OrderService()
         return service.delete(order_id)
 
@@ -78,6 +97,11 @@ class OrderGeneral(MethodView):
         :return list: List of Orders.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: OrderService = OrderService()
         return service.get_all()
 
@@ -92,5 +116,10 @@ class OrderGeneral(MethodView):
         :return ViewOderSchema: Order to be stored.
         """
 
+        employee_service: EmployeeService = EmployeeService()
+        employee_service.has_privilege(
+            employee_id=get_jwt_identity(),
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
         service: OrderService = OrderService()
         return service.create(**order_data)
