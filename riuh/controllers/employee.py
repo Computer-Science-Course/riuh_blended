@@ -12,6 +12,7 @@ from flask_jwt_extended import (
 from passlib.hash import pbkdf2_sha256 as sha256
 
 from schemas.employee import (
+    AccessJWTSchema,
     LoginEmployeeSchema,
     CreateEmployeeSchema,
     ViewEmployeeSchema,
@@ -113,6 +114,7 @@ class EmployeeGeneral(MethodView):
 
         :return ViewEmployeeSchema: Employee.
         """
+
         service: EmployeeService = EmployeeService()
         return service.create(**employee_data)
 
@@ -122,6 +124,7 @@ class EmployeeLogin(MethodView):
     """Controllers for employee login."""
 
     @blp.arguments(LoginEmployeeSchema)
+    @blp.response(200, AccessJWTSchema)
     def post(self, employee_data):
         """
         Login an employee.

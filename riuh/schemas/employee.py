@@ -23,3 +23,7 @@ class UpdateEmployeeSchema(Schema):
 class LoginEmployeeSchema(Schema):
     username = fields.Str(required=True)
     password = fields.Str(required=True)
+
+
+class AccessJWTSchema(Schema):
+    access_token = fields.Str(required=True)
