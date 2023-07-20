@@ -13,7 +13,6 @@ from flask_jwt_extended import (
 )
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from blocklist import BLOCK_LIST
 from schemas.employee import (
     AccessJWTSchema,
     CreateEmployeeSchema,
@@ -23,6 +22,7 @@ from schemas.employee import (
     UpdateEmployeeSchema
 )
 from services import (
+    BlockListService,
     EmployeeService,
 )
 
@@ -191,5 +191,6 @@ class EmployeeLogout(MethodView):
         """
 
         jti = get_jwt()['jti']
-        BLOCK_LIST.add(jti)
+        block_list_service: BlockListService = BlockListService()
+        block_list_service.create(jti)
         return {'message': 'Successfully logged out.'}

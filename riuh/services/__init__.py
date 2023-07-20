@@ -1,6 +1,7 @@
 """This module is used to import all the services in the services folder."""
 
 from services.employee import EmployeeService
+from services.block_list import BlockListService
 from services.client import ClientService
 from services.order import OrderService
 from services.perk import PerkService

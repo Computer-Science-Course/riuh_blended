@@ -2,10 +2,10 @@ from flask import Flask
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 
+from config import config_app
 from models.db import db
 from services.database import populate_database
-from config import config_app
-from blocklist import BLOCK_LIST
+from services.block_list import BlockListService
 
 from controllers.client import blp as client_blp
 from controllers.employee import blp as employee_blp
@@ -37,7 +37,8 @@ def create_app(db_url=None) -> Flask:
     @jwt.token_in_blocklist_loader
     def check_if_token_in_blocklist(jwt_header, jwt_payload):
         jti = jwt_payload['jti']
-        return jti in BLOCK_LIST
+        service_block_list: BlockListService = BlockListService()
+        return service_block_list.jti_in_block_list(jti)
 
     @jwt.revoked_token_loader
     def revoked_token_callback(jwt_header, jwt_payload):
