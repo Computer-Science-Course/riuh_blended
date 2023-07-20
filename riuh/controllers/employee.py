@@ -8,14 +8,17 @@ from flask_smorest import (
 from flask_jwt_extended import (
     create_access_token,
     get_jwt_identity,
+    get_jwt,
     jwt_required,
 )
 from passlib.hash import pbkdf2_sha256 as sha256
 
+from blocklist import BLOCK_LIST
 from schemas.employee import (
     AccessJWTSchema,
-    LoginEmployeeSchema,
     CreateEmployeeSchema,
+    LoginEmployeeSchema,
+    LogoutEmployeeSchema,
     ViewEmployeeSchema,
     UpdateEmployeeSchema
 )
@@ -172,3 +175,21 @@ class EmployeeLogin(MethodView):
             return {'access_token': access_token}
 
         abort(401, message='Invalid username or password.')
+
+
+@blp.route('/logout')
+class EmployeeLogout(MethodView):
+    """Controllers for employee logout."""
+
+    @jwt_required()
+    @blp.response(200, LogoutEmployeeSchema)
+    def post(self):
+        """
+        Logout an employee.
+
+        :return str: Message indicating successful logout.
+        """
+
+        jti = get_jwt()['jti']
+        BLOCK_LIST.add(jti)
+        return {'message': 'Successfully logged out.'}

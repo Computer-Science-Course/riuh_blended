@@ -27,3 +27,7 @@ class LoginEmployeeSchema(Schema):
 
 class AccessJWTSchema(Schema):
     access_token = fields.Str(required=True)
+
+
+class LogoutEmployeeSchema(Schema):
+    message = fields.Str(required=True)

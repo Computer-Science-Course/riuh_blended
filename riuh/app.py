@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from models.db import db
 from services.database import populate_database
 from config import config_app
-from controllers.employee import blp as employee_blp
+from blocklist import BLOCK_LIST
 
 from controllers.client import blp as client_blp
 from controllers.employee import blp as employee_blp
@@ -33,6 +33,17 @@ def create_app(db_url=None) -> Flask:
     config_app(db_url, app)
     api = Api(app)
     jwt = JWTManager(app)
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_in_blocklist(jwt_header, jwt_payload):
+        jti = jwt_payload['jti']
+        return jti in BLOCK_LIST
+
+    @jwt.revoked_token_loader
+    def revoked_token_callback(jwt_header, jwt_payload):
+        return {
+            'message': 'The token has been revoked.',
+        }, 401
 
     db.init_app(app)
     with app.app_context():
