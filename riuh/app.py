@@ -50,7 +50,7 @@ def create_app(db_url=None) -> Flask:
     with app.app_context():
         db.create_all()
         populate_database()
-    
+
     api.register_blueprint(client_blp)
     api.register_blueprint(employee_blp)
     api.register_blueprint(order_blp)

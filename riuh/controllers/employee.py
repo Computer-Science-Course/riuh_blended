@@ -68,7 +68,7 @@ class Employee(MethodView):
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+            required_privilege={'ADMIN', 'MANAGER'},
         )
         return service.update(id=employee_id, **employee_data)
 
@@ -85,7 +85,7 @@ class Employee(MethodView):
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+            required_privilege={'ADMIN', 'MANAGER'},
         )
         service.delete(employee_id)
 
@@ -102,7 +102,7 @@ class Employee(MethodView):
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+            required_privilege={'ADMIN', 'MANAGER'},
         )
         service.activate(employee_id)
 
@@ -124,7 +124,7 @@ class EmployeeGeneral(MethodView):
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+            required_privilege={'ADMIN', 'MANAGER'},
         )
         return service.get_all(**pagination_args)
 
@@ -144,7 +144,7 @@ class EmployeeGeneral(MethodView):
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+            required_privilege={'ADMIN', 'MANAGER'},
         )
         return service.create(**employee_data)
 
