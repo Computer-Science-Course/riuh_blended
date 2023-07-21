@@ -12,11 +12,12 @@ from schemas.transaction import (
     ViewTransactionSchema,
     UpdateTransactionSchema,
 )
-from services.transaction import (
-    TransactionService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.transaction import (
+    TransactionService,
 )
 
 blp = Blueprint('Transaction', __name__, description='Opretations on Transactions.')
@@ -90,8 +91,9 @@ class TransactionGeneral(MethodView):
     """Controllers for general transactions."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewTransactionSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all transactions.
 
@@ -104,7 +106,7 @@ class TransactionGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
         service: TransactionService = TransactionService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
     @jwt_required()
     @blp.arguments(CreateTransactionSchema)

@@ -16,10 +16,15 @@ class ProductService:
         self.product = Product()
 
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all products."""
 
-        return self.product.query.all()
+        offset = (page - 1) * per_page
+
+        return self.product.query.offset(offset).limit(per_page).all()
 
     def get_by_id(
             self,

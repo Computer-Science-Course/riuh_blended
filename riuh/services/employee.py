@@ -19,10 +19,15 @@ class EmployeeService:
         self.employee = Employee()
 
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all employees."""
 
-        return self.employee.query.all()
+        offset = (page - 1) * per_page
+
+        return self.employee.query.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

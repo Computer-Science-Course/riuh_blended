@@ -16,10 +16,15 @@ class OrderService:
         self.order = Order()
     
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all orders."""
 
-        return self.order.query.all()
+        offset = (page - 1) * per_page
+
+        return self.order.query.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

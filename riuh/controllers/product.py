@@ -12,11 +12,12 @@ from schemas.product import (
     UpdateProductSchema,
     ViewProductSchema,
 )
-from services.product import (
-    ProductService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.product import (
+    ProductService,
 )
 
 blp = Blueprint('Products', __name__, description='Operations on products.')
@@ -105,8 +106,9 @@ class ProductGeneral(MethodView):
     """Controllers for general products."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewProductSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all clients.
 
@@ -119,7 +121,7 @@ class ProductGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
         service: ProductService = ProductService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
 
     @jwt_required()

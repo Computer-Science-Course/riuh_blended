@@ -16,10 +16,15 @@ class ClientService:
         self.client = Client()
 
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all clients."""
 
-        return self.client.query.all()
+        offset = (page - 1) * per_page
+
+        return self.client.query.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

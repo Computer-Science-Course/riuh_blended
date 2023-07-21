@@ -21,6 +21,7 @@ from schemas.employee import (
     ViewEmployeeSchema,
     UpdateEmployeeSchema
 )
+from schemas.pagination import PaginationSchema
 from services import (
     BlockListService,
     EmployeeService,
@@ -43,11 +44,6 @@ class Employee(MethodView):
         :return ViewEmployeeSchema: Employee.
         """
 
-        service: EmployeeService = EmployeeService()
-        service.has_privilege(
-            employee_id=get_jwt_identity(),
-            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
-        )
         service: EmployeeService = EmployeeService()
         service.has_privilege(
             employee_id=get_jwt_identity(),
@@ -116,8 +112,9 @@ class EmployeeGeneral(MethodView):
     """Controllers for general employees."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewEmployeeSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all employees.
 
@@ -129,7 +126,7 @@ class EmployeeGeneral(MethodView):
             employee_id=get_jwt_identity(),
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
 
     @jwt_required()

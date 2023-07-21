@@ -16,10 +16,15 @@ class TransactionService:
         self.transaction = Transaction()
 
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all transactions."""
 
-        return self.transaction.query.all()
+        offset = (page - 1) * per_page
+
+        return self.transaction.query.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

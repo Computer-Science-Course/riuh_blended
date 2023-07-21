@@ -12,11 +12,12 @@ from schemas.order import (
     UpdateOrderSchema,
     ViewOrderSchema,
 )
-from services.order import (
-    OrderService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.order import (
+    OrderService,
 )
 
 blp = Blueprint('Order', __name__, description='Opretations on Orders.')
@@ -89,8 +90,9 @@ class OrderGeneral(MethodView):
     """Controllers for general orders."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewOrderSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all orders.
 
@@ -103,7 +105,7 @@ class OrderGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
         service: OrderService = OrderService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
 
     @jwt_required()

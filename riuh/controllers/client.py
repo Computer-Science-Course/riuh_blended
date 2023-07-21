@@ -12,6 +12,7 @@ from schemas.client import (
     UpdateClientSchema,
     ViewClientSchema,
 )
+from schemas.pagination import PaginationSchema
 from services import (
     ClientService
 )
@@ -102,8 +103,9 @@ class ClientGeneral(MethodView):
     """Controllers for general employees."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewClientSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all Clients.
 
@@ -116,7 +118,7 @@ class ClientGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
         service: ClientService = ClientService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
 
     @jwt_required()

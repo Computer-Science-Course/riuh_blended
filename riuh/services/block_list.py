@@ -15,10 +15,15 @@ class BlockListService:
         self.block_list = BlockList()
 
 
-    def get_all(self):
+    def get_all(
+            self,
+            page: int = 1, per_page: int = 10,
+    ):
         """Get all block lists."""
 
-        return self.block_list.query.all()
+        offset = (page - 1) * per_page
+
+        return self.block_list.query.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

@@ -11,11 +11,12 @@ from schemas.perk import (
     CreatePerkSchema,
     ViewPerkSchema,
 )
-from services.perk import (
-    PerkService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.perk import (
+    PerkService,
 )
 
 blp = Blueprint('Perk', __name__, description='Opretations on Perks.')
@@ -67,8 +68,9 @@ class PerkGeneral(MethodView):
     """Controllers for general perks."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewPerkSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all perks.
 
@@ -81,7 +83,7 @@ class PerkGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER'},
         )
         service: PerkService = PerkService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
 
     @jwt_required()

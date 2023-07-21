@@ -12,11 +12,12 @@ from schemas.wallet import (
     ViewWalletSchema,
     UpdateWalletSchema,
 )
-from services.wallet import (
-    WalletService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.wallet import (
+    WalletService,
 )
 
 blp = Blueprint('Wallet', __name__, description='Operations on wallets.')
@@ -73,8 +74,9 @@ class WalletGeneral(MethodView):
     """Controlers for general wallets."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewWalletSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all wallets.
 
@@ -87,7 +89,7 @@ class WalletGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
         )
         service: WalletService = WalletService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
     @jwt_required()
     @blp.arguments(CreateWalletSchema)

@@ -12,11 +12,12 @@ from schemas.role import (
     ViewRoleSchema,
     UpdateRoleSchema,
 )
-from services.role import (
-    RoleService,
-)
+from schemas.pagination import PaginationSchema
 from services import (
     EmployeeService,
+)
+from services.role import (
+    RoleService,
 )
 
 blp = Blueprint('Role', __name__, description='Opretations on Roles.')
@@ -106,8 +107,9 @@ class RoleGeneral(MethodView):
     """Controllers for general roles."""
 
     @jwt_required()
+    @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewRoleSchema(many=True))
-    def get(self):
+    def get(self, pagination_args):
         """
         Get all roles.
 
@@ -120,7 +122,7 @@ class RoleGeneral(MethodView):
             required_privilege={'ADMIN', 'MANAGER'},
         )
         service: RoleService = RoleService()
-        return service.get_all()
+        return service.get_all(**pagination_args)
 
     @jwt_required()
     @blp.arguments(CreateRoleSchema)
