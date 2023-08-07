@@ -7,6 +7,7 @@ from flask_smorest import (
 )
 from flask_jwt_extended import (
     create_access_token,
+    create_refresh_token,
     get_jwt_identity,
     get_jwt,
     jwt_required,
@@ -168,10 +169,30 @@ class EmployeeLogin(MethodView):
         employee = service.get_by_username(employee_data.get('username'))
 
         if employee and sha256.verify(employee_data.get('password'), employee.password):
-            access_token = create_access_token(identity=employee.id)
-            return {'access_token': access_token}
+            access_token = create_access_token(identity=employee.id, fresh=True)
+            refresh_token = create_refresh_token(identity=employee.id)
+            return {'access_token': access_token, 'refresh_token': refresh_token}
 
         abort(401, message='Invalid username or password.')
+
+
+@blp.route('/refresh')
+class EmployeeRefresh(MethodView):
+    """Controllers for employee refresh."""
+
+    @jwt_required(refresh=True)
+    @blp.response(200, AccessJWTSchema)
+    def post(self):
+        """
+        Refresh an employee's access token.
+
+        :return AccessJWTSchema: Access token.
+        """
+
+        employee_id = get_jwt_identity()
+        access_token = create_access_token(identity=employee_id, fresh=False)
+
+        return {'access_token': access_token}
 
 
 @blp.route('/logout')

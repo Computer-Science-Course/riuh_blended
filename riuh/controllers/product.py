@@ -105,7 +105,7 @@ class Product(MethodView):
 class ProductGeneral(MethodView):
     """Controllers for general products."""
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(PaginationSchema, location='query')
     @blp.response(200, ViewProductSchema(many=True))
     def get(self, pagination_args):
