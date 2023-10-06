@@ -93,6 +93,10 @@ module.exports = {
         }
       }
     },
+    fontFamily: {
+      sans: ['Inter', 'sans'],
+      mono: ['IBM Plex Mono', 'monospace']
+    }
   },
   plugins: [],
 }
