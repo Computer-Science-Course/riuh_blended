@@ -16,6 +16,7 @@ function App() {
         disabledStatus={false}
         label='Isso é um botão'
         variation='green'
+        loading={false}
       />
     </div>
   )
