@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PasswordField from '.'; './index';
+import PasswordField from './index';
 
 const meta = {
   title: 'Components/PasswordField',
