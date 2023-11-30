@@ -8,6 +8,7 @@ const meta = {
   args: {
     label: '',
     required: false,
+    storeFieldValue: (value: string) => console.log(value),
   }
 } satisfies Meta<typeof TextField>;
 

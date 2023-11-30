@@ -6,8 +6,10 @@ const meta = {
   title: 'Components/PasswordField',
   component: PasswordField,
   args: {
-    label: '',
-    required: false,
+    label: 'Password',
+    required: true,
+    placeholder: 'Password',
+    storeFieldValue: (value: string) => console.log(value),
   }
 } satisfies Meta<typeof PasswordField>;
 

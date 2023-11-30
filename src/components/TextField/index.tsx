@@ -8,7 +8,8 @@ const inputStyles: string = 'font-mono rounded-lg px-4 py-2 placeholder:text-whi
 const TextField = ({
   label,
   placeholder,
-  required = false
+  required = false,
+  storeFieldValue,
 }: TextFieldProps): JSX.Element => {
 
   return (
@@ -25,6 +26,7 @@ const TextField = ({
         className={inputStyles}
         placeholder={placeholder}
         required={required}
+        onChange={(event) => storeFieldValue && storeFieldValue(event.target.value)}
       />
     </div >
   )

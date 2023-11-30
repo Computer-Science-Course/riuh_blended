@@ -7,13 +7,14 @@ import { PasswordFieldProps } from './PasswordFieldProps';
 const containerStyles: string = 'flex flex-col text-white-900 gap-1';
 const labelStyles: string = 'flex gap-1';
 const requiredTagStyles: string = 'text-purple-900';
-const inputStyles: string = 'font-mono px-4 py-2 placeholder:text-white-0 text-black-500 max-w-xs';
+const inputStyles: string = 'font-mono px-4 py-2 placeholder:text-white-0 text-black-500 max-w-xs focus:outline-none';
 const inputGroupStyles: string = 'flex gap-1 items-center bg-white-900 rounded-lg px-2 w-max';
 
 const PasswordField = ({
   label,
   placeholder,
-  required = false
+  required = false,
+  storeFieldValue,
 }: PasswordFieldProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -32,6 +33,7 @@ const PasswordField = ({
           className={inputStyles}
           placeholder={placeholder}
           required={required}
+          onChange={(event) => storeFieldValue && storeFieldValue(event.target.value)}
         />
         {
           showPassword ?
