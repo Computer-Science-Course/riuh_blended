@@ -13,7 +13,7 @@ const iconStyles = {
   hover: 'hover:text-white-800 hover:bg-white-0',
   active: 'active:text-white-800 active:bg-white-400',
   selected: 'flex justify-center items-center text-black-700 bg-white-0 w-12 h-12',
-}
+};
 
 const icons = {
   'cashier': DollarSignIcon,
@@ -21,11 +21,11 @@ const icons = {
   'employee': UserCircleIcon,
   'product': UtensilsIcon,
   'report': BookMinusIcon,
-}
+};
 
 const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 const MenuButton = ({
   currentSelected = false,
