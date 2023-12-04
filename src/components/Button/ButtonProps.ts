@@ -22,7 +22,10 @@ export interface ButtonProps {
     label?: string,
     /** Disabled status value */
     disabledStatus: boolean,
+    /** Loading status value */
     loading: boolean,
     /** Button variations: standard | hover | active | disabled */
     variation?: ButtonVariation,
+    /** Event on button is clicked */
+    onClick?: () => void,
 }
