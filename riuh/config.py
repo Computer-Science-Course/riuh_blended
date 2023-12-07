@@ -23,6 +23,7 @@ def config_app(
     :param db_url: The database URL to connect to.
     :param app: The Flask app instance to configure.
     """
+    load_envs()
 
     app.config['PROPAGATE_EXCEPTIONS'] = True
 
@@ -37,9 +38,11 @@ def config_app(
         'DATABASE_URL', 'sqlite:///data.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # [TO-DO] Use environment variables.
-    app.config['SECRET_KEY'] = '1234'
+    app.config['SECRET_KEY'] = os.getenv('APP_SECRET_KEY')
 
 
 def get_origins():
-    return os.environ.get('VALID_ORIGINS').split(',')
+    """
+    Get the allowed origins for CORS.
+    """
+    return os.getenv('VALID_ORIGINS').split(',')
