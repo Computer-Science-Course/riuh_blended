@@ -1,8 +1,10 @@
+"""Main entry point."""
 from flask import Flask
 from flask_smorest import Api
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
-from config import config_app
+from config import config_app, get_origins, load_envs
 from models.db import db
 from services.database import populate_database
 from services.block_list import BlockListService
@@ -18,6 +20,7 @@ from controllers.wallet import blp as wallet_blp
 
 __version__: str = '0.1.0'
 
+
 def create_app(db_url=None) -> Flask:
     """
 
@@ -27,9 +30,10 @@ def create_app(db_url=None) -> Flask:
 
     :return: A Flask app instance.
     """
-
+    load_envs()
 
     app = Flask(__name__)
+    CORS(app, origins=get_origins())
     config_app(db_url, app)
     api = Api(app)
     jwt = JWTManager(app)
