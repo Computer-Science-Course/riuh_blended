@@ -28,4 +28,6 @@ export interface ButtonProps {
     variation?: ButtonVariation,
     /** Event on button is clicked */
     onClick?: () => void,
+    /** Button size */
+    fullWidth?: boolean,
 }

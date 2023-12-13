@@ -7,7 +7,6 @@ const dialogBoxStyles = 'flex flex-col items-center gap-8 bg-white-800 rounded-l
 const dialogBoxTextStyles = 'max-w-sm';
 const buttonsStyles = 'flex w-full justify-between mt-4';
 
-
 const ConfirmModal = ({
   message,
   isLoading,
