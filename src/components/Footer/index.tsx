@@ -1,4 +1,4 @@
-const containerStyles = 'flex justify-center bg-black-700 text-white-800 p-3 rounded-lg items-center w-full h-max'
+const containerStyles = 'flex justify-center bg-black-700 text-white-800 py-3 rounded-lg items-center w-full h-max border border-black-400';
 
 const Button = (): JSX.Element => {
 

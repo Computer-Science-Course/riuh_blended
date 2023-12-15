@@ -1,5 +1,5 @@
 import { API_URL } from "../../common/constants";
-import { LoginProps, Responses } from "./LoginProps";
+import { LoginProps, JwtPayload, Responses } from "./LoginProps";
 
 const responses: Responses = {
     200: 'Login efetuado com sucesso',
@@ -8,11 +8,12 @@ const responses: Responses = {
     500: 'Erro interno do servidor',
 };
 
-export const logIn = async ({
+export const logInService = async ({
     password,
     username,
     setLoading,
     setReturnMessage,
+    login,
 }: LoginProps): Promise<any> => {
     const loginUrl = `${API_URL}/login`;
     setLoading(true);
@@ -36,7 +37,10 @@ export const logIn = async ({
         }
 
         if (response.ok) {
-            const responseData = await response.json();
+            login();
+            const responseData: JwtPayload = await response.json();
+            localStorage.setItem('access_token', responseData.access_token);
+            localStorage.setItem('refresh_token', responseData.refresh_token);
         }
     } catch (error) {
         if (error instanceof Error) {
