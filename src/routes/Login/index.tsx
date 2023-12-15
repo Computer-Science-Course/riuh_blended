@@ -1,22 +1,35 @@
+import { useContext, useEffect, useState } from 'react';
+import Button from '../../components/Button';
+import Footer from '../../components/Footer';
+import Hyperlink from '../../components/Hyperlink';
+import PasswordField from '../../components/PasswordField';
+import TextField from '../../components/TextField';
+import { logInService } from '../../services/login';
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 const screenContainerStyles = 'flex flex-col items-center justify-center h-screen bg-black-900 text-white-900';
 const loginContainerStyles = 'flex items-center justify-center w-full h-full';
 const loginBoxStyles = 'flex items-center justify-center bg-black-500 rounded-lg';
 const loginAreaStyles = 'flex flex-col gap-8 items-center justify-center p-24 w-full';
 const fieldsStyles = 'flex flex-col gap-4 items-center justify-center w-full';
 
-import { useState } from 'react';
-import Button from '../components/Button';
-import Footer from '../components/Footer';
-import Hyperlink from '../components/Hyperlink';
-import PasswordField from '../components/PasswordField';
-import TextField from '../components/TextField';
-import { logIn } from '../services/login';
-
 const Login = () => {
+    const { isAuthenticated, login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [returnMessage, setReturnMessage] = useState<string>('');
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated]);
+
+
     if (returnMessage) {
         alert(returnMessage);
         setReturnMessage('');
@@ -44,7 +57,7 @@ const Login = () => {
                                 variation='standard'
                                 loading={loading}
                                 disabledStatus={loading}
-                                onClick={() => logIn({ username, password, setLoading, setReturnMessage })}
+                                onClick={() => logInService({ username, password, setLoading, setReturnMessage, login })}
                                 key='confirm'
                                 fullWidth
                             />
@@ -61,6 +74,6 @@ const Login = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default Login;
