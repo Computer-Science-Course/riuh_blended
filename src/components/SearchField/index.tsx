@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { SearchIcon } from 'lucide-react';
 
 import { SearchFieldProps } from './SearchFieldProps';
