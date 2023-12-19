@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MenuButton from '../MenuButton';
 import { MenuButtonProps, MenuButtonVariation } from '../MenuButton/MenuButtonProps';
@@ -35,11 +35,12 @@ const Menu = ({
   employeeAction,
   productAction,
   reportAction,
+  currentSelected,
 }: MenuProps): JSX.Element => {
   const [buttons, setButtons] = useState<MenuButtonProps[]>([
     {
       variation: 'cashier',
-      currentSelected: true,
+      currentSelected: false,
       onClick: cashierAction,
     },
     {
@@ -64,6 +65,10 @@ const Menu = ({
     },
   ]);
 
+  useEffect(() => {
+    changeSelected(currentSelected, setButtons);
+  }, [currentSelected]);
+
   return (
     <div className={containerStyles}>
       {
@@ -72,10 +77,7 @@ const Menu = ({
             key={variation}
             variation={variation}
             currentSelected={currentSelected}
-            onClick={() => {
-              changeSelected(variation!, setButtons);
-              onClick();
-            }}
+            onClick={() => onClick()}
           />
         ))
       }

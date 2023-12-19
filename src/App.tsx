@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import 'typeface-inter';
 import 'typeface-ibm-plex-mono';
 import { AuthContext } from './context/AuthContext';
@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
 import ExitButton from './components/ExitButton';
+import { MenuState } from './components/Menu/MenuProps';
 
 const containerStyles = 'w-full h-screen flex flex-col bg-black-900 gap-3 px-4 py-4';
 const topBoxStyles = 'w-full h-full flex gap-3';
@@ -15,6 +16,21 @@ const contentStyles = 'h-full w-full flex justify-center items-center rounded-lg
 const App = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useContext(AuthContext);
+  const [currentMenuItemSelected, setCurrentMenuItemSelected] = useState<MenuState>('cashier');
+
+  useEffect(() => {
+    const path = location.pathname.split('/')[1];
+
+    const pathToMenuItemMap: { [key: string]: MenuState } = {
+      caixa: 'cashier',
+      cliente: 'client',
+      funcionario: 'employee',
+      produto: 'product',
+      relatorio: 'report',
+    };
+
+    setCurrentMenuItemSelected(pathToMenuItemMap[path] || 'cashier');
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -32,6 +48,7 @@ const App = () => {
             employeeAction={() => navigate('/funcionario')}
             productAction={() => navigate('/produto')}
             reportAction={() => navigate('/relatorio')}
+            currentSelected={currentMenuItemSelected}
           />
           <ExitButton onClick={logout} />
         </div>
