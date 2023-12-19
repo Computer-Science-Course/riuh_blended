@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Menu from './components/Menu';
 import ExitButton from './components/ExitButton';
 import { MenuState } from './components/Menu/MenuProps';
+import ConfirmModal from './components/ConfirmModal';
 
 const containerStyles = 'w-full h-screen flex flex-col bg-black-900 gap-3 px-4 py-4';
 const topBoxStyles = 'w-full h-full flex gap-3';
@@ -17,6 +18,7 @@ const App = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useContext(AuthContext);
   const [currentMenuItemSelected, setCurrentMenuItemSelected] = useState<MenuState>('cashier');
+  const [isConfirmExitModalOpen, setIsConfirmExitModalOpen] = useState(false);
 
   useEffect(() => {
     const path = location.pathname.split('/')[1];
@@ -50,13 +52,19 @@ const App = () => {
             reportAction={() => navigate('/relatorio')}
             currentSelected={currentMenuItemSelected}
           />
-          <ExitButton onClick={logout} />
+          <ExitButton onClick={() => setIsConfirmExitModalOpen(true)} />
         </div>
         <div className={contentStyles}>
           <Outlet />
         </div>
       </div>
       <Footer />
+      {isConfirmExitModalOpen && <ConfirmModal
+        isLoading={false}
+        message='Deseja realmente sair da sua conta?'
+        onCancel={() => setIsConfirmExitModalOpen(false)}
+        onConfirm={logout}
+      />}
     </div>
   );
 };
