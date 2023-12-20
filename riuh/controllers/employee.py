@@ -191,8 +191,9 @@ class EmployeeRefresh(MethodView):
 
         employee_id = get_jwt_identity()
         access_token = create_access_token(identity=employee_id, fresh=False)
+        refresh_token = create_refresh_token(identity=employee_id)
 
-        return {'access_token': access_token}
+        return {'access_token': access_token, 'refresh_token': refresh_token}
 
 
 @blp.route('/logout')
