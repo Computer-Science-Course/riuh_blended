@@ -7,5 +7,7 @@ export interface TextFieldProps {
     /** Set up if value is required */
     required: boolean,
     /** Store field value */
-    storeFieldValue?: (value: string) => void,
+    onChange?: (value: any) => void,
+    /** Text field width */
+    fullWidth?: boolean,
 }
