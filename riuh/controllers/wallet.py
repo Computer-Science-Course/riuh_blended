@@ -22,7 +22,7 @@ from services.wallet import (
 
 blp = Blueprint('Wallet', __name__, description='Operations on wallets.')
 
-@blp.route('/wallet/<int:client_id>')
+@blp.route('/wallet/client/<int:client_id>')
 class Wallet(MethodView):
     """Controllers for specific wallet."""
 
