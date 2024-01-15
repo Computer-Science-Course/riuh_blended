@@ -110,9 +110,9 @@ class ProductGeneral(MethodView):
     @blp.response(200, ViewProductSchema(many=True))
     def get(self, pagination_args):
         """
-        Get all clients.
+        Get all products.
 
-        :return list: List of Clients.
+        :return list: List of Products.
         """
 
         employee_service: EmployeeService = EmployeeService()
