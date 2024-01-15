@@ -22,7 +22,7 @@ from services import (
 
 blp = Blueprint('Clients', __name__, description='Operations on clientes.')
 
-@blp.route('/client/<int:client_id>')
+@blp.route('/client/<string:client_id>')
 class Client(MethodView):
     """Controllers for specific client."""
 
@@ -30,14 +30,14 @@ class Client(MethodView):
     @blp.response(200, ViewClientSchema)
     def get(self, client_id):
         """
-        Get a client by ID.
+        Get a client by document.
 
         :param int client_id: Employee ID.
 
         :return ViewClientSchem: Client.
         """
         service : ClientService = ClientService()
-        return service.get_by_id(client_id)
+        return service.get_by_registration(client_id)
 
 
     @jwt_required()
