@@ -10,4 +10,4 @@ class Order(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     price = db.Column(db.Float, nullable=False, default=0.0)
     quantity = db.Column(db.Integer, nullable=False, default=0)
-    datetime = db.Column(db.DateTime, nullable=True, default=datetime.now())
+    datetime = db.Column(db.DateTime, nullable=True, default=datetime.now)
