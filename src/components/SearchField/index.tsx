@@ -12,7 +12,7 @@ const SearchField = ({
   label,
   placeholder,
   required = false,
-  storeFieldValue
+  onChange
 }: SearchFieldProps): JSX.Element => {
 
 
@@ -31,7 +31,7 @@ const SearchField = ({
           className={inputStyles}
           placeholder={placeholder}
           required={required}
-          onChange={(event) => storeFieldValue && storeFieldValue(event.target.value)}
+          onChange={(event) => onChange && onChange(event.target.value)}
         />
         <SearchIcon
           size={24}

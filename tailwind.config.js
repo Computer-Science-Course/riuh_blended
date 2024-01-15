@@ -91,6 +91,12 @@ module.exports = {
           800: "#130208",
           900: "#000000",
         }
+      },
+      keyframes: {
+        smaller: {
+          '0%': { width: '100%' },
+          '100%': { width: '0%' },
+        }
       }
     },
     fontFamily: {

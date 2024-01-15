@@ -1,6 +1,8 @@
+import { Product } from "../../entities/Product";
+
 export interface DropdownProps {
-    options: string[];
-    onChange: (value: string) => void;
+    options: Product[];
+    onChange: (option: Product) => void;
     label?: string;
     required?: boolean;
 }

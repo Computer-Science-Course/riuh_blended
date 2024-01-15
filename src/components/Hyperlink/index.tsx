@@ -13,6 +13,7 @@ const Hyperlink = ({
   return (
     <a
       href={url}
+      key={url}
       className={`${standart} ${hover} ${visited}`}
       {...(openInNewTab && { target: '_blank' })}
     >

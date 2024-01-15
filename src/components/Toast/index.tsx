@@ -18,9 +18,9 @@ const stylesByType = {
 };
 
 const Toast = ({
-  message,
-  variation = 'standard',
+  toastMessage,
   duration = 3,
+  messageSetter,
 }: ToastProps): JSX.Element => {
   const [isActive, setIsActive] = useState(true);
 
@@ -28,16 +28,17 @@ const Toast = ({
     if (!isActive) return;
     setTimeout(() => {
       setIsActive(false);
+      if (messageSetter) messageSetter({ message: '', variation: 'standard' });
     }, duration * 1000);
   }, [isActive]);
 
-  const toastStyles = stylesByType[variation];
+  const toastStyles = stylesByType[toastMessage.variation];
 
   return (
     <>
       {isActive && <div className={`${baseStyle} ${toastStyles}`}>
         <div className={headerStyle}>
-          <span>{message}</span>
+          <span>{toastMessage.message}</span>
           <span className="cursor-pointer">
             <X size={16} onClick={() => setIsActive(false)} />
           </span>

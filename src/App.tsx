@@ -12,7 +12,7 @@ import ConfirmModal from './components/ConfirmModal';
 const containerStyles = 'w-full h-screen flex flex-col bg-black-900 gap-3 px-4 py-4';
 const topBoxStyles = 'w-full h-full flex gap-3';
 const sideBarStyles = 'h-full w-max flex flex-col justify-between rounded-lg py-8 bg-black-700 border border-black-400';
-const contentStyles = 'h-full w-full flex justify-center items-center rounded-lg bg-black-700 border border-black-400 text-white-900';
+const contentStyles = 'h-full w-full rounded-lg bg-black-700 border border-black-400 text-white-900';
 
 const App = () => {
   const navigate = useNavigate();

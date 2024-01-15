@@ -1,5 +1,5 @@
 export interface CalendarProps {
-    storeFieldValue?: (value: string) => void,
+    onChange?: (value: string) => void,
     label?: string,
     required?: boolean,
 }

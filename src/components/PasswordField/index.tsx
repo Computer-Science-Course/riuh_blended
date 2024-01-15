@@ -15,7 +15,7 @@ const PasswordField = ({
   label,
   placeholder,
   required = false,
-  storeFieldValue,
+  onChange,
 }: PasswordFieldProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -34,7 +34,7 @@ const PasswordField = ({
           className={inputStyles}
           placeholder={placeholder}
           required={required}
-          onChange={(event) => storeFieldValue && storeFieldValue(event.target.value)}
+          onChange={(event) => onChange && onChange(event.target.value)}
         />
         <span className={iconBoxStyles}>
           {

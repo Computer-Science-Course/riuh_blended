@@ -24,7 +24,7 @@ const ConfirmModal = ({
         {onTypePassword && <PasswordField
           required
           placeholder='Insira sua senha'
-          storeFieldValue={onTypePassword}
+          onChange={onTypePassword}
         />}
 
         <div className={buttonsStyles}>

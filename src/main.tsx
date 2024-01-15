@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Login from './routes/Login/index.tsx';
 import Error from './routes/Error/index.tsx';
 import AuthContextProvider from './context/AuthContext.tsx';
@@ -25,7 +25,7 @@ const browserRouter = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Cashier />,
+        element: <Navigate to="/caixa" />,
       },
       {
         path: '/caixa',
@@ -52,9 +52,9 @@ const browserRouter = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <RouterProvider router={browserRouter} />
-    </AuthContextProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <AuthContextProvider>
+    <RouterProvider router={browserRouter} />
+  </AuthContextProvider>
+  // </React.StrictMode>,
 )

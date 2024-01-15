@@ -6,7 +6,7 @@ const requiredTagStyles: string = 'text-purple-900';
 const inputStyles: string = 'flex py-1 px-2 rounded-md font-mono font-semibold w-48';
 
 const Calendar = ({
-  storeFieldValue,
+  onChange,
   label,
   required = false,
 }: CalendarProps) => {
@@ -22,7 +22,7 @@ const Calendar = ({
       }
       <input
         type='date'
-        onChange={(event) => storeFieldValue && storeFieldValue(event.target.value)}
+        onChange={(event) => onChange && onChange(event.target.value)}
         className={`${inputStyles}`}
       />
     </div>
