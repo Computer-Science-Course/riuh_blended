@@ -8,3 +8,4 @@ class Client(db.Model):
     registration = db.Column(db.String(128), nullable=False)
     username = db.Column(db.String(32), unique=True, nullable=True)
     active = db.Column(db.Boolean, nullable=False, default=True)
+    course = db.Column(db.String(128), nullable=False)
