@@ -75,7 +75,8 @@ class ClientService:
     def create(
             self,
             name: str, registration: str,
-            username: str, active: bool = True
+            username: str, course: str,
+            active: bool = True,
     ) -> Client:
         """Create a new client."""
 
@@ -83,6 +84,7 @@ class ClientService:
         self.client.registration = registration
         self.client.username = username
         self.client.active = active
+        self.client.course = course
 
         try:
             db.session.add(self.client)
@@ -98,7 +100,8 @@ class ClientService:
             self,
             id: int,
             name: str, registration: str,
-            username: str, active: bool
+            username: str, course: str,
+            active: bool,
     ) -> Client:
         """Update an client."""
 
@@ -108,6 +111,7 @@ class ClientService:
         self.client.registration = registration
         self.client.username = username
         self.client.active = active
+        self.client.course = course
 
         try:
             db.session.add(self.client)
