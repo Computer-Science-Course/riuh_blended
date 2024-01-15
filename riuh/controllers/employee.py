@@ -150,6 +150,28 @@ class EmployeeGeneral(MethodView):
         return service.create(**employee_data)
 
 
+@blp.route('/employee/self')
+class SelfEmployee(MethodView):
+    """Controllers for self employee based on jwt identity."""
+
+    @jwt_required()
+    @blp.response(200, ViewEmployeeSchema)
+    def get(self):
+        """
+        Get self employee informationa.
+
+        :return ViewEmployeeSchema: Employee.
+        """
+
+        employee_id = get_jwt_identity()
+        service: EmployeeService = EmployeeService()
+        service.has_privilege(
+            employee_id=employee_id,
+            required_privilege={'ADMIN', 'MANAGER', 'EMPLOYEE'},
+        )
+        return service.get_by_id(employee_id)
+
+
 @blp.route('/login')
 class EmployeeLogin(MethodView):
     """Controllers for employee login."""
