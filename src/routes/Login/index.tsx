@@ -7,6 +7,8 @@ import TextField from '../../components/TextField';
 import { logInService } from '../../services/login';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Toast from '../../components/Toast';
+import { ToastMessage } from '../../components/Toast/ToastProps';
 
 const screenContainerStyles = 'flex flex-col items-center justify-center h-screen bg-black-900 text-white-900';
 const loginContainerStyles = 'flex items-center justify-center w-full h-full';
@@ -21,19 +23,15 @@ const Login = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
-    const [returnMessage, setReturnMessage] = useState<string>('');
+    const [returnMessage, setReturnMessage] = useState<ToastMessage>({
+        message: '', variation: 'standard'
+    });
 
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/');
         }
     }, [isAuthenticated]);
-
-
-    if (returnMessage) {
-        alert(returnMessage);
-        setReturnMessage('');
-    }
 
     return (
         <div className={screenContainerStyles}>
@@ -44,13 +42,14 @@ const Login = () => {
                         <div className={fieldsStyles}>
                             <TextField
                                 required
+                                fullWidth
                                 placeholder='Insira seu usuário'
-                                storeFieldValue={(value: string) => setUsername(value)}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
                             />
                             <PasswordField
                                 required
                                 placeholder='Insira sua senha'
-                                storeFieldValue={(value: string) => setPassword(value)}
+                                onChange={(value: string) => setPassword(value)}
                             />
                             <Button
                                 label='Entrar'
@@ -72,6 +71,10 @@ const Login = () => {
                 </div>
             </div>
             <Footer />
+            {returnMessage.message && <Toast
+                toastMessage={returnMessage}
+                messageSetter={setReturnMessage}
+            />}
         </div>
     );
 };

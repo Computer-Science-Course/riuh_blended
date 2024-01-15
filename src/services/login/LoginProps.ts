@@ -1,13 +1,11 @@
+import { ToastMessage } from "../../components/Toast/ToastProps";
+
 export interface LoginProps {
     username: string;
     password: string;
     setLoading: (loading: boolean) => void;
-    setReturnMessage: (message: string) => void;
+    setReturnMessage: (toastTessage: ToastMessage) => void;
     login: () => void;
-};
-
-export interface Responses {
-    [key: number]: string;
 };
 
 export interface JwtPayload {

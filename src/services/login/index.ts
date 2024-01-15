@@ -1,12 +1,18 @@
 import { API_URL } from "../../common/constants";
-import { LoginProps, JwtPayload, Responses } from "./LoginProps";
+import { fetchData } from "../common";
+import { responses } from "../common/FetchDataProps";
+import { LoginProps, JwtPayload } from "./LoginProps";
 
-const responses: Responses = {
-    200: 'Login efetuado com sucesso',
-    401: 'Usuário ou senha inválidos',
-    404: 'Usuário ou senha inválidos',
-    500: 'Erro interno do servidor',
-};
+const fetchToken = async (username: string, password: string) => {
+    const loginUrl = `${API_URL}/login`;
+    const token = localStorage.getItem('access_token');
+    return await fetchData({
+        url: loginUrl,
+        method: 'POST',
+        body: { username, password },
+        token: token || '',
+    });
+}
 
 export const logInService = async ({
     password,
@@ -15,25 +21,22 @@ export const logInService = async ({
     setReturnMessage,
     login,
 }: LoginProps): Promise<any> => {
-    const loginUrl = `${API_URL}/login`;
     setLoading(true);
 
     try {
-        const response = await fetch(loginUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                password,
-            }),
-        });
+        const response = await fetchToken(username, password);
+        console.log('response');
 
         if (responses[response.status]) {
-            setReturnMessage(responses[response.status]);
+            setReturnMessage({
+                message: responses[response.status].message,
+                variation: responses[response.status].variation,
+            });
         } else {
-            setReturnMessage('Unknown error');
+            setReturnMessage({
+                message: 'Unknown error',
+                variation: 'red',
+            });
         }
 
         if (response.ok) {
@@ -43,11 +46,10 @@ export const logInService = async ({
             localStorage.setItem('refresh_token', responseData.refresh_token);
         }
     } catch (error) {
-        if (error instanceof Error) {
-            setReturnMessage('Unknown error');
-        } else {
-            setReturnMessage('Unknown error');
-        }
+        setReturnMessage({
+            message: 'Unknown error',
+            variation: 'red',
+        });
     } finally {
         setLoading(false);
     }
