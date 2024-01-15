@@ -21,63 +21,73 @@ def populate_clients():
 
     clients: list = [
         {
-            'name': 'Jorge da Silva',
-            'registration': '7658976589467',
-            'username': 'jorge',
+            'name': 'Mateus Santos Mendonça',
+            'registration': '1929040019',
+            'username': 'mateuzin',
+            'course': 'Ciência da Computação',
             'active': True
+        },
+        {
+            'name': 'Dâmaris Campos',
+            'registration': 'E000861',
+            'username': 'damaris',
+            'course': 'Ciência da Computação',
+            'active': False
         },
         {
             'name': 'Maria Santos',
             'registration': '1234567890123',
             'username': 'maria',
+            'course': 'Ciência da Computação',
             'active': True
-        },
-        {
-            'name': 'Pedro Oliveira',
-            'registration': '9876543210987',
-            'username': 'pedro',
-            'active': False
         },
         {
             'name': 'Ana Ferreira',
             'registration': '4567890123456',
             'username': 'ana',
+            'course': 'Ciência da Computação',
             'active': True
         },
         {
             'name': 'Lucas Almeida',
             'registration': '7890123456789',
             'username': 'lucas',
+            'course': 'Ciência da Computação',
             'active': False
         },
         {
             'name': 'Carla Silva',
             'registration': '5678901234567',
             'username': 'carla',
+            'course': 'Ciência da Computação',
             'active': True
         },
         {
             'name': 'Ricardo Santos',
             'registration': '9012345678901',
             'username': 'ricardo',
+            'course': 'Ciência da Computação',
             'active': True
         },
         {
             'name': 'Fernanda Oliveira',
             'registration': '3456789012345',
             'username': 'fernanda',
+            'course': 'Ciência da Computação',
             'active': True
         },
         {
             'name': 'Gustavo Pereira',
             'registration': '6789012345678',
             'username': 'gustavo',
+            'course': 'Ciência da Computação',
             'active': False
         },
         {
             'name': 'Mariana Alves',
             'registration': '0123456789012',
             'username': 'mariana',
+            'course': 'Ciência da Computação',
             'active': True
         },
     ]
@@ -179,42 +189,10 @@ def populate_products():
     """Populate the products table with some default data."""
 
     product_names = [
-        'Coca-Cola',
-        'Pepsi',
-        'Fanta',
-        'Guaraná',
-        'Sprite',
-        'Água',
-        'Suco de Laranja',
-        'Suco de Uva',
-        'Suco de Maracujá',
-        'Suco de Limão',
-        'Suco de Morango',
-        'Suco de Manga',
-        'Suco de Caju',
-        'Suco de Acerola',
-        'Suco de Açaí',
-        'Pringles',
-        'Doritos',
-        'Ruffles',
-        'Cheetos',
-        'Fandangos',
-        'Baconzitos',
-        'Cebolitos',
-        'Cigarro',
-        'Cigarro de Palha',
-        'Cachaça',
-        'Vodka',
-        'Whisky',
-        'Cerveja',
-        'Cerveja Artesanal',
-        'Cerveja Importada',
-        'Cerveja Sem Álcool',
-        'Cerveja de Trigo',
-        'Cerveja Pilsen',
-        'Picanha',
-        'Alcatra',
-        'Contra Filé',
+        'Desjejum',
+        'Almoço',
+        'Lanche',
+        'Jantar',
     ]
     products: list = [
         {
@@ -241,7 +219,7 @@ def populate_orders():
         {
             'client_id': randint(1, 10),
             'employee_id': randint(2, 6),
-            'product_id': randint(1, 36),
+            'product_id': randint(1, 4),
             'price': randint(500, 10000) / 100,
             'quantity': randint(1, 5),
         }
