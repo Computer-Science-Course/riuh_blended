@@ -11,6 +11,7 @@ import { Client } from "../../../entities/Client";
 import { Wallet } from "../../../entities/Wallet";
 import Toast from "../../../components/Toast";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
+import { HandleSellProps } from "./CashierrProps";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -45,19 +46,12 @@ const handleGetClient = async (
   }
 };
 
-export interface handleSellProps {
-  client: Client;
-  product: Product;
-  setReturnMessage: (toastMessage: ToastMessage) => void;
-  setIsLoading: (loading: boolean) => void;
-}
-
 const handleSell = async ({
   client,
   product,
   setReturnMessage,
   setIsLoading,
-}: handleSellProps) => {
+}: HandleSellProps) => {
   setIsLoading(true);
   const employee = await getSelfEmployee({
     setReturnMessage,
@@ -73,6 +67,9 @@ const handleSell = async ({
   setIsLoading(false);
 }
 
+/**
+ * @description React component for Cashier.
+ */
 const Cashier = () => {
   const [isFastCashier, setIsFastCashier] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +88,7 @@ const Cashier = () => {
     message: '', variation: 'standard'
   });
 
+  /** Get all products when page is loaded. */
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -104,40 +102,36 @@ const Cashier = () => {
     setIsLoading(false);
   }, []);
 
+  /** Perform a sell when client change and "fast cashier" is on. */
   useEffect(() => {
-    const handleFastCashier = async () => {
-      if (isFastCashier && clientDocument.trim()) {
-        try {
-          // Call handleGetClient and wait for it to complete
-          const clientData = await handleGetClient(
-            setClient,
-            setWallet,
-            clientDocument,
-            setReturnMessage,
-            setIsLoading,
-          );
+    if(client.id && isFastCashier) {
+      handleSell({
+        client,
+        product,
+        setIsLoading,
+        setReturnMessage,
+      });
+    }
+  }, [client])
 
-          // Now that handleGetClient has completed, use its result in handleSell
-          await handleSell({
-            client: clientData,
-            product,
-            setIsLoading,
-            setReturnMessage,
-          });
-        } catch (error) {
-          // Handle errors here if necessary
-          console.error("Error in handleFastCashier:", error);
-        }
-      }
-    };
-
-    handleFastCashier();
-  }, [clientDocument, isFastCashier, product]);
+  /** Get client info when client document change and "fast cashier" is on.   */
+  useEffect(() => {
+    if (isFastCashier && clientDocument.trim()) {
+      handleGetClient(
+        setClient,
+        setWallet,
+        clientDocument,
+        setReturnMessage,
+        setIsLoading
+      )
+    }
+  }, [clientDocument]);
 
   return (
     <div className={containerStyles}>
       <h1 className={titleStyles}>Caixa</h1>
       <BreadCrumbs />
+      {/* Content area */}
       <section className={contentStyles}>
         <div className={firstColumnStyles}>
           <Dropdown
@@ -155,6 +149,7 @@ const Cashier = () => {
               }}
               required
             />
+            {/* Button to search client */}
             <Button
               label="+"
               variation="green"
@@ -162,8 +157,7 @@ const Cashier = () => {
               loading={isLoading}
               onClick={() => {
                 handleGetClient(
-                  setClient,
-                  setWallet,
+                  setClient, setWallet,
                   clientDocument,
                   setReturnMessage,
                   setIsLoading,
@@ -183,6 +177,7 @@ const Cashier = () => {
             onChange={setIsPayingWithWallet}
           /> */}
         </div>
+        {/* Client info */}
         <div className={secondColumnStyles}>
           {client.name && (
             <>
@@ -207,6 +202,7 @@ const Cashier = () => {
         })}
         fullWidth={false}
       />
+      {/* Show toast message on the screen */}
       {returnMessage.message && <Toast
         toastMessage={returnMessage}
         messageSetter={setReturnMessage}
