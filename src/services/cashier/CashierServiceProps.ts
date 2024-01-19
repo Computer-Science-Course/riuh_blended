@@ -20,6 +20,7 @@ export interface sellProps {
     price: number,
     product_id: number,
     quantity: number,
+    isPayingFromWallet: boolean,
     setReturnMessage: (toatsMessage: ToastMessage) => void;
 };
 

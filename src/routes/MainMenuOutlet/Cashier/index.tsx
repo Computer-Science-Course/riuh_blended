@@ -49,6 +49,7 @@ const handleGetClient = async (
 const handleSell = async ({
   client,
   product,
+  isPayingFromWallet,
   setReturnMessage,
   setIsLoading,
 }: HandleSellProps) => {
@@ -62,6 +63,7 @@ const handleSell = async ({
     product_id: product.id!,
     price: product.price!,
     quantity: 1,
+    isPayingFromWallet,
     setReturnMessage,
   })
   setIsLoading(false);
@@ -73,7 +75,7 @@ const handleSell = async ({
 const Cashier = () => {
   const [isFastCashier, setIsFastCashier] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isPayingWithWallet, setIsPayingWithWallet] = useState(false);
+  const [isPayingFromWallet, setIsPayingFromWallet] = useState(false);
   const [client, setClient] = useState<Client>({
     active: false,
     registration: '',
@@ -110,6 +112,7 @@ const Cashier = () => {
         product,
         setIsLoading,
         setReturnMessage,
+        isPayingFromWallet,
       });
     }
   }, [client])
@@ -171,11 +174,11 @@ const Cashier = () => {
             onChange={setIsFastCashier}
           />
           {/* Currently unavaiable */}
-          {/* <Checkbox
+          <Checkbox
             label="Pagar com a carteirinha"
-            checked={isPayingWithWallet}
-            onChange={setIsPayingWithWallet}
-          /> */}
+            checked={isPayingFromWallet}
+            onChange={setIsPayingFromWallet}
+          />
         </div>
         {/* Client info */}
         <div className={secondColumnStyles}>
@@ -199,6 +202,7 @@ const Cashier = () => {
           product,
           setReturnMessage,
           setIsLoading,
+          isPayingFromWallet,
         })}
         fullWidth={false}
       />
