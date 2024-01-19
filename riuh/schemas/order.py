@@ -16,6 +16,7 @@ class CreateOrderSchema(Schema):
     product_id = fields.Integer(required=True)
     price = fields.Float(required=True)
     quantity = fields.Int(required=True)
+    isPayingFromWallet = fields.Bool()
 
 
 class UpdateOrderSchema(CreateOrderSchema):

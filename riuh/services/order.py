@@ -8,6 +8,9 @@ from sqlalchemy.exc import (
     IntegrityError,
     SQLAlchemyError,
 )
+from services.wallet import (
+    WalletService,
+)
 
 class OrderService:
     """Service for order."""
@@ -67,7 +70,7 @@ class OrderService:
             self,
             client_id: int, employee_id: int,
             product_id: int, price: float,
-            quantity: int,
+            quantity: int, isPayingFromWallet: bool = False,
     ) -> Order:
         """Create a new order."""
 
@@ -78,6 +81,17 @@ class OrderService:
         self.order.quantity = quantity
 
         try:
+            if isPayingFromWallet:
+                walletService: WalletService = WalletService()
+                wallet = walletService.get_by_client_id(client_id)
+                amount = price * quantity
+                if wallet.balance - amount < 0:
+                    message = 'Saldo insuficiente'
+                    abort(403, message=message)
+                walletService.subtract_balance(
+                    id=wallet.id,
+                    amount=amount,
+                )
             db.session.add(self.order)
             db.session.commit()
             return self.order
