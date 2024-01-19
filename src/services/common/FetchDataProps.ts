@@ -5,7 +5,7 @@ type method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export interface fetchDataProps {
     url: string;
     method: method;
-    body: Record<string, string | number>;
+    body: Record<string, string | number | boolean>;
     token: string;
 }
 

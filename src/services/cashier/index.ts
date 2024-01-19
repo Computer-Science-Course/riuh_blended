@@ -73,6 +73,7 @@ export const sell = async ({
     price,
     product_id,
     quantity,
+    isPayingFromWallet,
     setReturnMessage,
 }: sellProps) => {
 
@@ -80,6 +81,7 @@ export const sell = async ({
     const body = {
         client_id,
         employee_id,
+        isPayingFromWallet,
         price,
         product_id,
         quantity,

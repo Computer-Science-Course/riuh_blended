@@ -56,6 +56,12 @@ export const tryFetchData = async ({
                 });
                 // To do: logout from here
             }
+        } else if (response.status === 403) {
+            console.log(response);
+            setReturnMessage({
+                message: 'batata',
+                variation: responses[response.status].variation,
+            });
         } else {
             setReturnMessage({
                 message: responses[response.status].variation,

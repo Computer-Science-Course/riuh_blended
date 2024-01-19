@@ -8,6 +8,8 @@ export interface HandleSellProps {
   client: Client;
   /** Product info. */
   product: Product;
+  /** If money is being taking from client wallet. */
+  isPayingFromWallet: boolean;
   /** Setter for toast message. */
   setReturnMessage: (toastMessage: ToastMessage) => void;
   /** Loading state. */
