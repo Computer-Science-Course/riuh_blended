@@ -99,7 +99,7 @@ def populate_clients():
         except Exception:
             new_client = service.create(**client)
             wallet_service: WalletService = WalletService()
-            wallet_service.create(client_id=new_client.id)
+            wallet_service.create(client_id=new_client.id, balance=100)
 
 
 def populate_employees():
@@ -197,7 +197,7 @@ def populate_products():
     products: list = [
         {
             'name': name,
-            'price': randint(500, 10000) / 100,
+            'price': choice([1.8, 0.8]),
             'quantity': randint(1, 100),
             'active': True
         }
