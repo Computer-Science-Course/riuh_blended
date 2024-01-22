@@ -9,8 +9,8 @@ export const refreshTokens = async () => {
         body: {},
         token: refreshToken || '',
     });
-    if (response.ok) {
-        const responseData = await response.json();
+    if (response.status === 200) {
+        const responseData = await response.data;
         localStorage.setItem('access_token', responseData.access_token);
         localStorage.setItem('refresh_token', responseData.refresh_token);
     }

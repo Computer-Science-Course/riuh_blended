@@ -1,3 +1,4 @@
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { refreshTokens } from "../token";
 import { fetchDataProps, responses, tryFetchDataProps } from "./FetchDataProps";
 
@@ -13,16 +14,17 @@ export const fetchData = async ({
         'Authorization': `Bearer ${token}`,
     };
 
-    const requestOptions: RequestInit = {
+    const axiosConfig: AxiosRequestConfig = {
         method: method,
+        url: url,
         headers: headers,
     };
 
     if (['POST', 'PUT', 'PATCH'].includes(method)) {
-        requestOptions.body = JSON.stringify(body);
+        axiosConfig.data = body;
     }
 
-    const response = await fetch(url, requestOptions);
+    const response: AxiosResponse = await axios(axiosConfig);
     return response;
 };
 
@@ -30,50 +32,53 @@ export const tryFetchData = async ({
     setReturnMessage,
     request,
     okayMessage,
-    forbiddenMessage = 'Something!',
 }: tryFetchDataProps): Promise<any> => {
     let responseData = undefined;
 
     try {
         const response = await fetchData(request);
-
-        if (response.ok) {
-            responseData = await response.json();
-            if (okayMessage) {
-                setReturnMessage({
-                    message: okayMessage,
-                    variation: responses[response.status].variation,
-                });
+        responseData = await response.data;
+        setReturnMessage({
+            message: okayMessage,
+            variation: responses[response.status].variation,
+        });
+        /** TODO: Type it. */
+    } catch (error: any) {
+        if (error.response) {
+            /** TODO: Change it to a retry function. */
+            try {
+                if (error.response.status === 401) {
+                    await refreshTokens();
+                    const response = await fetchData(request);
+                    responseData = await response.data;
+                } else if (error.response.status === 403) {
+                    setReturnMessage({
+                        message: error.response.data.message,
+                        variation: 'red',
+                    });
+                }
+            } catch (error: any) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        console.log('Need to sign in again');
+                    }
+                    setReturnMessage({
+                        message: error.response.data.message,
+                        variation: 'red',
+                    });
+                } else {
+                    setReturnMessage({
+                        message: 'Unknown error',
+                        variation: 'red',
+                    });
+                }
             }
-        } else if (response.status === 401) {
-            await refreshTokens();
-            const response = await fetchData(request);
-            if (response.ok) {
-                responseData = await response.json();
-            } else {
-                setReturnMessage({
-                    message: responses[response.status].message,
-                    variation: responses[response.status].variation,
-                });
-                // To do: logout from here
-            }
-        } else if (response.status === 403 && forbiddenMessage) {
-            console.log(response);
-            setReturnMessage({
-                message: forbiddenMessage,
-                variation: 'red',
-            });
         } else {
             setReturnMessage({
-                message: responses[response.status].variation,
-                variation: responses[response.status].variation,
+                message: 'Unknown error',
+                variation: 'red',
             });
         }
-    } catch (error) {
-        setReturnMessage({
-            message: 'Unknown error',
-            variation: 'red',
-        });
     } finally {
         return responseData;
     }

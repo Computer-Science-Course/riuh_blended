@@ -24,30 +24,22 @@ export const logInService = async ({
     setLoading(true);
 
     try {
-        const response = await fetchToken(username, password);
-        console.log('response');
+        let response = undefined;
+        response = await fetchToken(username, password);
 
-        if (responses[response.status]) {
-            setReturnMessage({
-                message: responses[response.status].message,
-                variation: responses[response.status].variation,
-            });
-        } else {
-            setReturnMessage({
-                message: 'Unknown error',
-                variation: 'red',
-            });
-        }
-
-        if (response.ok) {
+        if (response.status === 200) {
             login();
-            const responseData: JwtPayload = await response.json();
+            const responseData: JwtPayload = await response.data;
             localStorage.setItem('access_token', responseData.access_token);
             localStorage.setItem('refresh_token', responseData.refresh_token);
+            setReturnMessage({
+                message: response.statusText,
+                variation: responses[response.status].variation,
+            });
         }
     } catch (error) {
         setReturnMessage({
-            message: 'Unknown error',
+            message: 'Unknow error!',
             variation: 'red',
         });
     } finally {
