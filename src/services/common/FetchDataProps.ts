@@ -13,6 +13,7 @@ export interface tryFetchDataProps {
     setReturnMessage: (toatsMessage: ToastMessage) => void;
     request: fetchDataProps;
     okayMessage?: string;
+    forbiddenMessage?: string;
 }
 
 export interface Responses {

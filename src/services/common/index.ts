@@ -30,6 +30,7 @@ export const tryFetchData = async ({
     setReturnMessage,
     request,
     okayMessage,
+    forbiddenMessage = 'Something!',
 }: tryFetchDataProps): Promise<any> => {
     let responseData = undefined;
 
@@ -56,11 +57,11 @@ export const tryFetchData = async ({
                 });
                 // To do: logout from here
             }
-        } else if (response.status === 403) {
+        } else if (response.status === 403 && forbiddenMessage) {
             console.log(response);
             setReturnMessage({
-                message: 'batata',
-                variation: responses[response.status].variation,
+                message: forbiddenMessage,
+                variation: 'red',
             });
         } else {
             setReturnMessage({
