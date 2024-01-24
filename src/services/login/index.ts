@@ -37,12 +37,20 @@ export const logInService = async ({
                 variation: responses[response.status].variation,
             });
         }
-    } catch (error) {
-        setReturnMessage({
-            message: 'Unknow error!',
-            variation: 'red',
-        });
+    } catch (error: any) {
+        if (error.response) {
+            setReturnMessage({
+                message: responses[error.response.status].message,
+                variation: responses[error.response.status].variation,
+            });
+        } else {
+            setReturnMessage({
+                message: 'Unknown error',
+                variation: 'red',
+            });
+        }
     } finally {
         setLoading(false);
     }
+    
 };

@@ -1,8 +1,9 @@
+import { ReactElement } from "react";
 import { Product } from "../../entities/Product";
 
 export interface DropdownProps {
-    options: Product[];
-    onChange: (option: Product) => void;
+    children: ReactElement[] | ReactElement;
+    value: string;
     label?: string;
     required?: boolean;
 }

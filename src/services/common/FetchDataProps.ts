@@ -10,9 +10,9 @@ export interface fetchDataProps {
 }
 
 export interface tryFetchDataProps {
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
     request: fetchDataProps;
-    okayMessage: string;
+    okayMessage?: string;
 }
 
 export interface Responses {

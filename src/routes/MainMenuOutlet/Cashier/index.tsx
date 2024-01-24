@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BreadCrumbs from "../../../components/BreadCrumbs";
 import Dropdown from "../../../components/Dropdown";
 import Checkbox from "../../../components/Switch";
@@ -12,6 +12,7 @@ import { Wallet } from "../../../entities/Wallet";
 import Toast from "../../../components/Toast";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
 import { HandleSellProps } from "./CashierrProps";
+import Item from "../../../components/Dropdown/Item";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -24,7 +25,7 @@ const handleGetClient = async (
   setClient: (client: Client) => void,
   setWallet: (wallet: Wallet) => void,
   clientDocument: string,
-  setReturnMessage: (toastMessage: ToastMessage) => void,
+  setReturnMessage: Dispatch<SetStateAction<ToastMessage>>,
   setIsLoading: (isLoading: boolean) => void,
 ) => {
   setIsLoading(true);
@@ -34,13 +35,6 @@ const handleGetClient = async (
       setReturnMessage,
     });
     setClient(client);
-    const clientId = client.id;
-    if (!clientId) return;
-    const wallet = await getWallet({
-      clientId,
-      setReturnMessage,
-    });
-    setWallet(wallet);
   } finally {
     setIsLoading(false);
   }
@@ -54,19 +48,25 @@ const handleSell = async ({
   setIsLoading,
 }: HandleSellProps) => {
   setIsLoading(true);
-  const employee = await getSelfEmployee({
-    setReturnMessage,
-  })
-  await sell({
-    client_id: client.id!,
-    employee_id: employee.id!,
-    product_id: product.id!,
-    price: product.price!,
-    quantity: 1,
-    isPayingFromWallet,
-    setReturnMessage,
-  })
-  setIsLoading(false);
+  try {
+    const employee = await getSelfEmployee({
+      setReturnMessage,
+    })
+    const orderReponse = await sell({
+      client_id: client.id!,
+      employee_id: employee.id!,
+      product_id: product.id!,
+      price: product.price!,
+      quantity: 1,
+      isPayingFromWallet,
+      setReturnMessage,
+    })
+    if (orderReponse && isPayingFromWallet) {
+      // Fetch client info
+    }
+  } finally {
+    setIsLoading(false);
+  }
 }
 
 /**
@@ -104,9 +104,9 @@ const Cashier = () => {
     setIsLoading(false);
   }, []);
 
-  /** Perform a sell when client change and "fast cashier" is on. */
   useEffect(() => {
-    if(client.id && isFastCashier) {
+    /** Perform a sell when client change and "fast cashier" is on. */
+    if (client.id && isFastCashier) {
       handleSell({
         client,
         product,
@@ -115,7 +115,21 @@ const Cashier = () => {
         isPayingFromWallet,
       });
     }
+
+    /** Get new wallet */
+    const fetchWallet = async () => {
+      if (client.id) {
+        const wallet = await getWallet({
+          clientId: client.id,
+          setReturnMessage,
+        });
+        setWallet(wallet);
+      }
+    }
+
+    fetchWallet();
   }, [client])
+
 
   /** Get client info when client document change and "fast cashier" is on.   */
   useEffect(() => {
@@ -139,10 +153,18 @@ const Cashier = () => {
         <div className={firstColumnStyles}>
           <Dropdown
             label="Produto"
+            value={product.name || ''}
             required
-            onChange={setProduct}
-            options={products?.map(product => product)}
-          />
+          >
+            {products.map(product => (
+              <Item
+              label={`${product.name!} | R$${product.price!}`}
+              value={product}
+              key={product.name!}
+              handleSelect={setProduct}
+              />
+            ))}
+          </Dropdown>
           <span className={addClientStyles}>
             <TextField
               label="Freguês"
@@ -160,7 +182,8 @@ const Cashier = () => {
               loading={isLoading}
               onClick={() => {
                 handleGetClient(
-                  setClient, setWallet,
+                  setClient,
+                  setWallet,
                   clientDocument,
                   setReturnMessage,
                   setIsLoading,
@@ -173,7 +196,6 @@ const Cashier = () => {
             checked={isFastCashier}
             onChange={setIsFastCashier}
           />
-          {/* Currently unavaiable */}
           <Checkbox
             label="Pagar com a carteirinha"
             checked={isPayingFromWallet}
@@ -191,7 +213,7 @@ const Cashier = () => {
             </>
           )}
         </div>
-      </section>
+      </section >
       <Button
         label="Realizar venda"
         disabledStatus={isFastCashier || isLoading || !(client.name && product.name)}
@@ -207,11 +229,13 @@ const Cashier = () => {
         fullWidth={false}
       />
       {/* Show toast message on the screen */}
-      {returnMessage.message && <Toast
-        toastMessage={returnMessage}
-        messageSetter={setReturnMessage}
-      />}
-    </div>
+      {
+        returnMessage.message && <Toast
+          toastMessage={returnMessage}
+          messageSetter={setReturnMessage}
+        />
+      }
+    </div >
   );
 };
 

@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
 import { Client } from "../../../entities/Client";
 import { Product } from "../../../entities/Product";
@@ -11,7 +12,7 @@ export interface HandleSellProps {
   /** If money is being taking from client wallet. */
   isPayingFromWallet: boolean;
   /** Setter for toast message. */
-  setReturnMessage: (toastMessage: ToastMessage) => void;
+  setReturnMessage: Dispatch<SetStateAction<ToastMessage>>;
   /** Loading state. */
   setIsLoading: (loading: boolean) => void;
 }

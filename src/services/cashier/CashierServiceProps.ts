@@ -1,16 +1,16 @@
 import { ToastMessage } from "../../components/Toast/ToastProps";
 
 export interface getProductsProps {
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
 };
 
 export interface getClientProps {
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
     clientDocument: string;
 };
 
 export interface getWalletProps {
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
     clientId: number;
 };
 
@@ -21,9 +21,9 @@ export interface sellProps {
     product_id: number,
     quantity: number,
     isPayingFromWallet: boolean,
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
 };
 
 export interface getSelfEmployeeProps {
-    setReturnMessage: (toatsMessage: ToastMessage) => void;
+    setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
 };
