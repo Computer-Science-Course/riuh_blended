@@ -23,7 +23,6 @@ const secondColumnStyles = 'flex flex-col gap-2';
 
 const handleGetClient = async (
   setClient: (client: Client) => void,
-  setWallet: (wallet: Wallet) => void,
   clientDocument: string,
   setReturnMessage: Dispatch<SetStateAction<ToastMessage>>,
   setIsLoading: (isLoading: boolean) => void,
@@ -34,7 +33,9 @@ const handleGetClient = async (
       clientDocument,
       setReturnMessage,
     });
-    setClient(client);
+    if (client) {
+      setClient(client);
+    }
   } finally {
     setIsLoading(false);
   }
@@ -136,7 +137,6 @@ const Cashier = () => {
     if (isFastCashier && clientDocument.trim()) {
       handleGetClient(
         setClient,
-        setWallet,
         clientDocument,
         setReturnMessage,
         setIsLoading
@@ -183,7 +183,6 @@ const Cashier = () => {
               onClick={() => {
                 handleGetClient(
                   setClient,
-                  setWallet,
                   clientDocument,
                   setReturnMessage,
                   setIsLoading,

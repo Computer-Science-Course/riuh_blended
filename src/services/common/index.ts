@@ -91,13 +91,27 @@ export const tryFetchData = async ({
         }
         /** TODO: Type it. */
     } catch (error: any) {
-        if (error.response) {
-            retryFetchData({
-                error,
-                request,
-                setReturnMessage,
-            })  
-        } else {
+        const statusCode = error.response.status;
+        if (statusCode) {
+            if (error.response.status == 401) {
+                retryFetchData({
+                    error,
+                    request,
+                    setReturnMessage,
+                })
+            } else if (Object.keys(responses).includes(`${statusCode}`)) {
+                setReturnMessage({
+                    message: responses[error.response.status].message,
+                    variation: responses[error.response.status].variation,
+                });
+            } else {
+                setReturnMessage({
+                    message: error.response.data.message,
+                    variation: 'red',
+                });
+            }
+        }
+         else {
             setReturnMessage({
                 message: 'Unknown error',
                 variation: 'red',

@@ -32,6 +32,10 @@ export const responses: Responses = {
         message: 'Dados não encontrados.',
         variation: 'red',
     },
+    422: {
+        message: 'Prencha todos os campos.',
+        variation: 'red',
+    },
     500: {
         message: 'Erro interno.',
         variation: 'red',
