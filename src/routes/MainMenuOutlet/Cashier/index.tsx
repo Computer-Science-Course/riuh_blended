@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCrumbs from "../../../components/BreadCrumbs";
 import Dropdown from "../../../components/Dropdown";
 import Checkbox from "../../../components/Switch";
@@ -11,7 +11,7 @@ import { Client } from "../../../entities/Client";
 import { Wallet } from "../../../entities/Wallet";
 import Toast from "../../../components/Toast";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
-import { HandleSellProps } from "./CashierrProps";
+import { HandleGetClientProps, HandleSellProps } from "./CashierrProps";
 import Item from "../../../components/Dropdown/Item";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
@@ -21,12 +21,22 @@ const firstColumnStyles = 'flex flex-col gap-4';
 const addClientStyles = 'flex gap-4 items-end';
 const secondColumnStyles = 'flex flex-col gap-2';
 
-const handleGetClient = async (
-  setClient: (client: Client) => void,
-  clientDocument: string,
-  setReturnMessage: Dispatch<SetStateAction<ToastMessage>>,
-  setIsLoading: (isLoading: boolean) => void,
-) => {
+/**
+ * Handles the retrieval of a client based on their document.
+ * 
+ * @param {HandleGetClientProps} props - The function props.
+ * @param {string} props.clientDocument - The document of the client to retrieve.
+ * @param {Function} props.setClient - The function to set the retrieved client.
+ * @param {Function} props.setIsLoading - The function to set the loading state.
+ * @param {Function} props.setReturnMessage - The function to set the return message.
+ * @returns {Promise<void>} - A promise that resolves when the client retrieval is complete.
+ */
+const handleGetClient = async ({
+  clientDocument,
+  setClient,
+  setIsLoading,
+  setReturnMessage,
+}: HandleGetClientProps) => {
   setIsLoading(true);
   try {
     const client = await getClient({
@@ -41,12 +51,24 @@ const handleGetClient = async (
   }
 };
 
+/**
+ * Handles the sell operation.
+ * 
+ * @param {HandleSellProps} props - The function props.
+ * @param {Client} props.client - The client object.
+ * @param {Product} props.product - The product object.
+ * @param {boolean} props.isPayingFromWallet - Indicates whether the payment is made from the wallet.
+ * @param {Function} props.setReturnMessage - The function to set the return message.
+ * @param {Function} props.setIsLoading - The function to set the loading state.
+ * @param {Function} props.setClient - The function to set the client object.
+ */
 const handleSell = async ({
   client,
   product,
   isPayingFromWallet,
   setReturnMessage,
   setIsLoading,
+  setClient,
 }: HandleSellProps) => {
   setIsLoading(true);
   try {
@@ -63,12 +85,19 @@ const handleSell = async ({
       setReturnMessage,
     })
     if (orderReponse && isPayingFromWallet) {
-      // Fetch client info
+      handleGetClient({
+        clientDocument: client.registration!,
+        setClient,
+        setReturnMessage,
+        setIsLoading,
+      })
+
     }
   } finally {
     setIsLoading(false);
   }
 }
+
 
 /**
  * @description React component for Cashier.
@@ -85,7 +114,7 @@ const Cashier = () => {
   });
   const [wallet, setWallet] = useState<Wallet>({});
   const [clientDocument, setClientDocument] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([{}]);
   const [product, setProduct] = useState<Product>({});
   const [returnMessage, setReturnMessage] = useState<ToastMessage>({
     message: '', variation: 'standard'
@@ -99,6 +128,7 @@ const Cashier = () => {
         setReturnMessage,
       });
       setProducts(loadedProducts);
+      setProduct(loadedProducts[0]);
     };
 
     fetchProducts();
@@ -114,10 +144,13 @@ const Cashier = () => {
         setIsLoading,
         setReturnMessage,
         isPayingFromWallet,
+        setClient,
       });
     }
+  }, [client.id])
 
-    /** Get new wallet */
+  useEffect(() => {
+    /** Get new wallet when client changes. */
     const fetchWallet = async () => {
       if (client.id) {
         const wallet = await getWallet({
@@ -131,16 +164,15 @@ const Cashier = () => {
     fetchWallet();
   }, [client])
 
-
   /** Get client info when client document change and "fast cashier" is on.   */
   useEffect(() => {
     if (isFastCashier && clientDocument.trim()) {
-      handleGetClient(
+      handleGetClient({
         setClient,
         clientDocument,
         setReturnMessage,
         setIsLoading
-      )
+      })
     }
   }, [clientDocument]);
 
@@ -148,20 +180,21 @@ const Cashier = () => {
     <div className={containerStyles}>
       <h1 className={titleStyles}>Caixa</h1>
       <BreadCrumbs />
+
       {/* Content area */}
       <section className={contentStyles}>
         <div className={firstColumnStyles}>
           <Dropdown
             label="Produto"
-            value={product.name || ''}
+            value={product.name || products[0].name || ''}
             required
           >
             {products.map(product => (
               <Item
-              label={`${product.name!} | R$${product.price!}`}
-              value={product}
-              key={product.name!}
-              handleSelect={setProduct}
+                label={`${product.name!} | R$${product.price!}`}
+                value={product}
+                key={product.name!}
+                handleSelect={setProduct}
               />
             ))}
           </Dropdown>
@@ -181,12 +214,12 @@ const Cashier = () => {
               disabledStatus={isFastCashier || isLoading}
               loading={isLoading}
               onClick={() => {
-                handleGetClient(
+                handleGetClient({
                   setClient,
                   clientDocument,
                   setReturnMessage,
                   setIsLoading,
-                )
+                })
               }}
             />
           </span>
@@ -224,6 +257,7 @@ const Cashier = () => {
           setReturnMessage,
           setIsLoading,
           isPayingFromWallet,
+          setClient,
         })}
         fullWidth={false}
       />
