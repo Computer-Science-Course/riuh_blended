@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from models.wallet import Wallet
 from models.db import db
 
@@ -105,7 +107,7 @@ class WalletService:
 
         self.wallet = self.get_by_id(id)
 
-        self.wallet.balance += amount
+        self.wallet.balance = Decimal(str(self.wallet.balance)) + Decimal(str(amount))
 
         try:
             db.session.add(self.wallet)
@@ -124,7 +126,7 @@ class WalletService:
 
         self.wallet = self.get_by_id(id)
 
-        self.wallet.balance -= amount
+        self.wallet.balance = Decimal(str(self.wallet.balance)) - Decimal(str(amount))
 
         try:
             db.session.commit()
