@@ -45,6 +45,13 @@ const handleGetClient = async ({
     });
     if (client) {
       setClient(client);
+    } else {
+      setClient({
+        active: false,
+        registration: '',
+        name: '',
+        id: undefined,
+      });
     }
   } finally {
     setIsLoading(false);
