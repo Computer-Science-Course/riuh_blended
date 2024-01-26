@@ -25,7 +25,7 @@ const SearchField = ({
           {required && <span className={requiredTagStyles}>*</span>}
         </span>
       }
-      <span className={inputGroupStyles}>
+      <span className={inputGroupStyles} title={placeholder}>
         <input
           type='text'
           className={inputStyles}
