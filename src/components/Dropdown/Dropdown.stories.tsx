@@ -23,6 +23,7 @@ const meta = {
         handleSelect={console.log}
         label={option}
         value='Some value'
+        key={option}
       />
     ))
   },

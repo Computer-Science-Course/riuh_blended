@@ -46,7 +46,7 @@ const Dropdown = ({
         <ChevronsUpDown size={24} />
       </div>
       {isOpen && (
-        <ul className={dropdownListStyles}>
+        <ul className={dropdownListStyles} onClick={handleToggle}>
           {children}
         </ul>
       )}
