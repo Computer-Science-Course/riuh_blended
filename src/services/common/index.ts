@@ -42,11 +42,24 @@ const retryFetchData = async ({
     let responseData = undefined;
 
     try {
-        if (error.response.status === 401) {
-            await refreshTokens();
-            const response = await fetchData(request);
-            responseData = await response.data;
-        } else if (error.response.status === 403) {
+        console.log('Hi! It\'s me. I\'m the problem. It\'s me.')
+        const statusCode = error.response.status;
+        if (statusCode === 401) {
+            await refreshTokens().then(async () => {
+                const response = await fetchData(request);
+                responseData = await response.data;
+            });
+        } else if (statusCode === 403) {
+            setReturnMessage({
+                message: error.response.data.message,
+                variation: 'red',
+            });
+        } else if (Object.keys(responses).includes(`${statusCode}`)) {
+            setReturnMessage({
+                message: responses[statusCode].message,
+                variation: responses[statusCode].variation,
+            });
+        } else {
             setReturnMessage({
                 message: error.response.data.message,
                 variation: 'red',
@@ -93,25 +106,13 @@ export const tryFetchData = async ({
     } catch (error: any) {
         const statusCode = error.response.status;
         if (statusCode) {
-            if (error.response.status == 401) {
-                retryFetchData({
-                    error,
-                    request,
-                    setReturnMessage,
-                })
-            } else if (Object.keys(responses).includes(`${statusCode}`)) {
-                setReturnMessage({
-                    message: responses[error.response.status].message,
-                    variation: responses[error.response.status].variation,
-                });
-            } else {
-                setReturnMessage({
-                    message: error.response.data.message,
-                    variation: 'red',
-                });
-            }
+            retryFetchData({
+                error,
+                request,
+                setReturnMessage,
+            });
         }
-         else {
+        else {
             setReturnMessage({
                 message: 'Unknown error',
                 variation: 'red',
