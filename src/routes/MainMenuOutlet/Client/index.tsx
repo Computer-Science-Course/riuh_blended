@@ -5,6 +5,7 @@ import Button from "../../../components/Button";
 import Toast from "../../../components/Toast";
 import { useState } from "react";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
+import { scrollBarStyles } from "../../../common/constants";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -43,7 +44,7 @@ const Client = () => {
             placeholder="Digite um nome ou documento"
             required={false}
           />
-          <div className={itemsStyles}>
+          <div className={`${itemsStyles} ${scrollBarStyles}`}>
             {clientsBase.map(({ name, document }) => (
               <CRUDListItem
                 title={name}

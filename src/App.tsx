@@ -41,6 +41,7 @@ const App = () => {
   }, [isAuthenticated]);
 
   return (
+    isAuthenticated &&
     <div className={containerStyles}>
       <div className={topBoxStyles}>
         <div className={sideBarStyles}>

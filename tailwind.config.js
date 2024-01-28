@@ -104,5 +104,5 @@ module.exports = {
       mono: ['IBM Plex Mono', 'monospace']
     }
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar'),],
 }

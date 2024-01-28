@@ -1,7 +1,12 @@
 import { API_URL } from "../../common/constants";
 import { fetchData } from "../common";
 
-export const refreshTokens = async () => {
+export interface refreshTokensProps {
+    accessToken: string;
+    refreshToken: string;
+}
+
+export const refreshTokens = async (): Promise<refreshTokensProps | undefined> => {
     const refreshToken = localStorage.getItem('refresh_token');
     const response = await fetchData({
         url: `${API_URL}/refresh`,
@@ -10,8 +15,8 @@ export const refreshTokens = async () => {
         token: refreshToken || '',
     });
     if (response.status === 200) {
-        const responseData = await response.data;
-        localStorage.setItem('access_token', responseData.access_token);
-        localStorage.setItem('refresh_token', responseData.refresh_token);
+        return await response.data;
+        // localStorage.setItem('access_token', responseData.access_token);
+        // localStorage.setItem('refresh_token', responseData.refresh_token);
     }
 }
