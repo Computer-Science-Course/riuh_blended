@@ -19,12 +19,13 @@ export const revokeTokens = async (
   setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>
 ): Promise<any> => {
 
-  const token = localStorage.getItem('access_token');
+  const accessToken = localStorage.getItem('access_token');
+  const refresh_token = localStorage.getItem('refresh_token');
   const request: any = {
     url: `${API_URL}/logout`,
     method: 'POST',
-    body: {},
-    token: token || '',
+    body: {refresh_token},
+    token: accessToken || '',
   };
   return await tryFetchData({
     setReturnMessage,
@@ -55,9 +56,9 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setIsAuthenticated(false);
-    // localStorage.removeItem('access_token');
-    // localStorage.removeItem('refresh_token');
     revokeTokens(setReturnMessage);
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
 
   };
 
