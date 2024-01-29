@@ -3,7 +3,6 @@ import { fetchData } from "../common";
 
 export interface refreshTokensProps {
     accessToken: string;
-    refreshToken: string;
 }
 
 export const refreshTokens = async (): Promise<refreshTokensProps | undefined> => {
@@ -15,8 +14,11 @@ export const refreshTokens = async (): Promise<refreshTokensProps | undefined> =
         token: refreshToken || '',
     });
     if (response.status === 200) {
-        return await response.data;
-        // localStorage.setItem('access_token', responseData.access_token);
-        // localStorage.setItem('refresh_token', responseData.refresh_token);
+        const responseData = await response.data;
+        const tokens: refreshTokensProps = {
+            accessToken: responseData.access_token,
+        }
+        localStorage.setItem('access_token', tokens.accessToken);
+        return tokens;
     }
 }
