@@ -11,11 +11,14 @@ from flask_jwt_extended import (
     get_jwt_identity,
     get_jwt,
     jwt_required,
+    get_jti,
 )
 from passlib.hash import pbkdf2_sha256 as sha256
 
 from schemas.employee import (
-    AccessJWTSchema,
+    AccessJWTSchemaLogin,
+    AccessJWTSchemaLogout,
+    AccessJWTSchemaRefresh,
     CreateEmployeeSchema,
     LoginEmployeeSchema,
     LogoutEmployeeSchema,
@@ -177,7 +180,7 @@ class EmployeeLogin(MethodView):
     """Controllers for employee login."""
 
     @blp.arguments(LoginEmployeeSchema)
-    @blp.response(200, AccessJWTSchema)
+    @blp.response(200, AccessJWTSchemaLogin)
     def post(self, employee_data):
         """
         Login an employee.
@@ -203,7 +206,7 @@ class EmployeeRefresh(MethodView):
     """Controllers for employee refresh."""
 
     @jwt_required(refresh=True)
-    @blp.response(200, AccessJWTSchema)
+    @blp.response(200, AccessJWTSchemaRefresh)
     def post(self):
         """
         Refresh an employee's access token.
@@ -222,15 +225,20 @@ class EmployeeLogout(MethodView):
     """Controllers for employee logout."""
 
     @jwt_required()
+    @blp.arguments(AccessJWTSchemaLogout)
     @blp.response(200, LogoutEmployeeSchema)
-    def post(self):
+    def post(self, refresh_data):
         """
         Logout an employee.
 
         :return str: Message indicating successful logout.
         """
 
-        jti = get_jwt()['jti']
+        access_jti = get_jwt()['jti']
+        refresh_jti = get_jti(refresh_data.get('refresh_token'))
         block_list_service: BlockListService = BlockListService()
-        block_list_service.create(jti)
+        block_list_service.create(access_jti)
+        block_list_service: BlockListService = BlockListService()
+        block_list_service.create(refresh_jti)
+
         return {'message': 'Successfully logged out.'}

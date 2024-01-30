@@ -25,8 +25,17 @@ class LoginEmployeeSchema(Schema):
     password = fields.Str(required=True)
 
 
-class AccessJWTSchema(Schema):
+class AccessJWTSchemaLogin(Schema):
     access_token = fields.Str(required=True)
+    refresh_token = fields.Str(required=True)
+
+
+class AccessJWTSchemaLogout(Schema):
+    refresh_token = fields.Str(required=True)
+
+
+class AccessJWTSchemaRefresh(AccessJWTSchemaLogout):
+    refresh_token = fields.Str(required=True)
 
 
 class LogoutEmployeeSchema(Schema):
