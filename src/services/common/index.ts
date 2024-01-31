@@ -6,8 +6,9 @@ export const fetchData = async ({
     body = {},
     method,
     url,
+    tokenType = 'access_token',
 }: fetchDataProps) => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem(tokenType);
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

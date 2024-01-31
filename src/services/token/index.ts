@@ -6,12 +6,11 @@ export interface refreshTokensProps {
 }
 
 export const refreshTokens = async (): Promise<refreshTokensProps | undefined> => {
-    const refreshToken = localStorage.getItem('refresh_token');
     const response = await fetchData({
         url: `${API_URL}/refresh`,
         method: 'POST',
         body: {},
-        token: refreshToken || '',
+        tokenType: 'refresh_token',
     });
     if (response.status === 200) {
         const responseData = await response.data;
