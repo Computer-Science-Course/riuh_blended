@@ -318,7 +318,7 @@ def populate_database():
 
     populate_employees()
     populate_clients()
-    populate_transactions()
+    # populate_transactions()
     populate_products()
     populate_orders()
     populate_roles()

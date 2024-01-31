@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import List
 
 from models.order import Order
@@ -7,6 +8,9 @@ from flask_smorest import abort
 from sqlalchemy.exc import (
     IntegrityError,
     SQLAlchemyError,
+)
+from services.transaction import (
+    TransactionService,
 )
 from services.wallet import (
     WalletService,
@@ -81,19 +85,16 @@ class OrderService:
         self.order.quantity = quantity
 
         try:
+            amount = Decimal(str(price)) * Decimal(str(quantity))
             if isPayingFromWallet:
-                walletService: WalletService = WalletService()
-                wallet = walletService.get_by_client_id(client_id)
-                amount = price * quantity
-                if wallet.balance - amount < 0:
-                    message = 'Saldo insuficiente'
-                    abort(403, message=message)
-                walletService.subtract_balance(
-                    id=wallet.id,
-                    amount=amount,
-                )
+                self.pay_from_wallet(client_id, amount)                
+
             db.session.add(self.order)
             db.session.commit()
+
+            self.attach_order_transaction(
+                client_id, employee_id, amount, 'BUY'
+            )
             return self.order
         except IntegrityError as exception:
             abort(409, message=str(exception))
@@ -141,3 +142,34 @@ class OrderService:
             db.session.commit()
         except SQLAlchemyError as exception:
             abort(400, message=str(exception))
+    
+    def pay_from_wallet(
+            self,
+            client_id: int,
+            amount: Decimal,
+    ) -> None:
+        """Pay from wallet."""
+
+        wallet_service: WalletService = WalletService()
+        wallet = wallet_service.get_by_client_id(client_id)
+        if wallet.balance - amount < 0:
+            message = 'Saldo insuficiente'
+            abort(403, message=message)
+        wallet_service.subtract_balance(
+            id=wallet.id,
+            amount=amount,
+        )
+
+    def attach_order_transaction(
+            self,
+            client_id: int,
+            employee_id: int,
+            amount: Decimal,
+            type: str,
+    ) -> None:
+        """Attach order transaction."""
+
+        transaction_service: TransactionService = TransactionService()
+        transaction_service.create(
+            client_id, employee_id, amount, type
+        )
