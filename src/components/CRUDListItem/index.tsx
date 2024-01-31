@@ -1,7 +1,7 @@
 import IconButton from "../IconButton";
 import { CRUDListItemProps } from "./CRUDListItem";
 
-const containerStyles = 'flex gap-2';
+const containerStyles = 'flex gap-4';
 const textStyles = 'flex flex-col';
 const titleStyles = 'text-1xl max-w-sm break-all';
 const descriptionStyles = 'text-base text-white-300';

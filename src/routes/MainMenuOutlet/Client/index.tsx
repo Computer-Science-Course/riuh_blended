@@ -3,9 +3,11 @@ import SearchField from "../../../components/SearchField";
 import CRUDListItem from "../../../components/CRUDListItem";
 import Button from "../../../components/Button";
 import Toast from "../../../components/Toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
 import { scrollBarStyles } from "../../../common/constants";
+import { Client as ClientEntity } from "../../../entities/Client";
+import { getClients } from "../../../services/client";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -13,23 +15,28 @@ const contentStyles = 'flex gap-40 text';
 const itemsStyles = 'flex flex-col max-h-96 overflow-y-auto gap-4 p-2 pr-12';
 const firstColumnStyles = 'flex flex-col gap-4';
 
-const clientBase = {
-  name: 'Mateus Santos Mendonça',
-  document: '1929040019',
-}
-
-const clientsBase = [
-  clientBase, clientBase, clientBase, clientBase, clientBase,
-  clientBase, clientBase, clientBase, clientBase, clientBase,
-  clientBase, clientBase, clientBase, clientBase, clientBase,
-  clientBase, clientBase, clientBase, clientBase, clientBase,
-  clientBase, clientBase, clientBase, clientBase, clientBase,
-]
-
 const Client = () => {
+  const [clients, setClients] = useState<ClientEntity[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [returnMessage, setReturnMessage] = useState<ToastMessage>({
     message: '', variation: 'standard'
   });
+
+  /** Handler to get and set clients. */
+  const handleGetClients = async () => {
+    try {
+      const clients = await getClients({
+        setReturnMessage,
+      });
+      setClients(clients);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    handleGetClients();
+  }, []);
 
   return (
     <div className={containerStyles}>
@@ -45,10 +52,10 @@ const Client = () => {
             required={false}
           />
           <div className={`${itemsStyles} ${scrollBarStyles}`}>
-            {clientsBase.map(({ name, document }) => (
+            {clients.map(({ name, registration }) => (
               <CRUDListItem
-                title={name}
-                description={document}
+                title={name!}
+                description={registration!}
               />
             ))}
           </div>
@@ -56,8 +63,8 @@ const Client = () => {
       </section >
       <Button
         label="Criar novo freguês"
-        disabledStatus={false}
-        loading={false}
+        disabledStatus={isLoading}
+        loading={isLoading}
         onClick={() => console.log('Criar novo freguês')}
         fullWidth={false}
       />
