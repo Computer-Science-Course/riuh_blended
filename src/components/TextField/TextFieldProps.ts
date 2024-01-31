@@ -7,7 +7,7 @@ export interface TextFieldProps {
     /** Set up if value is required */
     required: boolean,
     /** Store field value */
-    onChange?: (value: any) => void,
+    onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void,
     /** Text field width */
     fullWidth?: boolean,
 }

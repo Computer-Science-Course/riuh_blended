@@ -7,5 +7,5 @@ export interface SearchFieldProps {
     /** Set up if value is required */
     required: boolean,
     /** Search field value */
-    onChange?: (value: string) => void,
+    onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void,
 }

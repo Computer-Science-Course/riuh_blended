@@ -31,7 +31,7 @@ const SearchField = ({
           className={inputStyles}
           placeholder={placeholder}
           required={required}
-          onChange={(event) => onChange && onChange(event.target.value)}
+          onChange={onChange}
         />
         <SearchIcon
           size={24}

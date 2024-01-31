@@ -18,6 +18,7 @@ const firstColumnStyles = 'flex flex-col gap-4';
 const Client = () => {
   const [clients, setClients] = useState<ClientEntity[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchField, setSearchField] = useState<string>('');
   const [returnMessage, setReturnMessage] = useState<ToastMessage>({
     message: '', variation: 'standard'
   });
@@ -49,15 +50,25 @@ const Client = () => {
           <SearchField
             label="Procure por um freguês"
             placeholder="Digite um nome ou documento"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setSearchField(event.target.value);
+            }}
             required={false}
           />
           <div className={`${itemsStyles} ${scrollBarStyles}`}>
-            {clients.map(({ name, registration }) => (
-              <CRUDListItem
-                title={name!}
-                description={registration!}
-              />
-            ))}
+            {clients.map(({ name, registration }) => {
+              const hasSearchByName = name?.toLowerCase().includes(searchField.toLocaleLowerCase());
+              const hasSearchByRegistration = registration?.toLowerCase().includes(searchField.toLocaleLowerCase());
+              const hasSearch = hasSearchByName || hasSearchByRegistration;
+              const isNotSearching = searchField.length == 0;
+              /** TODO: Highlight found search. */
+              if ( hasSearch || isNotSearching) {
+                return (<CRUDListItem
+                  title={name!}
+                  description={registration!}
+                />)
+              }
+            })}
           </div>
         </div>
       </section >
