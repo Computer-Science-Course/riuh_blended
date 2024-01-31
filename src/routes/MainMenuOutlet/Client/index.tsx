@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
 import { scrollBarStyles } from "../../../common/constants";
 import { Client as ClientEntity } from "../../../entities/Client";
-import { getClients } from "../../../services/client";
+import { deleteClient, getClients } from "../../../services/client";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -25,11 +25,24 @@ const Client = () => {
 
   /** Handler to get and set clients. */
   const handleGetClients = async () => {
+    setIsLoading(true);
     try {
       const clients = await getClients({
         setReturnMessage,
       });
       setClients(clients);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const handleDeleteClient = async (clientId: number | undefined) => {
+    setIsLoading(true);
+    try {
+      await deleteClient({
+        setReturnMessage,
+        client_id: clientId,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -56,17 +69,21 @@ const Client = () => {
             required={false}
           />
           <div className={`${itemsStyles} ${scrollBarStyles}`}>
-            {clients.map(({ name, registration }) => {
+            {clients.map(({ id, name, registration }) => {
               const hasSearchByName = name?.toLowerCase().includes(searchField.toLocaleLowerCase());
               const hasSearchByRegistration = registration?.toLowerCase().includes(searchField.toLocaleLowerCase());
               const hasSearch = hasSearchByName || hasSearchByRegistration;
               const isNotSearching = searchField.length == 0;
               /** TODO: Highlight found search. */
-              if ( hasSearch || isNotSearching) {
-                return (<CRUDListItem
-                  title={name!}
-                  description={registration!}
-                />)
+              if (hasSearch || isNotSearching) {
+                return (
+                  <CRUDListItem
+                    title={name!}
+                    description={registration!}
+                    onClickDelete={() => handleDeleteClient(id)}
+                    onClickEdit={() => console.log('edit')}
+                  />
+                )
               }
             })}
           </div>

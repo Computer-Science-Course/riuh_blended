@@ -1,7 +1,7 @@
 import { Client } from "../../entities/Client";
 import { tryFetchData } from "../common";
 import { fetchDataProps } from "../common/FetchDataProps";
-import { getClientsProps } from "./ClientServiceProps";
+import { deleteClientProps, getClientsProps } from "./ClientServiceProps";
 
 /** Gets clients from back-end */
 export const getClients = async ({
@@ -11,6 +11,22 @@ export const getClients = async ({
     const request: fetchDataProps = {
         url: `/client`,
         method: 'GET',
+        body: {},
+    };
+    return await tryFetchData({
+        setReturnMessage,
+        request,
+    });
+};
+
+export const deleteClient = async ({
+    setReturnMessage,
+    client_id,
+}: deleteClientProps): Promise<Client[]> => {
+
+    const request: fetchDataProps = {
+        url: `/client/${client_id}`,
+        method: 'DELETE',
         body: {},
     };
     return await tryFetchData({
