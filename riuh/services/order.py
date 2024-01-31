@@ -152,7 +152,7 @@ class OrderService:
 
         wallet_service: WalletService = WalletService()
         wallet = wallet_service.get_by_client_id(client_id)
-        if wallet.balance - amount < 0:
+        if Decimal(str(wallet.balance)) - amount < 0:
             message = 'Saldo insuficiente'
             abort(403, message=message)
         wallet_service.subtract_balance(
