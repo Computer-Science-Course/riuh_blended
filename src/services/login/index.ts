@@ -1,16 +1,13 @@
-import { API_URL } from "../../common/constants";
 import { fetchData } from "../common";
 import { responses } from "../common/FetchDataProps";
 import { LoginProps, JwtPayload } from "./LoginProps";
 
 const fetchToken = async (username: string, password: string) => {
-    const loginUrl = `${API_URL}/login`;
-    const token = localStorage.getItem('access_token');
+    const loginUrl = `/login`;
     return await fetchData({
         url: loginUrl,
         method: 'POST',
         body: { username, password },
-        token: token || '',
     });
 }
 
@@ -52,5 +49,5 @@ export const logInService = async ({
     } finally {
         setLoading(false);
     }
-    
+
 };

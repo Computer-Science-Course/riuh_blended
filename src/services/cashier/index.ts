@@ -1,4 +1,3 @@
-import { API_URL } from "../../common/constants";
 import { Client } from "../../entities/Client";
 import { Employee } from "../../entities/Employee";
 import { Product } from "../../entities/Product";
@@ -17,12 +16,10 @@ export const getProducts = async ({
     setReturnMessage,
 }: getProductsProps): Promise<Product[]> => {
 
-    const token = localStorage.getItem('access_token');
     const request: fetchDataProps = {
-        url: `${API_URL}/product`,
+        url: '/product',
         method: 'GET',
         body: {},
-        token: token || '',
     }
     return await tryFetchData({
         setReturnMessage,
@@ -36,12 +33,10 @@ export const getClient = async ({
     setReturnMessage,
 }: getClientProps): Promise<Client> => {
 
-    const token = localStorage.getItem('access_token');
     const request: fetchDataProps = {
-        url: `${API_URL}/client/${clientDocument}`,
+        url: `/client/${clientDocument}`,
         method: 'GET',
         body: {},
-        token: token || '',
     };
     return await tryFetchData({
         setReturnMessage,
@@ -54,12 +49,10 @@ export const getWallet = async ({
     setReturnMessage,
 }: getWalletProps): Promise<Wallet> => {
 
-    const token = localStorage.getItem('access_token');
     const request: fetchDataProps = {
-        url: `${API_URL}/wallet/client/${clientId}`,
+        url: `/wallet/client/${clientId}`,
         method: 'GET',
         body: {},
-        token: token || '',
     };
     return await tryFetchData({
         setReturnMessage,
@@ -77,7 +70,6 @@ export const sell = async ({
     setReturnMessage,
 }: sellProps) => {
 
-    const token = localStorage.getItem('access_token');
     const body = {
         client_id,
         employee_id,
@@ -87,10 +79,9 @@ export const sell = async ({
         quantity,
     }
     const request: fetchDataProps = {
-        url: `${API_URL}/order`,
+        url: `/order`,
         method: 'POST',
         body: body,
-        token: token || '',
     };
     return await tryFetchData({
         okayMessage: 'Venda efetuada com sucesso!',
@@ -103,12 +94,10 @@ export const getSelfEmployee = async ({
     setReturnMessage,
 }: getSelfEmployeeProps): Promise<Employee> => {
 
-    const token = localStorage.getItem('access_token');
     const request: fetchDataProps = {
-        url: `${API_URL}/employee/self`,
+        url: '/employee/self',
         method: 'GET',
         body: {},
-        token: token || '',
     };
     return await tryFetchData({
         setReturnMessage,

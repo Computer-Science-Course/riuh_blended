@@ -1,9 +1,9 @@
+import { axiosPrivate } from "../api/axios";
 import { refreshTokens } from "../services/token";
-import axios from "axios";
 
+/** @description Personalized axios instance to use interceptors. */
 const useAxiosPrivate = () => {
 
-  const axiosPrivate = axios.create();
   const token = localStorage.getItem('access_token');
   axiosPrivate.interceptors.request.use(
     config => {
