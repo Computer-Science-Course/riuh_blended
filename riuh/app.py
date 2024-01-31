@@ -1,4 +1,6 @@
 """Main entry point."""
+from datetime import timedelta
+
 from flask import Flask
 from flask_smorest import Api
 from flask_cors import CORS
@@ -36,6 +38,8 @@ def create_app(db_url=None) -> Flask:
     CORS(app, origins=get_origins())
     config_app(db_url, app)
     api = Api(app)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=7)
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(hours=12)
     jwt = JWTManager(app)
 
     @jwt.token_in_blocklist_loader
