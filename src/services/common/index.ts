@@ -5,9 +5,9 @@ import useAxiosPrivate from "../../hooks/usePrivateAuth";
 export const fetchData = async ({
     body = {},
     method,
-    token,
     url,
 }: fetchDataProps) => {
+    const token = localStorage.getItem('access_token');
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

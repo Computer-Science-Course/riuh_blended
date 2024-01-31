@@ -6,7 +6,6 @@ export interface fetchDataProps {
     url: string;
     method: method;
     body: Record<string, string | number | boolean>;
-    token: string;
 }
 
 export interface tryFetchDataProps {

@@ -1,10 +1,9 @@
-import { API_URL } from "../../common/constants";
 import { fetchData } from "../common";
 import { responses } from "../common/FetchDataProps";
 import { LoginProps, JwtPayload } from "./LoginProps";
 
 const fetchToken = async (username: string, password: string) => {
-    const loginUrl = `${API_URL}/login`;
+    const loginUrl = `/login`;
     const token = localStorage.getItem('access_token');
     return await fetchData({
         url: loginUrl,
@@ -52,5 +51,5 @@ export const logInService = async ({
     } finally {
         setLoading(false);
     }
-    
+
 };

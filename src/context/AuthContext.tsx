@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { tryFetchData } from '../services/common';
 import { ToastMessage } from '../components/Toast/ToastProps';
-import { API_URL } from '../common/constants';
+import { fetchDataProps } from '../services/common/FetchDataProps';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -19,13 +19,11 @@ export const revokeTokens = async (
   setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>
 ): Promise<any> => {
 
-  const accessToken = localStorage.getItem('access_token');
   const refresh_token = localStorage.getItem('refresh_token');
-  const request: any = {
-    url: `${API_URL}/logout`,
+  const request: fetchDataProps = {
+    url: '/logout',
     method: 'POST',
-    body: {refresh_token},
-    token: accessToken || '',
+    body: { refresh_token: refresh_token || '' },
   };
   return await tryFetchData({
     setReturnMessage,
