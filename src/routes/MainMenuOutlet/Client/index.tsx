@@ -9,6 +9,8 @@ import { scrollBarStyles } from "../../../common/constants";
 import { Client as ClientEntity } from "../../../entities/Client";
 import { deleteClient, getClients } from "../../../services/client";
 import ConfirmModal from "../../../components/ConfirmModal";
+import { fetchTokens } from "../../../services/login";
+import { JwtPayload } from "../../../services/login/LoginProps";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -42,6 +44,9 @@ const Client = () => {
   const handleDeleteClient = async (clientId: number | undefined) => {
     setIsLoading(true);
     try {
+      /** TODO: Change username for a dinamic one. */
+      const response = await fetchTokens('matcraft', password);
+      const { access_token }: JwtPayload = await response.data;
       await deleteClient({
         setReturnMessage,
         client_id: clientId,

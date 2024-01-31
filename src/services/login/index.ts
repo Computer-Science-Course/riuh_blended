@@ -2,7 +2,7 @@ import { fetchData } from "../common";
 import { responses } from "../common/FetchDataProps";
 import { LoginProps, JwtPayload } from "./LoginProps";
 
-const fetchToken = async (username: string, password: string) => {
+export const fetchTokens = async (username: string, password: string) => {
     const loginUrl = `/login`;
     return await fetchData({
         url: loginUrl,
@@ -22,7 +22,7 @@ export const logInService = async ({
 
     try {
         let response = undefined;
-        response = await fetchToken(username, password);
+        response = await fetchTokens(username, password);
 
         if (response.status === 200) {
             login();
