@@ -19,6 +19,16 @@ const useAxiosPrivate = () => {
     async (error) => {
       const prevRequest = error?.config;
       if (error?.response?.status === 401 && !prevRequest?.sent) {
+        /** Log out when cannot get new token with refresh token. */
+        const tokenSent = prevRequest.headers['Authorization'].replace('Bearer ', '');
+        const currentRefreshToken = localStorage.getItem('refresh_token');
+        if (tokenSent === currentRefreshToken){
+          /** TODO: Reuse login from logout function AuthContext.tsx */
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          location.reload();
+        }
+
         console.log('Ashley, look at me!');
         prevRequest.sent = true;
         const newAccessToken = await refreshTokens();

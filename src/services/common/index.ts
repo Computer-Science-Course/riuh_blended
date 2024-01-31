@@ -23,7 +23,6 @@ export const fetchData = async ({
     if (['POST', 'PUT', 'PATCH'].includes(method)) {
         axiosConfig.data = body;
     }
-
     const response: AxiosResponse = await useAxiosPrivate().request(axiosConfig);
     return response;
 };
