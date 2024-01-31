@@ -9,11 +9,13 @@ const descriptionStyles = 'text-base text-white-300';
 const CRUDListItem = ({
   description,
   title,
+  onClickDelete,
+  onClickEdit
 }: CRUDListItemProps) => {
   return (
     <span className={containerStyles}>
-      <IconButton onClick={console.log} icon="delete" />
-      <IconButton onClick={console.log} icon="edit" />
+      <IconButton onClick={onClickDelete} icon="delete" />
+      <IconButton onClick={onClickEdit} icon="edit" />
       <span className={textStyles}>
         <h2 className={titleStyles}>{title}</h2>
         <span className={descriptionStyles}>{description}</span>
