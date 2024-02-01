@@ -12,5 +12,6 @@ export interface deleteClientProps {
     setReturnMessage: React.Dispatch<React.SetStateAction<ToastMessage>>;
     /** Client to be deleted. */
     client_id: number | undefined;
+    /** Fresh access token. */
     access_token?: string;
 };

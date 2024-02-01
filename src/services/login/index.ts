@@ -20,12 +20,12 @@ export const logInService = async ({
 }: LoginProps): Promise<any> => {
     setLoading(true);
 
+    let response = undefined;
     try {
-        let response = undefined;
         response = await fetchTokens(username, password);
 
         if (response.status === 200) {
-            login();
+            if (login) login();
             const responseData: JwtPayload = await response.data;
             localStorage.setItem('access_token', responseData.access_token);
             localStorage.setItem('refresh_token', responseData.refresh_token);
@@ -49,6 +49,7 @@ export const logInService = async ({
         }
     } finally {
         setLoading(false);
+        return response;
     }
 
 };

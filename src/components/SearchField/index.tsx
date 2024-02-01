@@ -11,8 +11,9 @@ const inputGroupStyles: string = 'flex gap-1 items-center bg-white-900 rounded-l
 const SearchField = ({
   label,
   placeholder,
+  disabled = false,
   required = false,
-  onChange
+  onChange,
 }: SearchFieldProps): JSX.Element => {
 
 
@@ -32,6 +33,7 @@ const SearchField = ({
           placeholder={placeholder}
           required={required}
           onChange={onChange}
+          readOnly={disabled}
         />
         <SearchIcon
           size={24}

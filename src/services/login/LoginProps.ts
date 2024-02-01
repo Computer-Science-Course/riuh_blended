@@ -5,7 +5,7 @@ export interface LoginProps {
     password: string;
     setLoading: (loading: boolean) => void;
     setReturnMessage: (toastTessage: ToastMessage) => void;
-    login: () => void;
+    login?: () => void;
 };
 
 export interface JwtPayload {
