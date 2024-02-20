@@ -62,7 +62,7 @@ class Client(MethodView):
         return service.update(id=client_id, **client_data)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(204)
     def delete(self, client_id):
         """
