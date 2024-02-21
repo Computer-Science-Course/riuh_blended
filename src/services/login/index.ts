@@ -2,7 +2,7 @@ import { fetchData } from "../common";
 import { responses } from "../common/FetchDataProps";
 import { LoginProps, JwtPayload } from "./LoginProps";
 
-const fetchToken = async (username: string, password: string) => {
+export const fetchTokens = async (username: string, password: string) => {
     const loginUrl = `/login`;
     return await fetchData({
         url: loginUrl,
@@ -20,12 +20,12 @@ export const logInService = async ({
 }: LoginProps): Promise<any> => {
     setLoading(true);
 
+    let response = undefined;
     try {
-        let response = undefined;
-        response = await fetchToken(username, password);
+        response = await fetchTokens(username, password);
 
         if (response.status === 200) {
-            login();
+            if (login) login();
             const responseData: JwtPayload = await response.data;
             localStorage.setItem('access_token', responseData.access_token);
             localStorage.setItem('refresh_token', responseData.refresh_token);
@@ -49,6 +49,7 @@ export const logInService = async ({
         }
     } finally {
         setLoading(false);
+        return response;
     }
 
 };

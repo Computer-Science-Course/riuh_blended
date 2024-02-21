@@ -7,11 +7,12 @@ export const fetchData = async ({
     method,
     url,
     tokenType = 'access_token',
+    token,
 }: fetchDataProps) => {
-    const token = localStorage.getItem(tokenType);
+    const localToken = token ? token : localStorage.getItem(tokenType);
     const headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${localToken}`,
     };
 
     const axiosConfig: AxiosRequestConfig = {

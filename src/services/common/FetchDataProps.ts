@@ -7,6 +7,7 @@ export interface fetchDataProps {
     method: method;
     body: Record<string, string | number | boolean>;
     tokenType?: 'access_token' | 'refresh_token';
+    token?: string;
 }
 
 export interface tryFetchDataProps {

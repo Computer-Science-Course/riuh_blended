@@ -22,12 +22,14 @@ export const getClients = async ({
 export const deleteClient = async ({
     setReturnMessage,
     client_id,
+    access_token,
 }: deleteClientProps): Promise<Client[]> => {
 
     const request: fetchDataProps = {
         url: `/client/${client_id}`,
         method: 'DELETE',
         body: {},
+        token: access_token,
     };
     return await tryFetchData({
         setReturnMessage,

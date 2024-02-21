@@ -8,4 +8,6 @@ export interface SearchFieldProps {
     required: boolean,
     /** Search field value */
     onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void,
+    /** Disabled button state */
+    disabled?: boolean;
 }
