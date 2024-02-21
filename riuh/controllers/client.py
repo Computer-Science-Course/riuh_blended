@@ -40,7 +40,7 @@ class Client(MethodView):
         return service.get_by_registration(client_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateClientSchema)
     @blp.response(200, ViewClientSchema)
     def put(self, client_data, client_id):
@@ -80,7 +80,7 @@ class Client(MethodView):
         return service.delete(client_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(204)
     def patch(self, client_id):
         """
@@ -121,7 +121,7 @@ class ClientGeneral(MethodView):
         return service.get_all(**pagination_args)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateClientSchema)
     @blp.response(201, ViewClientSchema)
     def post(self, employee_data):

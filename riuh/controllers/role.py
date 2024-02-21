@@ -45,7 +45,7 @@ class Role(MethodView):
         service: RoleService = RoleService()
         return service.get_by_id(role_id)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateRoleSchema)
     @blp.response(200, ViewRoleSchema)
     def put(self, role_data, role_id):
@@ -67,7 +67,7 @@ class Role(MethodView):
         return service.update(id=role_id, **role_data)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def delete(self, role_id):
         """
@@ -84,7 +84,7 @@ class Role(MethodView):
         service: RoleService = RoleService()
         return service.delete(role_id)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(204)
     def patch(self, role_id):
         """
@@ -124,7 +124,7 @@ class RoleGeneral(MethodView):
         service: RoleService = RoleService()
         return service.get_all(**pagination_args)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateRoleSchema)
     @blp.response(200, ViewRoleSchema)
     def post(self, role_data):
