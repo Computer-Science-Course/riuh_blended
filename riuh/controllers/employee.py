@@ -56,7 +56,7 @@ class Employee(MethodView):
         return service.get_by_id(employee_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateEmployeeSchema)
     @blp.response(200, ViewEmployeeSchema)
     def put(self, employee_data, employee_id):
@@ -77,7 +77,7 @@ class Employee(MethodView):
         return service.update(id=employee_id, **employee_data)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(204)
     def delete(self, employee_id):
         """
@@ -94,7 +94,7 @@ class Employee(MethodView):
         service.delete(employee_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def patch(self, employee_id):
         """
@@ -133,7 +133,7 @@ class EmployeeGeneral(MethodView):
         return service.get_all(**pagination_args)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateEmployeeSchema)
     @blp.response(201, ViewEmployeeSchema)
     def post(self, employee_data):

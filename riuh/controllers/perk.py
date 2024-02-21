@@ -45,7 +45,7 @@ class Perk(MethodView):
         return service.get_by_id(perk_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def delete(self, perk_id):
         """
@@ -86,7 +86,7 @@ class PerkGeneral(MethodView):
         return service.get_all(**pagination_args)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreatePerkSchema)
     @blp.response(200, ViewPerkSchema)
     def post(self, perk_data):

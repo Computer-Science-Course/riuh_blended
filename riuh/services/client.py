@@ -23,8 +23,8 @@ class ClientService:
         """Get all clients."""
 
         offset = (page - 1) * per_page
-
-        return self.client.query.offset(offset).limit(per_page).all()
+        active = self.client.query.filter_by(active=True)
+        return active.offset(offset).limit(per_page).all()
 
 
     def get_by_id(

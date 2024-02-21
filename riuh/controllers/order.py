@@ -45,7 +45,7 @@ class Order(MethodView):
         service: OrderService = OrderService()
         return service.get_by_id(order_id)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateOrderSchema)
     @blp.response(200, ViewOrderSchema)
     def put(self, order_data, order_id):
@@ -67,7 +67,7 @@ class Order(MethodView):
         return service.update(id=order_id, **order_data)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def delete(self, order_id):
         """
@@ -108,7 +108,7 @@ class OrderGeneral(MethodView):
         return service.get_all(**pagination_args)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateOrderSchema)
     @blp.response(200, ViewOrderSchema)
     def post(self, order_data):

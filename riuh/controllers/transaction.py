@@ -46,7 +46,7 @@ class Transaction(MethodView):
         return service.get_by_id(transaction_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateTransactionSchema)
     @blp.response(200, ViewTransactionSchema)
     def put(self, transaction_data, transaction_id):
@@ -68,7 +68,7 @@ class Transaction(MethodView):
         return service.update(id=transaction_id, **transaction_data)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def delete(self, transaction_id):
         """
@@ -108,7 +108,7 @@ class TransactionGeneral(MethodView):
         service: TransactionService = TransactionService()
         return service.get_all(**pagination_args)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateTransactionSchema)
     @blp.response(200, ViewTransactionSchema)
     def post(self, transaction_data):

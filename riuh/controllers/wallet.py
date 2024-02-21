@@ -46,7 +46,7 @@ class Wallet(MethodView):
         return service.get_by_client_id(client_id)
 
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateWalletSchema)
     @blp.response(200, ViewWalletSchema)
     def put(self, wallet_data, client_id):
@@ -91,7 +91,7 @@ class WalletGeneral(MethodView):
         service: WalletService = WalletService()
         return service.get_all(**pagination_args)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateWalletSchema)
     @blp.response(200, ViewWalletSchema)
     def post(self, wallet_data):

@@ -45,7 +45,7 @@ class Product(MethodView):
         service: ProductService = ProductService()
         return service.get_by_id(product_id)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(UpdateProductSchema)
     @blp.response(200, ViewProductSchema)
     def put(self, product_data, product_id):
@@ -66,7 +66,7 @@ class Product(MethodView):
         service: ProductService = ProductService()
         return service.update(id=product_id, **product_data)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(204)
     def delete(self, product_id):
         """
@@ -83,7 +83,7 @@ class Product(MethodView):
         service: ProductService = ProductService()
         return service.delete(product_id)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.response(200)
     def patch(self, product_id):
         """
@@ -123,7 +123,7 @@ class ProductGeneral(MethodView):
         service: ProductService = ProductService()
         return service.get_all(**pagination_args)
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     @blp.arguments(CreateProductSchema)
     @blp.response(201, ViewProductSchema)
     def post(self, product_data):
