@@ -1,7 +1,7 @@
 import BreadCrumbs from "../../../components/BreadCrumbs";
 import Button from "../../../components/Button";
 import Toast from "../../../components/Toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastMessage } from "../../../components/Toast/ToastProps";
 import ConfirmModal from "../../../components/ConfirmModal";
 import TextField from "../../../components/TextField";
@@ -14,12 +14,20 @@ const fieldsStyle = 'flex flex-col gap-4';
 const formRowStyle = 'flex gap-4';
 
 const CreateClient = () => {
+  const [fieldBalance, setFieldBalance] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
   const [returnMessage, setReturnMessage] = useState<ToastMessage>({
     message: '', variation: 'standard'
   });
+
+  /** Force two decimals */
+  useEffect(() => {
+    if (fieldBalance) {
+      setFieldBalance(Number(fieldBalance.toFixed(2)));
+    }
+  }, [fieldBalance]);
 
   return (
     <div className={containerStyles}>
@@ -55,16 +63,22 @@ const CreateClient = () => {
             />
             <span className={addClientStyles}>
               <TextField
+                value={Number(fieldBalance)}
+                type='number'
                 required
                 fullWidth
                 label='Recarga'
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldBalance(Number(event.target.value))}
               />
               <Button
                 label='-'
                 disabledStatus={isLoading}
                 loading={isLoading}
-                onClick={() => console.log('Salvar novo freguês')}
+                onClick={() => {
+                  if (fieldBalance - 1 > 0) {
+                    setFieldBalance(fieldBalance - 1)
+                  }
+                }}
                 fullWidth={false}
                 variation='red'
               />
@@ -72,14 +86,16 @@ const CreateClient = () => {
                 label='+'
                 disabledStatus={isLoading}
                 loading={isLoading}
-                onClick={() => console.log('Salvar novo freguês')}
+                onClick={() => {
+                  setFieldBalance(fieldBalance + 1)
+                }}
                 fullWidth={false}
                 variation='green'
               />
             </span>
           </span>
           <p>Saldo atual R$0,00</p>
-          <p>Saldo após a recarga R$0,00</p>
+          <p>Saldo após a recarga R${(0 + fieldBalance).toFixed(2)}</p>
         </span>
       </section >
       <Button

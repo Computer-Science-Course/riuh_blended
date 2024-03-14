@@ -10,4 +10,8 @@ export interface TextFieldProps {
     onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void,
     /** Text field width */
     fullWidth?: boolean,
+    /** Text field type */
+    type?: 'text' | 'number',
+    /** Text field value */
+    value?: string | number,
 }
