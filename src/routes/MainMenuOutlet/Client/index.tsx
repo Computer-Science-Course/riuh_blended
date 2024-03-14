@@ -12,6 +12,7 @@ import ConfirmModal from "../../../components/ConfirmModal";
 import { logInService } from "../../../services/login";
 import { JwtPayload } from "../../../services/login/LoginProps";
 import { AuthContext } from "../../../context/AuthContext";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const containerStyles = 'w-full h-full flex flex-col p-12 gap-8';
 const titleStyles = 'text-4xl font-bold';
@@ -20,6 +21,7 @@ const itemsStyles = 'flex flex-col max-h-96 overflow-y-auto gap-4 p-2 pr-12';
 const firstColumnStyles = 'flex flex-col gap-4';
 
 const Client = () => {
+  const navigate = useNavigate();
   const [clientId, setClientId] = useState<number | undefined>(undefined)
   const [clients, setClients] = useState<ClientEntity[]>([]);
   const { currentUser } = useContext(AuthContext);
@@ -75,7 +77,8 @@ const Client = () => {
 
   return (
     <div className={containerStyles}>
-      <h1 className={titleStyles}>Cliente</h1>
+      <Outlet />
+      <h1 className={titleStyles}>Freguês</h1>
       <BreadCrumbs />
 
       {/* Content area */}
@@ -100,6 +103,7 @@ const Client = () => {
               if (hasSearch || isNotSearching) {
                 return (
                   <CRUDListItem
+                    key={`${id} | ${name}`}
                     title={name!}
                     description={registration!}
                     onClickDelete={() => {
@@ -118,7 +122,7 @@ const Client = () => {
         label="Criar novo freguês"
         disabledStatus={isLoading}
         loading={isLoading}
-        onClick={() => console.log('Criar novo freguês')}
+        onClick={() => navigate('/cliente/criar')}
         fullWidth={false}
       />
       {/* Show toast message on the screen */}
