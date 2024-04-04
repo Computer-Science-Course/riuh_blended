@@ -12,6 +12,7 @@ import Client from './routes/MainMenuOutlet/Client';
 import Employee from './routes/MainMenuOutlet/Employee';
 import Product from './routes/MainMenuOutlet/Product';
 import Report from './routes/MainMenuOutlet/Report';
+import CreateClient from './routes/MainMenuOutlet/CreateClient/index.tsx';
 
 const browserRouter = createBrowserRouter([
   {
@@ -33,19 +34,43 @@ const browserRouter = createBrowserRouter([
       },
       {
         path: '/cliente',
-        element: <Client />,
+        children: [
+          {
+            index: true,
+            element: <Client />,
+          },
+          {
+            path: 'criar',
+            element: <CreateClient />,
+          },
+        ],
       },
       {
         path: '/funcionario',
-        element: <Employee />,
+        children: [
+          {
+            index: true,
+            element: <Employee />,
+          },
+        ],
       },
       {
         path: '/produto',
-        element: <Product />,
+        children: [
+          {
+            index: true,
+            element: <Product />,
+          },
+        ],
       },
       {
         path: '/relatorio',
-        element: <Report />,
+        children: [
+          {
+            index: true,
+            element: <Report />,
+          },
+        ],
       }
     ]
   },

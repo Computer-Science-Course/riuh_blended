@@ -41,7 +41,6 @@ export const logInService = async ({
                 variation: responses[error.response.status].variation,
             });
         } else {
-            console.log(error)
             setReturnMessage({
                 message: 'Unknown error',
                 variation: 'red',

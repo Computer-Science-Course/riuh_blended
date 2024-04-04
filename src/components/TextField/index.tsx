@@ -1,5 +1,7 @@
 import { TextFieldProps } from './TextFieldProps';
 
+import './styles.css';
+
 const containerStyles: string = 'flex flex-col text-white-900 gap-1';
 const labelStyles: string = 'flex gap-1 w-max';
 const requiredTagStyles: string = 'text-purple-900';
@@ -11,6 +13,8 @@ const TextField = ({
   required = false,
   onChange,
   fullWidth = false,
+  type = 'text',
+  value,
 }: TextFieldProps): JSX.Element => {
 
   return (
@@ -23,8 +27,10 @@ const TextField = ({
         </span>
       }
       <input
-        type='text'
-        className={`${inputStyles}`}
+        value={value === undefined ? '' : value}
+        step={0.01}
+        type={type}
+        className={`${inputStyles} ${type === 'number' && 'hide-number-arrows'}`}
         placeholder={placeholder}
         required={required}
         onChange={onChange}
