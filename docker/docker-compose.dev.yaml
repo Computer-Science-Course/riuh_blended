@@ -1,0 +1,32 @@
+services:
+  backend:
+    container_name: riuh_back
+    image: riuh_back
+    build:
+      context: ../
+      dockerfile: docker/dockerfiles/back.dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - ${PROJECT_PATH}/back:/app
+    env_file:
+      - config/.env
+
+  frontend:
+    container_name: riuh_front
+    image: riuh_front
+    build:
+      context: ../
+      dockerfile: docker/dockerfiles/front.dockerfile
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+    volumes:
+      - ${PROJECT_PATH}/front:/app
+      - node_modules:/app/node_modules
+    env_file:
+      - config/.env
+
+volumes:
+  node_modules:
