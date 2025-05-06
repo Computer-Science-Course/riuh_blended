@@ -12,8 +12,8 @@ import { ToastMessage } from '../../components/Toast/ToastProps';
 
 const screenContainerStyles = 'flex flex-col items-center justify-center h-screen bg-black-900 text-white-900';
 const loginContainerStyles = 'flex items-center justify-center w-full h-full';
-const loginBoxStyles = 'flex items-center justify-center bg-black-500 rounded-lg';
-const loginAreaStyles = 'flex flex-col gap-8 items-center justify-center p-24 w-full';
+const loginBoxStyles = 'flex items-center justify-center bg-black-500 rounded-lg w-[72rem] h-[40rem]';
+const loginAreaStyles = 'flex flex-col gap-8 items-center justify-center w-1/2 h-full p-24 box-border';
 const fieldsStyles = 'flex flex-col gap-4 items-center justify-center w-full';
 
 const Login = () => {
@@ -39,7 +39,7 @@ const Login = () => {
                 <div className={loginBoxStyles}>
                     <main className={loginAreaStyles}>
                         <h1 className='text-3xl font-bold mb-4'>Entre na sua conta</h1>
-                        <div className={fieldsStyles}>
+                        <form className={fieldsStyles}>
                             <TextField
                                 required
                                 fullWidth
@@ -60,14 +60,14 @@ const Login = () => {
                                 key='confirm'
                                 fullWidth
                             />
-                        </div>
+                        </form>
 
                         <Hyperlink
                             text='Esqueci minha senha'
                             url='#'
                         />
                     </main>
-                    <img src='src/assets/login_cover.png' alt="" />
+                    <img className='w-1/2 h-full object-cover rounded-r-lg' src='src/assets/login_cover.png' alt="" />
                 </div>
             </div>
             <Footer />

@@ -7,8 +7,8 @@ import { PasswordFieldProps } from './PasswordFieldProps';
 const containerStyles: string = 'flex flex-col text-white-900 gap-1 w-full';
 const labelStyles: string = 'flex gap-1 box-border';
 const requiredTagStyles: string = 'text-purple-900';
-const inputStyles: string = 'font-mono px-4 py-2 bg-white-700 rounded-l-lg placeholder:text-white-0 text-black-500 focus:outline-none w-full h-full';
-const inputGroupStyles: string = 'flex items-center bg-white-700 rounded-lg w-full h-10';
+const inputStyles: string = 'font-mono px-4 py-2 rounded-l-lg placeholder:text-white-0 text-black-500 focus:outline-none w-full h-full';
+const inputGroupStyles: string = 'flex items-center bg-white-900 rounded-lg w-full h-10';
 const iconBoxStyles: string = 'flex h-full aspect-square items-center justify-center box-border rounded-r-lg';
 
 const PasswordField = ({

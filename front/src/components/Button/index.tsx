@@ -42,7 +42,7 @@ const Button = ({
 
   return (
     <button
-      type='button'
+      type='submit'
       className={`${standard} ${hover} ${active} ${disabled} ${fullWidth && '!w-full'}`}
       disabled={disabledStatus}
       onClick={onClick}

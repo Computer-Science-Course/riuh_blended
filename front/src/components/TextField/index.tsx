@@ -5,7 +5,7 @@ import './styles.css';
 const containerStyles: string = 'flex flex-col text-white-900 gap-1';
 const labelStyles: string = 'flex gap-1 w-max';
 const requiredTagStyles: string = 'text-purple-900';
-const inputStyles: string = 'font-mono rounded-lg px-4 py-2 placeholder:text-white-0 text-black-500 max-w-xs';
+const inputStyles: string = 'font-mono rounded-lg px-4 py-2 placeholder:text-white-0 text-black-500';
 
 const TextField = ({
   label,
@@ -18,7 +18,7 @@ const TextField = ({
 }: TextFieldProps): JSX.Element => {
 
   return (
-    <div className={`${containerStyles}  ${fullWidth && '!w-full'}`}>
+    <div className={`${containerStyles} ${fullWidth && 'w-full'}`}>
       {
         label &&
         <span className={labelStyles}>
@@ -27,10 +27,10 @@ const TextField = ({
         </span>
       }
       <input
-        value={value === undefined ? '' : value}
+        value={value}
         step={0.01}
         type={type}
-        className={`${inputStyles} ${type === 'number' && 'hide-number-arrows'}`}
+        className={`${inputStyles} ${type === 'number' && 'hide-number-arrows'} ${fullWidth && 'w-full'}`}
         placeholder={placeholder}
         required={required}
         onChange={onChange}
