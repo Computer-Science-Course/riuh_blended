@@ -1,0 +1,28 @@
+# For now, we are not going to touch this untill it goes to production.
+services:
+  backend:
+    container_name: riuh_back
+    image: riuh_back
+    build:
+      context: ../
+      dockerfile: docker/dockerfiles/back.dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - ${PROJECT_PATH}/back:/app
+    env_file:
+      - .env
+
+  frontend:
+    container_name: riuh_front
+    image: riuh_front
+    build:
+      context: ../
+      dockerfile: docker/dockerfiles/front.dockerfile
+      target: production
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production

@@ -45,4 +45,5 @@ def get_origins():
     """
     Get the allowed origins for CORS.
     """
+    print(f"Valid origins: {os.getenv('VALID_ORIGINS').split(',')}")
     return os.getenv('VALID_ORIGINS').split(',')

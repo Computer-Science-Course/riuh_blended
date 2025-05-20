@@ -37,7 +37,7 @@ class Client(MethodView):
         :return ViewClientSchem: Client.
         """
         service : ClientService = ClientService()
-        return service.get_by_registration(client_id)
+        return service.get_by_id(client_id)
 
 
     @jwt_required(fresh=True)

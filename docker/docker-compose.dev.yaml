@@ -1,7 +1,7 @@
 services:
-  backend:
-    container_name: riuh_back
-    image: riuh_back
+  backend-dev:
+    container_name: riuh_back_dev
+    image: riuh_back_dev
     build:
       context: ../
       dockerfile: docker/dockerfiles/back.dockerfile
@@ -12,21 +12,20 @@ services:
     env_file:
       - .env
 
-  frontend:
-    container_name: riuh_front
-    image: riuh_front
+  frontend-dev:
+    container_name: riuh_front_dev
+    image: riuh_front_dev
     build:
       context: ../
       dockerfile: docker/dockerfiles/front.dockerfile
+      target: dev
     ports:
-      - 5173:5173
-    depends_on:
-      - backend
-    volumes:
-      - ${PROJECT_PATH}/front:/app
-      - node_modules:/app/node_modules
+      - "3000:3000"
     env_file:
       - .env
-
-volumes:
-  node_modules:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ${PROJECT_PATH}/front:/app
+      - /app/node_modules
+    command: npm run dev
