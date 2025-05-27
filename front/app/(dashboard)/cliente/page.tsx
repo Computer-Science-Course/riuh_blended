@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -29,7 +29,6 @@ import {
 
 export default function ClientPage() {
   const router = useRouter()
-  const { toast } = useToast()
   const { currentUser } = useAuth()
   const [clients, setClients] = useState<Client[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -46,11 +45,7 @@ export default function ClientPage() {
       const clientsData = await getClients(page)
       setClients(clientsData)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao carregar clientes",
-        description: error.message,
-      })
+      toast.error("Erro ao carregar clientes")
     } finally {
       setIsLoading(false)
     }
@@ -62,18 +57,11 @@ export default function ClientPage() {
     setIsLoading(true)
     try {
       await deleteClient(selectedClientId, password)
-      toast({
-        title: "Cliente deletado com sucesso!",
-        variant: "default",
-      })
+      toast.success("Cliente deletado com sucesso!")
       setClients((prev) => prev.filter((client) => client.id !== selectedClientId))
       setShowConfirmModal(false)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao deletar cliente",
-        description: error.message,
-      })
+      toast.error("Erro ao deletar cliente")
     } finally {
       setIsLoading(false)
       setPassword("")

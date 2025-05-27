@@ -32,9 +32,9 @@ class Client(MethodView):
         """
         Get a client by document.
 
-        :param int client_id: Employee ID.
+        :param int client_id: Client ID.
 
-        :return ViewClientSchem: Client.
+        :return ViewClientSchema: Client.
         """
         service : ClientService = ClientService()
         return service.get_by_id(client_id)
@@ -96,6 +96,23 @@ class Client(MethodView):
         )
         service: ClientService = ClientService()
         return service.activate(client_id)
+
+@blp.route('/client/document/<string:document>')
+class ClientDocument(MethodView):
+    """Controllers for specific client."""
+
+    @jwt_required()
+    @blp.response(200, ViewClientSchema)
+    def get(self, document):
+        """
+        Get a client by document.
+
+        :param int document: Client ID.
+
+        :return ViewClientSchema: Client.
+        """
+        service : ClientService = ClientService()
+        return service.get_by_registration(document)
 
 
 @blp.route('/client')

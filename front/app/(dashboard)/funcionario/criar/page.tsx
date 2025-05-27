@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -13,7 +13,7 @@ import { createEmployee } from "@/lib/api/employee"
 
 export default function CreateEmployeePage() {
   const router = useRouter()
-  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState("")
   const [username, setUsername] = useState("")

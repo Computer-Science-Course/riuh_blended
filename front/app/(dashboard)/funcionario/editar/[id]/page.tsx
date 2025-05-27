@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
@@ -15,7 +15,6 @@ import type { Employee } from "@/lib/types/employee"
 
 export default function EditEmployeePage({ params }: { params: { id: string } }) {
   const router = useRouter()
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [employee, setEmployee] = useState<Employee>({})
   const [name, setName] = useState("")
@@ -39,11 +38,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
         setRole(employeeData.role || "employee")
         setActive(employeeData.active || false)
       } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro ao carregar dados do funcionário",
-          description: error.message,
-        })
+        toast.error("Erro ao carregar dados do funcionário")
         router.push("/funcionario")
       } finally {
         setIsLoading(false)
@@ -57,9 +52,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
     e.preventDefault()
 
     if (isChangingPassword && password !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Senhas não coincidem",
+      toast.error("Senhas não coincidem", {
         description: "Por favor, verifique se as senhas são iguais",
       })
       return
@@ -82,16 +75,11 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
 
       await updateEmployee(Number.parseInt(params.id), updateData)
 
-      toast({
-        title: "Funcionário atualizado com sucesso!",
-        variant: "default",
-      })
+      toast.success("Funcionário atualizado com sucesso!")
 
       router.push("/funcionario")
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao atualizar funcionário",
+      toast.error("Erro ao atualizar funcionário", {
         description: error.message,
       })
     } finally {

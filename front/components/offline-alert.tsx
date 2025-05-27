@@ -1,13 +1,13 @@
+
 "use client"
 
 import { useState, useEffect } from "react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { WifiOff } from "lucide-react"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 
 export default function OfflineAlert() {
   const [isOffline, setIsOffline] = useState(false)
-  const { toast } = useToast()
 
   useEffect(() => {
     // Only run in browser
@@ -15,20 +15,12 @@ export default function OfflineAlert() {
 
     const handleOffline = () => {
       setIsOffline(true)
-      toast({
-        variant: "destructive",
-        title: "Sem conexão com a internet",
-        description: "Você está offline. Algumas funcionalidades podem não estar disponíveis.",
-        duration: 0, // Persist until dismissed
-      })
+      toast.error("Sem conexão com a internet")
     }
 
     const handleOnline = () => {
       setIsOffline(false)
-      toast({
-        title: "Conectado à internet",
-        description: "Você está online novamente.",
-      })
+      toast.success("Conectado à internet")
     }
 
     window.addEventListener("offline", handleOffline)

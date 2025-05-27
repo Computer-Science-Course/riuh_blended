@@ -1,20 +1,20 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { UserCircle2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import BreadCrumbs from "@/components/breadcrumbs"
-import { getProducts, getClient, getWallet, sell, getSelfEmployee } from "@/lib/api/cashier"
+import { getProducts, getClientByDocument, getWallet, sell, getSelfEmployee } from "@/lib/api/cashier"
 import type { Product } from "@/lib/types/product"
 import type { Client } from "@/lib/types/client"
 import type { Wallet } from "@/lib/types/wallet"
+import { toast } from "sonner"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function CashierPage() {
-  const { toast } = useToast()
   const [isFastCashier, setIsFastCashier] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isPayingFromWallet, setIsPayingFromWallet] = useState(false)
@@ -40,11 +40,7 @@ export default function CashierPage() {
           setSelectedProduct(loadedProducts[0])
         }
       } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro ao carregar produtos",
-          description: error.message,
-        })
+        toast.error("Erro ao carregar produtos")
       } finally {
         setIsLoading(false)
       }
@@ -68,11 +64,7 @@ export default function CashierPage() {
           const walletData = await getWallet(client.id)
           setWallet(walletData)
         } catch (error: any) {
-          toast({
-            variant: "destructive",
-            title: "Erro ao carregar carteira",
-            description: error.message,
-          })
+          toast.error("Erro ao carregar carteira")
         }
       }
     }
@@ -90,7 +82,7 @@ export default function CashierPage() {
   const handleGetClient = async () => {
     setIsLoading(true)
     try {
-      const clientData = await getClient(clientDocument)
+      const clientData = await getClientByDocument(clientDocument)
       if (clientData) {
         setClient(clientData)
       } else {
@@ -102,11 +94,7 @@ export default function CashierPage() {
         })
       }
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao buscar cliente",
-        description: error.message,
-      })
+      toast.error("Erro ao buscar cliente")
     } finally {
       setIsLoading(false)
     }
@@ -127,21 +115,14 @@ export default function CashierPage() {
         isPayingFromWallet,
       })
 
-      toast({
-        title: "Venda efetuada com sucesso!",
-        variant: "default",
-      })
+      toast.success("Venda efetuada com sucesso!")
 
       if (isPayingFromWallet) {
         // Refresh client data to update wallet balance
         handleGetClient()
       }
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao realizar venda",
-        description: error.message,
-      })
+      toast.error("Erro ao realizar venda")
     } finally {
       setIsLoading(false)
     }
@@ -212,15 +193,48 @@ export default function CashierPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          {client.name && (
-            <>
-              <UserCircle2 size={80} />
-              <p className="text-2xl">{client.name}</p>
-              <p className="text-2xl">{client.course}</p>
-              <p className="text-2xl">R$ {wallet.balance?.toFixed(2)}</p>
-            </>
-          )}
+        <div className="flex flex-col p-4 border border-purple-600 border-solid rounded-lg">
+          <span className="flex gap-6">
+            <span className="flex flex-col gap-2 w-72">
+              <div>
+                <label className="text-white-0" >Nome</label>
+                {
+                  client.name ?
+                    <p className="text-2xl">{client.name}</p>
+                    :
+                    <Skeleton className="h-4 w-[250px]" />
+                }
+              </div>
+
+              <div>
+                <label className="text-white-0" >Curso</label>
+                {
+                  client.course ?
+                    <p className="text-2xl">{client.course}</p>
+                    :
+                    <Skeleton className="h-4 w-[250px]" />
+                }
+              </div>
+
+              <div>
+                <label className="text-white-0" >Saldo</label>
+                {
+                  wallet.balance ?
+                    <p className="text-2xl">R$ {wallet.balance?.toFixed(2)}</p>
+                    :
+                    <Skeleton className="h-4 w-[250px]" />
+
+                }
+              </div>
+            </span>
+
+            <span className="bg-purple-600 w-px rounded-full"></span>
+
+            <span className="flex flex-col justify-center items-center gap-2.5 text-purple-600">
+              <UserCircle2 size={100} strokeWidth={.5} />
+              <p>//// /// ////</p>
+            </span>
+          </span>
         </div>
       </section>
 

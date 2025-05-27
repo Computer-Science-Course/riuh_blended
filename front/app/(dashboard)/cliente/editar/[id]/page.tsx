@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
@@ -16,7 +16,6 @@ import type { Wallet } from "@/lib/types/wallet"
 
 export default function EditClientPage({ params }: { params: { id: string } }) {
   const router = useRouter()
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [client, setClient] = useState<Client>({})
   const [wallet, setWallet] = useState<Wallet>({})
@@ -44,11 +43,7 @@ export default function EditClientPage({ params }: { params: { id: string } }) {
           setBalance(walletData.balance || 0)
         }
       } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro ao carregar dados do cliente",
-          description: error.message,
-        })
+        toast.error("Erro ao carregar dados do cliente")
         router.push("/cliente")
       } finally {
         setIsLoading(false)
@@ -79,18 +74,11 @@ export default function EditClientPage({ params }: { params: { id: string } }) {
         })
       }
 
-      toast({
-        title: "Cliente atualizado com sucesso!",
-        variant: "default",
-      })
+      toast.success("Cliente atualizado com sucesso!")
 
       router.push("/cliente")
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao atualizar cliente",
-        description: error.message,
-      })
+      toast.error("Erro ao atualizar cliente")
     } finally {
       setIsLoading(false)
     }

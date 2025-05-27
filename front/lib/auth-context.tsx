@@ -1,10 +1,10 @@
+
 // Modernize auth context with better error handling and React 18 patterns
 "use client"
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
 import { api } from "./api"
 
 type User = {
@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const router = useRouter()
-  const { toast } = useToast()
 
   // Check if user is already authenticated on mount
   useEffect(() => {

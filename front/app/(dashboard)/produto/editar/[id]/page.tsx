@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
@@ -14,7 +14,7 @@ import type { Product } from "@/lib/types/product"
 
 export default function EditProductPage({ params }: { params: { id: string } }) {
   const router = useRouter()
-  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
   const [product, setProduct] = useState<Product>({})
   const [name, setName] = useState("")
@@ -33,11 +33,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
         setQuantity(productData.quantity || 0)
         setActive(productData.active || false)
       } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro ao carregar dados do produto",
-          description: error.message,
-        })
+        toast.error("Erro ao carregar dados do produto")
         router.push("/produto")
       } finally {
         setIsLoading(false)
@@ -59,18 +55,13 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
         active,
       })
 
-      toast({
-        title: "Produto atualizado com sucesso!",
-        variant: "default",
+      toast.success("Produto atualizado com sucesso!", {
+        description: name,
       })
 
       router.push("/produto")
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao atualizar produto",
-        description: error.message,
-      })
+      toast.error("Erro ao atualizar produto")
     } finally {
       setIsLoading(false)
     }

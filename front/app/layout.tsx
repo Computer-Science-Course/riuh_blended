@@ -3,7 +3,8 @@ import type { Metadata } from "next"
 import { Inter, IBM_Plex_Mono } from "next/font/google"
 import "./globals.css"
 import { Providers } from "./providers"
-import { Toaster } from "@/components/ui/toaster"
+// import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "sonner"
 
 // Import the OfflineAlert component
 import OfflineAlert from "@/components/offline-alert"
@@ -38,7 +39,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${ibmPlexMono.variable} font-sans bg-black-900`}>
         <Providers>
           {children}
-          <Toaster />
+          <Toaster theme="dark" richColors position="top-center" />
           <OfflineAlert />
         </Providers>
       </body>

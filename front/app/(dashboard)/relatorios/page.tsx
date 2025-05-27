@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -29,7 +29,7 @@ type ReportData = {
 }
 
 export default function ReportsPage() {
-  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
   const [reportType, setReportType] = useState("daily")
   const [startDate, setStartDate] = useState("")

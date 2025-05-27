@@ -5,4 +5,5 @@ export type Employee = {
   document?: string
   role?: string
   active?: boolean
+  password?: string
 }

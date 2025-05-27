@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import BreadCrumbs from "@/components/breadcrumbs"
@@ -12,7 +12,7 @@ import { createProduct } from "@/lib/api/product"
 
 export default function CreateProductPage() {
   const router = useRouter()
-  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState("")
   const [price, setPrice] = useState(0)

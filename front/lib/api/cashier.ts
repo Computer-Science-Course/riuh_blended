@@ -13,9 +13,18 @@ export const getProducts = async (): Promise<Product[]> => {
   }
 }
 
-export const getClient = async (document: string): Promise<Client> => {
+export const getClientByDocument = async (document: string): Promise<Client> => {
   try {
-    const response = await api.get(`/client/${document}`)
+    const response = await api.get(`/client/document/${document}`)
+    return response.data
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Erro ao buscar cliente")
+  }
+}
+
+export const getClient = async (id: string): Promise<Client> => {
+  try {
+    const response = await api.get(`/client/${id}`)
     return response.data
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Erro ao buscar cliente")

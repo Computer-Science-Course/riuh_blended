@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import BreadCrumbs from "@/components/breadcrumbs"
@@ -14,7 +14,6 @@ import type { Wallet } from "@/lib/types/wallet"
 
 export default function WalletPage() {
   const router = useRouter()
-  const { toast } = useToast()
   const [clients, setClients] = useState<Client[]>([])
   const [wallets, setWallets] = useState<Record<number, Wallet>>({})
   const [isLoading, setIsLoading] = useState(false)
@@ -43,11 +42,7 @@ export default function WalletPage() {
       }
       setWallets(walletsData)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao carregar clientes",
-        description: error.message,
-      })
+      toast.error("Erro ao carregar clientes")
     } finally {
       setIsLoading(false)
     }
@@ -74,19 +69,12 @@ export default function WalletPage() {
         },
       }))
 
-      toast({
-        title: "Saldo adicionado com sucesso!",
-        variant: "default",
-      })
+      toast.success("Saldo adicionado com sucesso!")
 
       setAdditionalBalance(0)
       setSelectedClientId(undefined)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao adicionar saldo",
-        description: error.message,
-      })
+      toast.error("Erro ao adicionar saldo")
     } finally {
       setIsLoading(false)
     }
