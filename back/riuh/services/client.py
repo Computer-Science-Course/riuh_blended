@@ -1,6 +1,7 @@
+from math import ceil
 from typing import List
-from models.db import db
 
+from models.db import db
 from models.client import Client
 
 from flask_smorest import abort
@@ -16,15 +17,21 @@ class ClientService:
         self.client = Client()
 
 
-    def get_all(
-            self,
-            page: int = 1, per_page: int = 10,
-    ):
-        """Get all clients."""
+    def get_all(self, page: int = 1, per_page: int = 10):
+        """Get all active clients with pagination metadata."""
 
-        offset = (page - 1) * per_page
-        active = self.client.query.filter_by(active=True)
-        return active.offset(offset).limit(per_page).all()
+        query = self.client.query.filter_by(active=True)
+        total = query.count()
+        items = query.offset((page - 1) * per_page).limit(per_page).all()
+        pages = ceil(total / per_page)
+
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "pages": pages,
+        }
 
 
     def get_by_id(

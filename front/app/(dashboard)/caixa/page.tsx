@@ -12,7 +12,10 @@ import type { Product } from "@/lib/types/product"
 import type { Client } from "@/lib/types/client"
 import type { Wallet } from "@/lib/types/wallet"
 import { toast } from "sonner"
-import { Skeleton } from "@/components/ui/skeleton"
+
+const convertToBrazilianCurrency = (value: number) => (
+  value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+)
 
 export default function CashierPage() {
   const [isFastCashier, setIsFastCashier] = useState(false)
@@ -157,7 +160,7 @@ export default function CashierPage() {
 
           <form className="flex gap-4 items-end">
             <Input
-              className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700"
+              className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700"
               placeholder="Documento"
               onChange={(e) => setClientDocument(e.target.value)}
             />
@@ -202,7 +205,7 @@ export default function CashierPage() {
                   client.name ?
                     <p className="text-2xl">{client.name}</p>
                     :
-                    <Skeleton className="h-4 w-[250px]" />
+                    <p className="text-black-100">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </p>
                 }
               </div>
 
@@ -212,7 +215,7 @@ export default function CashierPage() {
                   client.course ?
                     <p className="text-2xl">{client.course}</p>
                     :
-                    <Skeleton className="h-4 w-[250px]" />
+                    <p className="text-black-100">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </p>
                 }
               </div>
 
@@ -220,9 +223,9 @@ export default function CashierPage() {
                 <label className="text-white-0" >Saldo</label>
                 {
                   wallet.balance ?
-                    <p className="text-2xl">R$ {wallet.balance?.toFixed(2)}</p>
+                    <p className="text-2xl">R$ {convertToBrazilianCurrency(wallet.balance)}</p>
                     :
-                    <Skeleton className="h-4 w-[250px]" />
+                    <p className="text-black-100">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </p>
 
                 }
               </div>

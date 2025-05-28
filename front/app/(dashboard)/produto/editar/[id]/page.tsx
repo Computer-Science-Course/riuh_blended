@@ -86,7 +86,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
             <label className="block text-white-900 mb-1">Nome</label>
             <Input
               required
-              className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+              className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
               placeholder="Digite o nome do produto"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -100,7 +100,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                   required
                   type="number"
                   step="0.01"
-                  className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
+                  className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
                   value={price}
                   onChange={(e) => handlePriceChange(Number.parseFloat(e.target.value))}
                 />
@@ -127,7 +127,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                 <Input
                   required
                   type="number"
-                  className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
+                  className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
                   value={quantity}
                   onChange={(e) => handleQuantityChange(Number.parseInt(e.target.value))}
                 />

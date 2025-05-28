@@ -1,7 +1,15 @@
 import { api } from "../api"
 import type { Client } from "../types/client"
 
-export const getClients = async (page: number = 1, perPage: number = 10): Promise<Client[]> => {
+export interface PaginatedClientResponse {
+  items: Client[];
+  total: number;
+  page: number;
+  per_page: number;
+  pages: number;
+}
+
+export const getClients = async (page: number = 1, perPage: number = 10): Promise<PaginatedClientResponse> => {
   try {
     const response = await api.get("/client", {
       page: page,

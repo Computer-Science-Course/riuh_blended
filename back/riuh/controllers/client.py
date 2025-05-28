@@ -11,6 +11,7 @@ from schemas.client import (
     CreateClientSchema,
     UpdateClientSchema,
     ViewClientSchema,
+    PaginatedClientSchema,
 )
 from schemas.pagination import PaginationSchema
 from services import (
@@ -121,7 +122,7 @@ class ClientGeneral(MethodView):
 
     @jwt_required()
     @blp.arguments(PaginationSchema, location='query')
-    @blp.response(200, ViewClientSchema(many=True))
+    @blp.response(200, PaginatedClientSchema)
     def get(self, pagination_args):
         """
         Get all Clients.

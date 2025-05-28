@@ -18,6 +18,7 @@ import CRUDListItem from "@/components/crud-list-item"
 import { getEmployees, deleteEmployee } from "@/lib/api/employee"
 import type { Employee } from "@/lib/types/employee"
 import { useAuth } from "@/lib/auth-context"
+import { Search } from "lucide-react"
 
 export default function EmployeePage() {
   const router = useRouter()
@@ -36,9 +37,7 @@ export default function EmployeePage() {
       const employeesData = await getEmployees()
       setEmployees(employeesData)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao carregar funcionários",
+      toast.error("Erro ao carregar funcionários", {
         description: error.message,
       })
     } finally {
@@ -52,16 +51,11 @@ export default function EmployeePage() {
     setIsLoading(true)
     try {
       await deleteEmployee(selectedEmployeeId, password)
-      toast({
-        title: "Funcionário deletado com sucesso!",
-        variant: "default",
-      })
+      toast("Funcionário deletado com sucesso!")
       setEmployees((prev) => prev.filter((employee) => employee.id !== selectedEmployeeId))
       setShowConfirmModal(false)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao deletar funcionário",
+      toast.error("Erro ao deletar funcionário", {
         description: error.message,
       })
     } finally {
@@ -93,30 +87,15 @@ export default function EmployeePage() {
         <div className="flex flex-col gap-4">
           <div className="relative">
             <Input
-              className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 pr-10 w-[300px]"
+              className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
               placeholder="Digite um nome, usuário ou documento"
               onChange={(e) => setSearchField(e.target.value)}
               disabled={employees.length === 0}
+              icon={<Search />}
             />
-            <svg
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black-500"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
           </div>
 
-          <div className="flex flex-col max-h-96 overflow-y-auto gap-4 p-2 pr-12 scrollbar-thin scrollbar-thumb-white-200 scrollbar-track-black-0 scrollbar-rounded-lg scrollbar-track-rounded-lg">
+          <div className="flex flex-col h-96 overflow-y-auto gap-4 p-2 pr-12 scrollbar-thin scrollbar-thumb-white-200 scrollbar-track-black-0 scrollbar-rounded-lg scrollbar-track-rounded-lg">
             {filteredEmployees.map((employee) => (
               <CRUDListItem
                 key={employee.id}

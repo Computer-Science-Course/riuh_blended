@@ -46,7 +46,7 @@ export default function LoginPage() {
                 <div className="w-full">
                   <Input
                     required
-                    className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-900 w-full"
+                    className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-900 w-full"
                     placeholder="Insira seu usuário"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -57,7 +57,7 @@ export default function LoginPage() {
                   <Input
                     required
                     type={showPassword ? "text" : "password"}
-                    className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-900 w-full pr-10"
+                    className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-900 w-full pr-10"
                     placeholder="Insira sua senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

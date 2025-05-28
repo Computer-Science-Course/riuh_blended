@@ -76,7 +76,7 @@ export default function CreateClientPage() {
               <label className="block text-white-900 mb-1">Nome</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o nome do freguês"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -86,7 +86,7 @@ export default function CreateClientPage() {
               <label className="block text-white-900 mb-1">Matrícula</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Insira a matrícula"
                 value={registration}
                 onChange={(e) => setRegistration(e.target.value)}
@@ -98,7 +98,7 @@ export default function CreateClientPage() {
               <label className="block text-white-900 mb-1">Documento</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o documento do freguês"
                 value={document}
                 onChange={(e) => setDocument(e.target.value)}
@@ -108,7 +108,7 @@ export default function CreateClientPage() {
               <label className="block text-white-900 mb-1">Curso</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o curso do freguês"
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
@@ -121,7 +121,7 @@ export default function CreateClientPage() {
               <Input
                 type="number"
                 step="0.01"
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full hide-number-arrows"
                 value={balance}
                 onChange={(e) => handleBalanceChange(Number.parseFloat(e.target.value))}
               />

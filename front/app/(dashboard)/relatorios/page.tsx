@@ -97,7 +97,7 @@ export default function ReportsPage() {
           <label className="block text-white-900 mb-1">Data Inicial</label>
           <Input
             type="date"
-            className="font-mono px-4 py-2 rounded-lg text-black-500 bg-white-700"
+            className="font-mono rounded-lg text-black-500 bg-white-700"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
@@ -106,7 +106,7 @@ export default function ReportsPage() {
           <label className="block text-white-900 mb-1">Data Final</label>
           <Input
             type="date"
-            className="font-mono px-4 py-2 rounded-lg text-black-500 bg-white-700"
+            className="font-mono rounded-lg text-black-500 bg-white-700"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />

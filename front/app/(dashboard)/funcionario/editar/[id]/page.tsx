@@ -99,7 +99,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
               <label className="block text-white-900 mb-1">Nome</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o nome do funcionário"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -109,7 +109,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
               <label className="block text-white-900 mb-1">Usuário</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -121,7 +121,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
               <label className="block text-white-900 mb-1">Documento</label>
               <Input
                 required
-                className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                 placeholder="Digite o documento do funcionário"
                 value={document}
                 onChange={(e) => setDocument(e.target.value)}
@@ -158,7 +158,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
                 <label className="block text-white-900 mb-1">Nova Senha</label>
                 <Input
                   type="password"
-                  className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                  className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                   placeholder="Digite a nova senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -168,7 +168,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
                 <label className="block text-white-900 mb-1">Confirmar Nova Senha</label>
                 <Input
                   type="password"
-                  className="font-mono px-4 py-2 rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
+                  className="font-mono rounded-lg placeholder:text-white-0 text-black-500 bg-white-700 w-full"
                   placeholder="Confirme a nova senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
