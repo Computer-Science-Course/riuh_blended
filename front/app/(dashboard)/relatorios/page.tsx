@@ -1,12 +1,18 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { format } from "date-fns"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import BreadCrumbs from "@/components/breadcrumbs"
 import { api } from "@/lib/api"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { CalendarIcon } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import DatePicker from "@/components/date-picker"
 
 type ReportData = {
   totalSales: number
@@ -32,8 +38,8 @@ export default function ReportsPage() {
 
   const [isLoading, setIsLoading] = useState(false)
   const [reportType, setReportType] = useState("daily")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
+  const [startDate, setStartDate] = useState<Date>()
+  const [endDate, setEndDate] = useState<Date>()
   const [reportData, setReportData] = useState<ReportData | null>(null)
 
   useEffect(() => {
@@ -41,15 +47,13 @@ export default function ReportsPage() {
     const today = new Date()
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1)
 
-    setEndDate(today.toISOString().split("T")[0])
-    setStartDate(firstDay.toISOString().split("T")[0])
+    setEndDate(today)
+    setStartDate(firstDay)
   }, [])
 
   const handleGenerateReport = async () => {
     if (!startDate || !endDate) {
-      toast({
-        variant: "destructive",
-        title: "Datas inválidas",
+      toast.error("Datas inválidas", {
         description: "Por favor, selecione datas válidas para o relatório",
       })
       return
@@ -64,9 +68,7 @@ export default function ReportsPage() {
 
       setReportData(response.data)
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao gerar relatório",
+      toast.error("Erro ao gerar relatório", {
         description: error.response?.data?.message || "Ocorreu um erro ao gerar o relatório",
       })
     } finally {
@@ -79,7 +81,7 @@ export default function ReportsPage() {
       <h1 className="text-4xl font-bold">Relatórios</h1>
       <BreadCrumbs />
 
-      <div className="flex gap-4 items-end">
+      <div className="flex flex-col gap-4 w-60">
         <div>
           <label className="block text-white-900 mb-1">Tipo de Relatório</label>
           <Select value={reportType} onValueChange={setReportType}>
@@ -95,26 +97,22 @@ export default function ReportsPage() {
         </div>
         <div>
           <label className="block text-white-900 mb-1">Data Inicial</label>
-          <Input
-            type="date"
-            className="font-mono rounded-lg text-black-500 bg-white-700"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+          <DatePicker
+            date={startDate}
+            setDate={setStartDate}
           />
         </div>
         <div>
           <label className="block text-white-900 mb-1">Data Final</label>
-          <Input
-            type="date"
-            className="font-mono rounded-lg text-black-500 bg-white-700"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+          <DatePicker
+            date={endDate}
+            setDate={setEndDate}
           />
         </div>
         <Button
           onClick={handleGenerateReport}
           disabled={isLoading}
-          className="bg-purple-900 text-white-800 hover:bg-purple-700"
+          className="bg-purple-900 text-white-800 hover:bg-purple-700 w-max"
         >
           {isLoading ? "Gerando..." : "Gerar Relatório"}
         </Button>
